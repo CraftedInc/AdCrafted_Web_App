@@ -22,7 +22,7 @@ config.local = {
     PROTOCOL: "http://",
     DOMAIN: "test.com:8888",
     TEST_DOMAIN: "test.com",
-    S3_BUCKET: "AdCrafted-S3-DEV",
+    S3_BUCKET: "AdCrafted-DEV",
     ADSPACE_TABLE_NAME: "AdCrafted-AdSpace-DEV",
     AD_TABLE_NAME: "AdCrafted-Ad-DEV",
     USER_TABLE_NAME: "User-DEV",
@@ -35,7 +35,7 @@ config.local = {
 config.development = {
     PROTOCOL: "http://",
     DOMAIN: "citreo.us",
-    S3_BUCKET: "AdCrafted-S3-DEV",
+    S3_BUCKET: "AdCrafted-DEV",
     ADSPACE_TABLE_NAME: "AdCrafted-AdSpace-DEV",
     AD_TABLE_NAME: "AdCrafted-Ad-DEV",
     USER_TABLE_NAME: "User-DEV",
@@ -48,7 +48,7 @@ config.development = {
 config.production = {
     PROTOCOL: "http://",
     DOMAIN: "adcrafted.com",
-    S3_BUCKET: "AdCrafted-S3-PROD",
+    S3_BUCKET: "AdCrafted-PROD",
     ADSPACE_TABLE_NAME: "AdCrafted-AdSpace-PROD",
     AD_TABLE_NAME: "AdCrafted-Ad-PROD",
     USER_TABLE_NAME: "User-PROD",
