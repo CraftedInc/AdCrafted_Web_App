@@ -107,7 +107,7 @@ $(document).ready(function() {
 		}
 	    });
 	} else {
-	    $("#contact-error-text").text("Your email isn't valid.");
+	    $("#contact-error-text").text("Please enter a valid email address.");
 	    $("#contact-error").removeClass("hide");
 	}
     });
