@@ -130,6 +130,10 @@ body {
     cursor: pointer;
     background-color: rgb(116, 189, 241);
 }
+.email-sending {
+    width: 110px !important;
+    background-color: rgb(116, 189, 241) !important;
+}
 #footer {
     padding-top: 10px;
     color: rgb(100,100,100);

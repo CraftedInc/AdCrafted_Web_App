@@ -83,8 +83,9 @@ $(document).ready(function() {
 	if (isEmail(email)) {
 	    var name = $("#contact-name").val() || "Not provided";
 	    var comment = $("#contact-comment").val() || "Not provided";
-	    $("#contact-send").text("Sending...");
-	    $("#contact-send").prop("disabled", true);
+	    $(this).addClass("email-sending");
+	    $(this).text("Sending...");
+	    $(this).prop("disabled", true);
 	    $.ajax({
 		type: "POST",
 		url: "/email",
@@ -94,6 +95,7 @@ $(document).ready(function() {
 		success: function(data) {
 		    $("#contact-send").prop("disabled", false);
 		    $("#contact-send").text("Send");
+		    $("#contact-send").removeClass("email-sending");
 		    if (data.status != 200) {
 			$("#contact-error-text").text(data.message);
 			$("#contact-error").removeClass("hide");
