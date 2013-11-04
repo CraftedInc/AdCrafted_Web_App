@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="styles.css">
+    <title>Project R API</title>
+  </head>
+  <body>
+    <div id="content">
+      <div id="title">
+	<h1 class="section-header">Project R API</h1>
+	<p class="description">Description of the Project R web service API.</p>
+      </div>
+      <div id="index">
+	<h1 class="section-header">Index</h1>
+	<p><a class="index-link" href="#cards">/cards/</a></p>
+	<p><a class="index-link" href="#cards">/cards/</a></p>
+	<p><a class="index-link" href="#cards">/cards/</a></p>
+	<p><a class="index-link" href="#cards">/cards/</a></p>
+      </div>
+      <!-- /CARDS/ -->
+      <div class="api-section">
+	<h1 class="resource" id="cards">/cards/</h1>
+	<h2 class="http-method">GET</h2>
+	<div class="method-details">
+	  <p><strong>Description</strong></p>
+	  <p class="description">Retrieves all cards within a square box of the specified length centered at the given coordinates.</p>
+	  <hr>
+	  <p><strong>Required parameters</strong></p>
+	  <p class="parameter">lat</p>
+	  <p class="parameter"><em>The latitude coordinate</em></p>
+	  <p class="parameter">long</p>
+	  <p class="parameter"><em>The longitude coordinate</em></p>
+	  <hr>
+	  <p><strong>Optional parameters</strong></p>
+	  <p class="parameter">length (default=100)</p>
+	  <p class="parameter"><em>The dimension of the square box centered on the specified coordinates</em></p>
+	  <hr>
+	  <p><strong>Example</strong></p>
+	  <div class="example">
+	    <p>GET /cards?length=100&lat=47.6097&long=122.3331</p>
+	    <pre class="code">
+{
+  "title": "The Stumbling Monk",
+  "lat": 47.6097,
+  "long": 122.3331
+}
+	    </pre>
+	  </div>
+	</div>
+	<h2 class="http-method">PUT</h2>
+	<div class="method-details">
+	  <p>Example details</p>
+	  <p class="code">var foo = new Bar();</p>
+	</div>
+	<h2 class="http-method">POST</h2>
+	<div class="method-details">
+	  <p>Example details</p>
+	  <p class="code">var foo = new Bar();</p>
+	</div>
+	<h2 class="http-method">DELETE</h2>
+	<div class="method-details">
+	  <p>Example details</p>
+	  <p class="code">var foo = new Bar();</p>
+	</div>
+      </div>
+      <!-- END /CARDS/ -->
+      <!-- /CARDS/BYLOCATION/ -->
+      <div class="api-section">
+	<h1 class="resource">/cards/bylocation?lat=</h1>
+	<h2 class="http-method">GET</h2>
+	<div class="method-details">
+	  <p>Example details</p>
+	  <p class="code">var foo = new Bar();</p>
+	</div>
+	<h2 class="http-method">PUT</h2>
+	<div class="method-details">
+	  <p>Example details</p>
+	  <p class="code">var foo = new Bar();</p>
+	</div>
+	<h2 class="http-method">POST</h2>
+	<div class="method-details">
+	  <p>Example details</p>
+	  <p class="code">var foo = new Bar();</p>
+	</div>
+	<h2 class="http-method">DELETE</h2>
+	<div class="method-details">
+	  <p>Example details</p>
+	  <p class="code">var foo = new Bar();</p>
+	</div>
+      </div>
+      <!-- END /CARDS/BYLOCATION/ -->
+    </div>
+  </body>
+</html>

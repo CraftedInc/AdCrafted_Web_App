@@ -1,0 +1,31 @@
+{
+    "name": "project-r",
+    "description": "Prototype application for Project R",
+    "version": "0.0.1",
+    "private": true,
+    "author": "James Pasko <james@jamespasko.com>",
+    "contributors": [ 
+	{
+	    "name": "James Pasko",
+	    "email": "james@jamespasko.com"
+	} 
+    ],
+    "scripts": {
+	"start": "node server.js"
+    },
+    "repository": {
+	"type": "git",
+	"url": "https://github.com/jpasko/project_r.git"
+    },
+    "dependencies": {
+	"express": "3.x",
+	"jade": "*",
+	"aws-sdk": "*",
+	"node-uuid": "*",
+	"validator": "1.4.x",
+	"passport": "0.1.x",
+	"passport-google-oauth": "0.1.x",
+	"connect-ensure-login": "0.1.x",
+	"connect-redis": "1.4.x"
+    }
+}

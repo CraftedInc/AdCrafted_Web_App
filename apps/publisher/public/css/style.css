@@ -1,0 +1,81 @@
+.adspace-thumbnail, .ad-thumbnail {
+    margin-top: 10px;
+    background-color: #222;
+    padding: 10px;
+    border-radius: 2px;
+}
+html, body {
+    height: 100%;
+    color: #999 !important;
+}
+a.no-decoration:hover {
+    text-decoration: none;
+}
+body {
+    background-color: rgb(63, 169, 245) !important;
+}
+#wrap {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -60px;
+    padding: 0 0 60px;
+}
+#footer {
+    height: 60px;
+    background-color: #222;
+}
+#wrap > .container {
+    padding: 60px 0 0 0;
+}
+.container .footer-text {
+    margin: 20px 0;
+}
+#footer > .container {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+#adspace-content {
+    padding-bottom: 10px;
+}
+#input-group-search {
+    width: 250px;
+}
+#adspace-control-bar {
+    background-color: #222;
+    padding: 15px;
+    border-radius: 2px;
+}
+.adspace-information {
+    display: inline-block;
+}
+.adspace-img, .ad-img {
+    max-width: 240px;
+    display: inline-block;
+}
+.tag {
+    cursor: pointer;
+    margin-right: 3px;
+}
+.tag:hover {
+    color: white;
+    text-decoration: none;
+}
+#select-ordering, #select-sort-by {
+    margin-right: 20px;
+}
+#select-sort-by {
+    height: 34px;
+}
+#create-adspace-form, #edit-adspace-form, #edit-ad-form {
+    background-color: #222;
+    padding: 20px;
+    border-radius: 2px;
+}
+.drag-over {
+    opacity: 0.5;
+    border-color: rgb(200, 200, 200);
+}
+.draggable {
+    border: 2px dotted rgb(150, 150, 150);
+}

@@ -1,0 +1,58 @@
+<!-- ADSPACE control bar -->
+<div class="form-inline row" id="adspace-control-bar">
+  <a href="#/adspaces/" class="btn btn-default"><strong>Home</strong></a>
+  <a href="#/adspaces/{{AdSpaceID}}/ad/new" class="btn btn-danger"><strong>New Ad</strong></a>
+  <div class="form-group pull-right">
+    <div class="input-group" id="input-group-search">
+      <span class="input-group-addon">
+	<span class="glyphicon glyphicon-search"></span>
+      </span>
+      <input type="text" class="form-control" placeholder="Search" ng-model="query">
+    </div>
+  </div>
+  <div class="form-group pull-right">
+    <label for="select-ordering">Order: </label>
+    <div class="btn-group" id="select-ordering">
+      <button class="btn btn-default" type="button" ng-model="orderReverse" btn-radio="false">Forward</button>
+      <button class="btn btn-default" type="button" ng-model="orderReverse" btn-radio="true">Reverse</button>
+    </div>
+  </div>
+  <div class="form-group pull-right">
+    <label>Sort by: </label>
+    <select class="btn btn-default" id="select-sort-by" ng-model="orderProp">
+      <option value="title">Title</option>
+      <option value="AdID">ID</option>
+      <option value="date">Date</option>
+    </select>
+  </div>
+</div>
+
+<!-- ADSPACE list -->
+<div ng-repeat="Ad in AdCollection.Ads | orderBy:orderProp:orderReverse | filter:query" class="ad-thumbnail row">
+  <div class="col-md-3">
+    <img ng-src="{{Ad.image}}" fallback-src="http://placehold.it/240x240" class="img-rounded ad-img">
+  </div>
+  <div class="col-md-4">
+    <div class="adspace-information">
+      <p><strong>{{Ad.title}}</strong></p>
+      <p>
+	{{Ad.text}}
+      </p>
+    </div>
+  </div>
+  <div class="col-md-5">
+    <div class="adspace-information">
+      <p><strong>Ad ID: </strong><code>{{Ad.AdID}}</code></p>
+      <p><strong>AdSpace ID: </strong><code>{{AdSpaceID}}</code></p>
+      <p><strong>Link: </strong><a href={{Ad.link}} class="no-decoration" target="_blank">{{Ad.link}}</a>
+      <p><strong>Created: </strong>{{Ad.date | date:'longDate'}}</p>
+      <!--
+      <p><strong>Advertiser: </strong>{{Ad.advertiser}}</p>
+      <p><strong>Advertiser ID: </strong><code>{{Ad.advertiserID}}</code></p>
+      -->
+      <p><strong>Impressions: </strong><code>{{Ad.impressions}}</code></p>
+      <p><strong>Clicks: </strong><code>{{Ad.clicks}}</code></p>
+      <a href="#/adspaces/{{AdSpaceID}}/ad/{{Ad.AdID}}/edit" class="btn btn-default">Edit</a>
+    </div>
+  </div>
+</div>

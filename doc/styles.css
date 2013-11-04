@@ -1,0 +1,68 @@
+* {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+#content {
+    padding: 20px;
+}
+#index, #title {
+    margin: 10px;
+    border-radius: 5px;
+    border: 2px solid #e5e5e5;
+    width: 80%;
+    min-width: 940px;
+    background-color: #f5f5f5;
+    padding-bottom: 20px;
+}
+.section-header {
+    background-color: #e5e5e5;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.index-link {
+    color: #0b0080;
+    text-decoration: none;
+    padding: 5px 0 5px 20px;
+}
+.index-link:hover {
+    color: #0645ad;
+}
+h1 {
+    font-size: 28px;
+}
+h2 {
+    font-size: 16px;
+}
+.api-section {
+    margin: 10px;
+    border: 2px solid #e5e5e5;
+    border-radius: 5px;
+    width: 80%;
+    min-width: 940px;
+}
+.http-method {
+    padding: 5px 0 5px 20px;
+    background-color: #f5f5f5;
+}
+.method-details {
+    background-color: #fdfdfd;
+    padding: 5px 0 5px 30px;
+}
+.resource {
+    background-color: #e5e5e5;
+    padding: 10px;
+}
+.code {
+    font-family: "Courier New", Courier, monospace;
+}
+hr {
+    border-top: 1px solid #e5e5e5;
+    border-bottom: none;
+    margin: 3px 0;
+}
+.parameter, .description {
+    margin: 3px 0 0 20px;
+}
+.example {
+    margin: 3px 0 0 20px;
+}

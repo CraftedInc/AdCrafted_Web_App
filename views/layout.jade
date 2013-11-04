@@ -1,0 +1,58 @@
+doctype 5
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/static/css/style.css')
+    link(rel='stylesheet', href='/static/css/bootstrap.min.css')
+    link(rel='icon', type='image/ico', href='/static/img/favicon.ico')
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(name='keywords', content='advertising, mobile, custom, platform, technology')
+    meta(name='description', content='Say goodbye to banner ads. Sign up for AdCrafted today!')
+    script(type='text/javascript', src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js').
+    script(type='text/javascript', src='/static/js/landing.js').
+    script(type='text/javascript', src='/static/js/bootstrap.min.js').
+    script(type='text/javascript').
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-42783446-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    block head
+
+  body#landing-body
+    // Navbar.
+    div.navbar.navbar-inverse.navbar-fixed-top
+      div.container
+        div.navbar-header
+          button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+        div.navbar-collapse.collapse
+          ul.nav.navbar-nav.navbar-left
+            li
+              a#nav-link(href='#home') Home
+            li
+              a#nav-link(href='#about') About
+            li
+              a#nav-link(href='#contact') Contact
+            li
+              a#nav-link(href='#team') Team
+            li
+              a#nav-link(href='http://blog.adcrafted.com', target='_blank') Blog
+          ul.nav.navbar-nav.navbar-right
+            li
+              a#nav-link(href='http://publisher.' + domain, data-toggle='modal') Developers
+            li
+              a#nav-link(href='http://advertiser.' + domain, data-toggle='modal') Advertisers
+    // Content.
+    block content
+    // Footer.
+    div#footer
+      div.container
+        p.credit &copy; Crafted, Inc. 2013. <a href='#'>Terms</a> &middot; <a href='#'>Privacy</a>

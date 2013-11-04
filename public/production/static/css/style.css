@@ -1,0 +1,205 @@
+body {
+    padding: 0;
+    margin: 0;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+#landing-body {
+    background-color: rgb(63, 169, 245);
+}
+#home {
+    min-height: 650px;
+    background-image: url(/static/img/drops_900_blur.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+#about {
+    padding: 60px 0;
+    background-color: rgb(250, 250, 250);
+    border-top: 1px solid #999;
+    border-bottom: 1px solid #D3D3D3;
+}
+.about-text {
+    font-size: 1.3em;
+}
+.about-divider {
+    border-top: 1px solid #ECECEC;
+    margin: 40px auto;
+    max-width: 950px;
+}
+#team {
+    padding: 60px 0 40px 0;
+    text-align: center;
+}
+.img-team {
+    border: 5px solid white;
+    box-shadow: 0 0 10px rgb(100, 100, 100);
+}
+.team-member {
+    color: rgb(250, 250, 250);
+}
+.team-text {
+    font-size: 1.3em;
+    color: rgb(250, 250, 250);
+    max-width: 410px;
+    margin: 0 auto 20px auto;
+}
+#location {
+    background-color: rgb(180, 180, 180);
+    margin-bottom: -4px;
+    border-top: 1px solid #999;
+}
+#contact {
+    padding: 60px 0;
+    background-color: rgb(250, 250, 250);
+    border-bottom: 1px solid #999;
+    min-height: 300px;
+    text-align: center;
+}
+#contact-form {
+    padding-top: 20px;
+    width: 500px;
+    margin: 0 auto;
+}
+#contact-email {
+    height: 40px;
+    display: inline;
+    width: 248px;
+    margin-right: 4px;
+}
+#contact-name {
+    height: 40px;
+    display: inline;
+    width: 248px;
+}
+#contact-comment {
+    margin: 10px 0 20px 0;
+}
+#not-found {
+    color: black;
+    font-size: 1.4em;
+    text-align: center;
+    margin-top: 320px;
+}
+#landing-email {
+    background-image: url(/static/img/Logo-circular.png);
+    background-repeat: no-repeat;
+    background-position: center 40px;
+    width: 400px;
+    padding-top: 470px;
+    margin: 50px auto 0 auto;
+}
+#incentive {
+    color: white;
+    margin: 0 0 5px 0;
+    font-size: 1.5em;
+}
+#email-input-wrapper {
+    margin: 0 auto;
+    width: 330px;
+}
+#email-input {
+    padding: 0 10px;
+    margin: 0;
+    width: 235px;
+    height: 40px;
+    display: inline;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 5px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+#email-input:focus {
+    outline: none;
+}
+#email-send, #contact-send {
+    padding: 0;
+    margin: 0 0 0 5px;
+    width: 90px;
+    height: 40px;
+    display: inline;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    background-color: rgb(63, 169, 245);
+    font-size: 1.2em;
+    text-align: center;
+}
+#email-send:hover, #contact-send:hover {
+    cursor: pointer;
+    background-color: rgb(116, 189, 241);
+}
+#footer {
+    padding-top: 10px;
+    color: rgb(100,100,100);
+    background-color: rgb(230, 230, 230);
+}
+#invalid-email, #server-message, #thank-you {
+    display: none;
+    color: white;
+    text-align: center;
+    font-size: 1.2em;
+}
+#thank-you {
+    font-size: 1.4em;
+}
+#image-input {
+    display: none;
+}
+#login-box {
+    width: 325px;
+    margin: 100px auto 0 auto;
+    text-align: center;
+}
+#login-body {
+    background: rgb(200,200,200);
+}
+#comment-modal {
+    padding-top: 100px;
+    color: rgb(50, 50, 50);
+}
+#signin-modal {
+    padding-top: 150px;
+}
+#nav-link {
+    color: rgb(230,230,230);
+}
+#nav-link:hover {
+    color: rgb(63, 169, 245);
+}
+.checkbox {
+    margin-left: 20px;
+}
+#signin-modal-close {
+    position: absolute;
+    top: -14px;
+    right: -14px;
+    color: rgb(50,50,50);
+    background: white;
+    font-size: 1.8em;
+    border-bottom: 5px solid white;
+    border-left: 3px solid white;
+    border-right: 3px solid white;
+    border-top: 1px solid white;
+    border-radius: 16px;
+    box-shadow: 0 0 1px rgb(40,40,40);
+}
+#signin-modal-close:hover {
+    cursor: pointer;
+    color: rgb(10,10,10);
+}
+.modal-footer p, #signin-body p {
+    text-align: center;
+    color: rgb(100,100,100);
+    font-size: 0.8em;
+}
+#signin-google {
+    width: 198px;
+    margin: 25px auto 0 auto;
+}
+#signin-body {
+    padding-left: 0;
+    padding-right: 0;
+    text-align: center;
+}

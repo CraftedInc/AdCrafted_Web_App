@@ -1,0 +1,56 @@
+<!-- ADSPACE control bar -->
+<div class="form-inline row" id="adspace-control-bar">
+  <a href="#/adspaces/new" class="btn btn-danger"><strong>New AdSpace</strong></a>
+  <div class="form-group pull-right">
+    <div class="input-group" id="input-group-search">
+      <span class="input-group-addon">
+	<span class="glyphicon glyphicon-search"></span>
+      </span>
+      <input type="text" class="form-control" placeholder="Search" ng-model="query">
+    </div>
+  </div>
+  <div class="form-group pull-right">
+    <label for="select-ordering">Order: </label>
+    <div class="btn-group" id="select-ordering">
+      <button class="btn btn-default" type="button" ng-model="orderReverse" btn-radio="false">Forward</button>
+      <button class="btn btn-default" type="button" ng-model="orderReverse" btn-radio="true">Reverse</button>
+    </div>
+  </div>
+  <div class="form-group pull-right">
+    <label>Sort by: </label>
+    <select class="btn btn-default" id="select-sort-by" ng-model="orderProp">
+      <option value="date">Date</option>
+      <option value="title">Title</option>
+      <option value="AdSpaceID">ID</option>
+    </select>
+  </div>
+</div>
+
+<!-- ADSPACE list -->
+<div ng-repeat="AdSpace in AdSpaces.AdSpaces | orderBy:orderProp:orderReverse | filter:query" class="adspace-thumbnail row">
+  <div class="col-md-3">
+    <img ng-src="{{AdSpace.image}}" fallback-src="http://placehold.it/240x240" class="img-rounded adspace-img">
+  </div>
+  <div class="col-md-4">
+    <div class="adspace-information">
+      <p><strong>{{AdSpace.title}}</strong></p>
+      <p>
+	{{AdSpace.description}}
+      </p>
+    </div>
+  </div>
+  <div class="col-md-5">
+    <div class="adspace-information">
+      <p><strong>ID: </strong><code>{{AdSpace.AdSpaceID}}</code></p>
+      <p><strong>Created: </strong>{{AdSpace.date | date:'longDate'}}</p>
+      <p><strong>Publisher: </strong>{{AdSpace.publisher}}</p>
+      <p><strong>Publisher ID: </strong><code>{{AdSpace.publisherID}}</code></p>
+      <p>
+	<strong>Tags: </strong>
+	<a class="label label-success tag" ng-repeat="tag in AdSpace.tags" ng-click="populateSearch(tag)">{{tag}}</a>
+      </p>
+      <a href="#/adspaces/{{AdSpace.AdSpaceID}}" class="btn btn-default">Manage Ads</a>
+      <a href="#/adspaces/{{AdSpace.AdSpaceID}}/edit" class="btn btn-default">Edit</a>
+    </div>
+  </div>
+</div>
