@@ -11,5 +11,6 @@ angular.module("adcrafted", ["adSpaceServices", "adServices", "customDirectives"
 	    when("/adspaces/:AdSpaceID", {templateUrl: "partials/adspace-detail.html", controller: AdSpaceDetailCtrl}).
 	    when("/adspaces/:AdSpaceID/ad/new", {templateUrl: "partials/create-ad.html", controller: CreateAdCtrl}).
 	    when("/adspaces/:AdSpaceID/ad/:AdID/edit", {templateUrl: "partials/edit-ad.html", controller: EditAdCtrl}).
+	    when("/adspaces/:AdSpaceID/ad/:AdID/metrics", {templateUrl: "partials/ad-metrics.html", controller: AdMetricsCtrl}).
 	    otherwise({redirectTo: "/adspaces"});
     }]);

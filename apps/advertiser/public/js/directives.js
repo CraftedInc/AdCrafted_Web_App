@@ -65,3 +65,32 @@ customDirectives.directive("fallbackSrc", function() {
 	}
     };
 });
+
+customDirectives.directive("barChart", function() {
+    return {
+	restrict: "A",
+	link: function (scope, element, attrs) {
+	    var chart = new google.visualization.BarChart(element[0]);
+	    var options = {
+		theme: "maximized",
+		height: 150,
+		backgroundColor: {fill: "transparent"},
+		vAxis: {textPosition: "none"},
+		hAxis: {textStyle: {color: "#999"},
+			gridlines: {color: "#999"},
+			baselineColor: "#999"},
+		legend: {textStyle: {color: "#999"}}
+	    };
+	    // Redraw the graph when the scope gets the metrics data.
+	    scope.$watch("clicks", function() {
+		var impressions = scope.impressions ? scope.impressions : 0;
+		var clicks = scope.clicks ? scope.clicks : 0;
+		var data = google.visualization.arrayToDataTable([
+		    ["", "Impressions", "Clicks"],
+		    ["", impressions, clicks]
+		]);
+		chart.draw(data, options);
+	    });
+	}
+    };
+});

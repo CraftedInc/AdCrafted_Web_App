@@ -78,3 +78,11 @@ body {
 .draggable {
     border: 2px dotted rgb(150, 150, 150);
 }
+.text-blue {
+    color: rgb(63, 169, 245);
+    font-size: 1.4em;
+}
+.metrics-text {
+    color: #646464;
+    margin: 0;
+}

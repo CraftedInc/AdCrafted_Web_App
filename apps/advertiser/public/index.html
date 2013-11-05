@@ -1,10 +1,8 @@
 <!doctype html>
-<html lang="en" ng-app="adcrafted">
+<html lang="en">
   <head>
     <!-- META tags -->
     <meta charset="utf-8">
-    <meta name="keywords" content="advertising, mobile, custom, platform, technology">
-    <meta name="description" content="AdCrafted saves your app from interruptive ads. Sign up for a beta invitation today!">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- TITLE -->
@@ -26,6 +24,15 @@
     <script src="js/directives.js"></script>
     <script src="js/app.js"></script>
     <script src="js/controllers.js"></script>
+    <!-- Google Charts API -->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <!-- Ensure that the charts API has loaded before bootstrapping angular -->
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(function() {
+        angular.bootstrap(document, ['adcrafted']);
+      });
+    </script>
   </head>
   <body id="demo">
     <div id="wrap">

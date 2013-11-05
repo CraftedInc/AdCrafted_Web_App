@@ -141,3 +141,18 @@ function EditAdCtrl($scope, $routeParams, SingleAd, CustomFileReader) {
 		      });
     }
 }
+
+function AdMetricsCtrl($scope, $routeParams, SingleAd) {
+    $scope.AdSpaceID = $routeParams.AdSpaceID;
+    $scope.ctr = "--";
+    $scope.ad = SingleAd.get({adID: $routeParams.AdID,
+			      adSpaceID: $routeParams.AdSpaceID},
+			     function() {
+				 var ad = $scope.ad;
+				 $scope.impressions = parseInt(ad.impressions);
+				 $scope.clicks = parseInt(ad.clicks);
+				 $scope.ctr = $scope.impressions > 0 ?
+				     Math.floor(($scope.clicks /
+						 $scope.impressions) * 100) : 0;
+			     });
+}
