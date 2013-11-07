@@ -281,6 +281,36 @@ exports.deleteAd = function(request, response) {
 };
 
 /**
+ * Returns the metrics for the ad.
+ */
+exports.getMetrics = function(request, response) {
+    var db = response.app.get("db");
+    var id = request.params.adspace_id + request.params.ad_id;
+    var params = {
+	"TableName": response.app.get("metrics_table_name"),
+	"KeyConditions": {
+	    "ID": {
+		"AttributeValueList" : [{
+		    "S": id
+		}],
+		"ComparisonOperator" : "EQ"
+	    }
+	}
+    };
+    db.query(params, function(err, data) {
+	if (err) {
+	    response.send(err);
+	} else {
+	    var result = [];
+	    for (var i = 0; i < data.Count; i++) {
+		result[i] = utils.parseItem(data.Items[i]);
+	    }
+	    response.send(result);
+	}
+    });
+};
+
+/**
  * Registers a set of impressions and/or clicks.
  */
 exports.updateMetrics = function(request, response) {
@@ -289,15 +319,15 @@ exports.updateMetrics = function(request, response) {
     var clicks = request.body.clicks || 0;
     if ((utils.isInt(impressions) && utils.isInt(clicks)) &&
 	(impressions > 0 || clicks > 0)) {
-	// Create an UpdateMetricsJob and add it to the Job Scheduler.
-	var updateMetricsJob = 
-	    new jobs.UpdateMetricsJob(response.app.get("db"),
-				      response.app.get("ads_table_name"),
-				      request.params.adspace_id,
-				      request.params.ad_id,
-				      impressions,
-				      clicks);
-	jobScheduler.add(updateMetricsJob);
+	// Create an MetricsJob and add it to the Job Scheduler.
+	var metricsJob =
+	    new jobs.MetricsJob(response.app.get("db"),
+				response.app.get("metrics_table_name"),
+				request.params.adspace_id,
+				request.params.ad_id,
+				impressions,
+				clicks);
+	jobScheduler.add(metricsJob);
 	response.send( {"status": 200,
 			"message": "Success"} );
     } else {

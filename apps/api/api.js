@@ -47,18 +47,21 @@ app.configure("local", function() {
     app.set("s3_bucket", config.local.S3_BUCKET);
     app.set("adspace_table_name", config.local.ADSPACE_TABLE_NAME);
     app.set("ads_table_name", config.local.AD_TABLE_NAME);
+    app.set("metrics_table_name", config.local.METRICS_TABLE_NAME);
 });
 app.configure("development", function() {
     app.use(express.logger("dev"));
     app.set("s3_bucket", config.development.S3_BUCKET);
     app.set("adspace_table_name", config.development.ADSPACE_TABLE_NAME);
     app.set("ads_table_name", config.development.AD_TABLE_NAME);
+    app.set("metrics_table_name", config.development.METRICS_TABLE_NAME);
 });
 app.configure("production", function() {
     app.use(express.logger("tiny"));
     app.set("s3_bucket", config.production.S3_BUCKET);
     app.set("adspace_table_name", config.production.ADSPACE_TABLE_NAME);
     app.set("ads_table_name", config.production.AD_TABLE_NAME);
+    app.set("metrics_table_name", config.production.METRICS_TABLE_NAME);
 });
 
 /**
@@ -117,6 +120,9 @@ app.del("/adspace/:adspace_id/ad/:ad_id", ads.deleteAd)
 /**
  * Additional API methods that aren't part of the REST API.
  */
+// GET the metrics of the ad.
+app.get("/adspace/:adspace_id/ad/:ad_id/metrics", ads.getMetrics);
+
 // Update the impression and click metrics.
 app.post("/adspace/:adspace_id/ad/:ad_id/metrics", ads.updateMetrics);
 

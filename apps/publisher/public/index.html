@@ -24,13 +24,15 @@
     <script src="js/directives.js"></script>
     <script src="js/app.js"></script>
     <script src="js/controllers.js"></script>
+    <!-- DyGraphs SDK -->
+    <script type="text/javascript" src="js/dygraph-combined.js"></script>
     <!-- Google Charts API -->
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <!-- Ensure that the charts API has loaded before bootstrapping angular -->
     <script type="text/javascript">
-      google.load("visualization", "1", {packages:["corechart"]});
+      google.load("visualization", "1", {packages:["corechart", "annotatedtimeline"]});
       google.setOnLoadCallback(function() {
-        angular.bootstrap(document, ['adcrafted']);
+        angular.bootstrap(document, ["adcrafted"]);
       });
     </script>
   </head>

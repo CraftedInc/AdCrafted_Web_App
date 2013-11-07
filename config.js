@@ -26,6 +26,7 @@ config.local = {
     ADSPACE_TABLE_NAME: "AdCrafted-AdSpace-DEV",
     AD_TABLE_NAME: "AdCrafted-Ad-DEV",
     USER_TABLE_NAME: "User-DEV",
+    METRICS_TABLE_NAME: "AdCrafted-Metrics-DEV",
     STATIC_PATH: "public/development"
 };
 
@@ -39,6 +40,7 @@ config.development = {
     ADSPACE_TABLE_NAME: "AdCrafted-AdSpace-DEV",
     AD_TABLE_NAME: "AdCrafted-Ad-DEV",
     USER_TABLE_NAME: "User-DEV",
+    METRICS_TABLE_NAME: "AdCrafted-Metrics-DEV",
     STATIC_PATH: "public/development"
 };
 
@@ -52,6 +54,7 @@ config.production = {
     ADSPACE_TABLE_NAME: "AdCrafted-AdSpace-PROD",
     AD_TABLE_NAME: "AdCrafted-Ad-PROD",
     USER_TABLE_NAME: "User-PROD",
+    METRICS_TABLE_NAME: "AdCrafted-Metrics-PROD",
     STATIC_PATH: "public/production"
 };
 

@@ -142,17 +142,29 @@ function EditAdCtrl($scope, $routeParams, SingleAd, CustomFileReader) {
     }
 }
 
-function AdMetricsCtrl($scope, $routeParams, SingleAd) {
+function AdMetricsCtrl($scope, $routeParams, AdMetrics) {
     $scope.AdSpaceID = $routeParams.AdSpaceID;
     $scope.ctr = "--";
-    $scope.ad = SingleAd.get({adID: $routeParams.AdID,
-			      adSpaceID: $routeParams.AdSpaceID},
-			     function() {
-				 var ad = $scope.ad;
-				 $scope.impressions = parseInt(ad.impressions);
-				 $scope.clicks = parseInt(ad.clicks);
-				 $scope.ctr = $scope.impressions > 0 ?
-				     Math.floor(($scope.clicks /
-						 $scope.impressions) * 100) : 0;
-			     });
+    $scope.impressions = 0;
+    $scope.clicks = 0;
+    $scope.impressionsSeries = "";
+    $scope.clicksSeries = "";
+    $scope.metrics =
+	AdMetrics.get({adID: $routeParams.AdID,
+		       adSpaceID: $routeParams.AdSpaceID},
+		      function() {
+			  var metrics = $scope.metrics;
+			  for (var i = 0; i < metrics.length; i++) {
+			      $scope.impressions += 
+			      parseInt(metrics[i].impressions);
+			      $scope.clicks += parseInt(metrics[i].clicks);
+			      $scope.impressionsSeries += metrics[i].Date +
+				  "," + metrics[i].impressions + "\n";
+			      $scope.clicksSeries += metrics[i].Date +
+				  "," + metrics[i].clicks + "\n";
+			  }
+			  $scope.ctr = $scope.impressions > 0 ?
+			      Math.floor(($scope.clicks /
+					  $scope.impressions) * 100) : 0;
+		      });
 }

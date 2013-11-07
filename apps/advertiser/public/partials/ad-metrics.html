@@ -1,5 +1,5 @@
 <!-- Top bar -->
-<div class="row" id="adspace-control-bar">
+<div class="row" id="metrics-bar">
   <div class="col-md-2">
     <a href="#/adspaces/{{AdSpaceID}}" class="btn btn-default pull-left"><strong>Back</strong></a>
   </div>
@@ -20,4 +20,17 @@
   </div>
 </div>
 
-<div bar-chart class="ad-thumbnail"></div>
+<div class="ad-thumbnail">
+  <h3 class="metrics-text"><strong>Total</strong></h3>
+  <div bar-chart></div>
+</div>
+
+<div class="ad-thumbnail">
+  <h3 class="metrics-text"><strong>Impressions</strong></h3>
+  <div impressions-line-chart class="line-chart"></div>
+</div>
+
+<div class="ad-thumbnail">
+  <h3 class="metrics-text"><strong>Clicks</strong></h3>
+  <div clicks-line-chart class="line-chart"></div>
+</div>

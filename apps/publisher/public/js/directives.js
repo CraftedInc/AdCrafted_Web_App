@@ -73,25 +73,65 @@ customDirectives.directive("barChart", function() {
 	    var chart = new google.visualization.BarChart(element[0]);
 	    var options = {
 		theme: "maximized",
-		height: 150,
+		height: 80,
 		backgroundColor: {fill: "transparent"},
-		vAxis: {textPosition: "none",
-			gridlines: {color: "white"},
-			baselineColor: "white"},
-		hAxis: {textStyle: {color: "white"},
-			gridlines: {color: "white"},
-			baselineColor: "white"},
-		legend: {textStyle: {color: "white"}}
+		vAxis: {textPosition: "none"},
+		hAxis: {textStyle: {color: "#999"},
+			gridlines: {color: "#999"},
+			baselineColor: "#999"},
+		legend: {textStyle: {color: "#999"}},
+		bar: {groupWidth: "25"}
 	    };
 	    // Redraw the graph when the scope gets the metrics data.
 	    scope.$watch("clicks", function() {
 		var impressions = scope.impressions ? scope.impressions : 0;
 		var clicks = scope.clicks ? scope.clicks : 0;
-		var data = google.visualization.arrayToDataTable([
-		    ["", "Impressions", "Clicks"],
-		    ["", impressions, clicks]
+		var data = new google.visualization.DataTable();
+		data.addColumn("string", "Total");
+		data.addColumn("number", "Impressions");
+		data.addColumn("number", "Clicks");
+		data.addRows([
+		    ["Total", impressions, clicks],
 		]);
 		chart.draw(data, options);
+	    });
+	}
+    };
+});
+
+customDirectives.directive("impressionsLineChart", function() {
+    return {
+	restrict: "A",
+	link: function (scope, element, attrs) {
+	    scope.$watch("impressionsSeries", function() {
+		var chart = new Dygraph(
+		    element[0],
+		    "Date,Impressions\n" + scope.impressionsSeries,
+		    {drawGrid: false,
+		     fillGraph: true,
+		     axisLabelColor: "#999",
+		     strokeWidth: "2.0",
+		     colors: ["rgb(46, 105, 180)"]}
+		);
+	    });
+	}
+    };
+});
+
+customDirectives.directive("clicksLineChart", function() {
+    return {
+	restrict: "A",
+	link: function (scope, element, attrs) {
+	    scope.$watch("clicksSeries", function() {
+		var chart = new Dygraph(
+		    element[0],
+		    "Date,Clicks\n" + scope.clicksSeries,
+		    {drawGrid: false,
+		     fillGraph: true,
+		     axisLabelColor: "#999",
+		     strokeWidth: "2.0",
+		     colors: ["rgb(223, 49, 49)"]}
+		);
 	    });
 	}
     };

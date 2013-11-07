@@ -36,6 +36,7 @@ app.configure("local", function() {
     app.set("adspace_table_name", config.local.ADSPACE_TABLE_NAME);
     app.set("ads_table_name", config.local.AD_TABLE_NAME);
     app.set("user_table_name", config.local.USER_TABLE_NAME);
+    app.set("metrics_table_name", config.local.METRICS_TABLE_NAME);
     app.set("DOMAIN", config.local.DOMAIN);
     app.set("TEST_DOMAIN", config.local.TEST_DOMAIN);
     app.set("PROTOCOL", config.local.PROTOCOL);
@@ -46,6 +47,7 @@ app.configure("development", function() {
     app.set("adspace_table_name", config.development.ADSPACE_TABLE_NAME);
     app.set("ads_table_name", config.development.AD_TABLE_NAME);
     app.set("user_table_name", config.development.USER_TABLE_NAME);
+    app.set("metrics_table_name", config.development.METRICS_TABLE_NAME);
     app.set("DOMAIN", config.development.DOMAIN);
     app.set("PROTOCOL", config.development.PROTOCOL);
 });
@@ -55,6 +57,7 @@ app.configure("production", function() {
     app.set("adspace_table_name", config.production.ADSPACE_TABLE_NAME);
     app.set("ads_table_name", config.production.AD_TABLE_NAME);
     app.set("user_table_name", config.production.USER_TABLE_NAME);
+    app.set("metrics_table_name", config.production.METRICS_TABLE_NAME);
     app.set("DOMAIN", config.production.DOMAIN);
     app.set("PROTOCOL", config.production.PROTOCOL);
 });
@@ -162,5 +165,10 @@ app.put("/api/adspace/:adspace_id/ad/:ad_id",
 app.del("/api/adspace/:adspace_id/ad/:ad_id",
 	utils.ensureAuthenticated(),
 	ads.deleteAd);
+
+// GET the metrics for an ad.
+app.get("/api/adspace/:adspace_id/ad/:ad_id/metrics",
+	utils.ensureAuthenticated(),
+	ads.getMetrics);
 
 exports.app = app;

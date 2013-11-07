@@ -34,6 +34,12 @@ adServices.factory("SingleAd", function($resource){
     });
 });
 
+adServices.factory("AdMetrics", function($resource){
+    return $resource("/api/adspace/:adSpaceID/ad/:adID/metrics", {}, {
+	get: {method: "GET", isArray: true}
+    });
+});
+
 // A module for file-related services.
 var fileServices = angular.module("fileServices", []);
 
