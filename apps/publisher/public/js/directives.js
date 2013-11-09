@@ -80,7 +80,8 @@ customDirectives.directive("barChart", function() {
 			gridlines: {color: "#999"},
 			baselineColor: "#999"},
 		legend: {textStyle: {color: "#999"}},
-		bar: {groupWidth: "25"}
+		bar: {groupWidth: "25"},
+		colors: ["rgb(46, 105, 180)", "rgb(223, 49, 49)"]
 	    };
 	    // Redraw the graph when the scope gets the metrics data.
 	    scope.$watch("clicks", function() {
