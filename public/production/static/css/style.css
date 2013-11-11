@@ -85,8 +85,8 @@ body {
     background-repeat: no-repeat;
     background-position: center 40px;
     width: 400px;
-    padding-top: 470px;
-    margin: 50px auto 0 auto;
+    padding-top: 474px;
+    margin: 44px auto 0 auto;
 }
 #incentive {
     color: white;
@@ -95,7 +95,11 @@ body {
 }
 #email-input-wrapper {
     margin: 0 auto;
-    width: 330px;
+    width: 360px;
+    background-color: #222;
+    padding: 8px 15px 15px 15px;
+    border-radius: 7px;
+    box-shadow: 0 0 3px black;
 }
 #email-input {
     padding: 0 10px;

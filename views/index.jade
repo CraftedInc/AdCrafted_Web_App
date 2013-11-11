@@ -9,7 +9,7 @@ block head
   if (email)
     script(type='text/javascript').
       $(document).ready(function() {
-        $('#comment-header').text("We're still in testing mode! Tell us about yourself and we'll reach out soon.");
+        $('#comment-header').text("We're currently an invitation-only network. Please tell us about yourself and we'll get back to you soon.");
         $('#email-input').val('#{email}');
         $('#comment-modal').modal();
       });
@@ -55,12 +55,12 @@ block content
     div.container
       div#landing-email
         div#email-input-wrapper
-          p#incentive Find out more:
+          p#incentive Request an invitation:
           input#email-input(placeholder='Email')
           button#email-send Send
         p#invalid-email Please enter a valid email address.
         p#server-message
-        p#thank-you Thanks for joining!
+        p#thank-you Thanks!
   // About.
   div#about
     div.container
@@ -76,7 +76,7 @@ block content
           img.featurette-image.img-responsive.img-circle(src='/static/img/Advertiser.png')
         div.col-md-7
           h1.featurette-heading.text-muted Advertisers
-          p.about-text Quality advertising requires thoughtful integration with apps. We work directly with developers to connect your brand with the right audience in innovative ways.
+          p.about-text Quality advertising requires thoughtful integration with apps. We work directly with publishers to connect your brand with the right audience in innovative ways.
   // Contact.
   div#contact
     div.container
