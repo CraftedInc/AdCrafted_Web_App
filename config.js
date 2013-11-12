@@ -11,6 +11,7 @@ config.EMAIL_TABLE = "AdCrafted-emails";
 config.AD_IMG_PREFIX = "Ad-Images";
 config.ADSPACE_IMG_PREFIX = "AdSpace-Images";
 config.VIEWS_PATH = "/views";
+config.APPS_VIEWS_PATH = "/../../views";
 config.USER_WHITELIST = ["jbpasko@gmail.com", "james@adcrafted.com",
 			 "brandon@pepwuper.com", "brandon.wu.com@gmail.com",
 			 "brandon@adcrafted.com"];

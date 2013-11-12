@@ -163,11 +163,11 @@ app.configure(function() {
     // Error handler.
     app.use(function(err, request, response, next){
 	console.error(err.stack);
-	response.send(500, "500 - Internal server error");
+	response.status(500).render("500");
     });
     // 404 handler.
     app.use(function(request, response, next){
-	response.status(404).render("404", {title: "Page Not Found"});
+	response.status(404).render("404");
     });
 });
 
