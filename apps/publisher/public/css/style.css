@@ -1,8 +1,10 @@
 .adspace-thumbnail, .ad-thumbnail {
-    margin-top: 10px;
+    padding: 20px 10px 20px 0;
+    border-top: 1px solid #333;
+}
+.content-list {
     background-color: #222;
-    padding: 10px;
-    border-radius: 2px;
+    border-radius: 0 0 5px 5px;
 }
 html, body {
     height: 100%;
@@ -18,22 +20,11 @@ body {
     min-height: 100%;
     height: auto !important;
     height: 100%;
-    margin: 0 auto -60px;
-    padding: 0 0 60px;
+    margin: 0 auto -30px;
+    padding: 0 0 30px;
 }
 #footer {
-    height: 60px;
-    background-color: #222;
-}
-#wrap > .container {
-    padding: 60px 0 0 0;
-}
-.container .footer-text {
-    margin: 20px 0;
-}
-#footer > .container {
-    padding-left: 15px;
-    padding-right: 15px;
+    height: 30px;
 }
 #adspace-content {
     padding-bottom: 10px;
@@ -42,26 +33,27 @@ body {
     width: 250px;
 }
 #adspace-control-bar {
-    background-color: #222;
+    background-color: #333;
     padding: 15px;
-    border-radius: 2px;
+    border-radius: 5px 5px 0 0;
+    max-height: 64px;
 }
 #metrics-bar {
-    background-color: #222;
+    background-color: #333;
     padding: 15px 15px 12px 0;
-    border-radius: 2px;
+    border-radius: 5px 5px 0 0;
+    max-height: 64px;
 }
 .metrics-row {
-    margin-top: 10px;
     background-color: #222;
     padding: 10px;
-    border-radius: 2px;
+    border-radius: 0 0 5px 5px;
 }
 .adspace-information {
     display: inline-block;
 }
 .adspace-img, .ad-img {
-    max-width: 240px;
+    max-width: 200px;
     display: inline-block;
 }
 .tag {
@@ -78,10 +70,10 @@ body {
 #select-sort-by {
     height: 34px;
 }
-#create-adspace-form, #edit-adspace-form, #edit-ad-form {
+#create-adspace-form, #create-ad-form, #edit-adspace-form, #edit-ad-form {
     background-color: #222;
     padding: 20px;
-    border-radius: 2px;
+    border-radius: 0 0 5px 5px;
 }
 .drag-over {
     opacity: 0.5;
@@ -111,4 +103,48 @@ body {
     color: #999;
     background: none !important;
     font-size: 16px !important;
+}
+/**
+ * Override responsive Bootstrap.
+ */
+.container {
+    max-width: none !important;
+    width: 970px !important;
+}
+.row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+.adcrafted-nav {
+    padding: 5px 8px !important;
+    margin: 0 0 0 6px;
+    border-radius: 10px;
+    box-shadow: inset 0 0 3px #333;
+    font-size: 12px;
+    display: inline !important;
+}
+.adcrafted-nav:hover {
+    background-color: #333 !important;
+}
+.navbar-inverse {
+    border: none !important;
+    background: none !important;
+}
+.navbar {
+    margin: 0 auto !important;
+    height: 50px !important;
+    width: 970px !important;
+    padding-top: 14px !important;
+}
+.navbar-nav {
+    margin: 0 !important;
+    float: right !important;
+}
+.navbar-adcrafted-home {
+    position: absolute;
+    left: 9px;
+    top: 15px;
+}
+.navbar-adcrafted-home a {
+    font-size: 16px;
 }

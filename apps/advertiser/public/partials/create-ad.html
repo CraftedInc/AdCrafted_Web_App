@@ -1,47 +1,40 @@
+<!-- BACK bar -->
+<div class="form-inline row" id="adspace-control-bar">
+  <a href="#/adspaces/{{adSpaceID}}/" class="btn btn-default"><strong>Back</strong></a>
+</div>
+
 <!-- CREATION form -->
-<form class="form-horizontal row" role="form" id="create-adspace-form" name="newAdForm">
+<form class="form-horizontal row" role="form" id="create-ad-form" name="newAdForm">
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-xs-9">
       <div class="form-group">
-	<label for="title" class="col-md-2 control-label">Title</label>
-	<div class="col-md-9">
+	<label for="title" class="col-xs-2 control-label">Title</label>
+	<div class="col-xs-9">
 	  <input type="text" class="form-control" id="title" placeholder="Title" ng-model="ad.title" required>
 	</div>
       </div>
       <div class="form-group">
-	<label for="text" class="col-md-2 control-label">Text</label>
-	<div class="col-md-9">
-	  <textarea class="form-control" id="text" placeholder="Text" ng-model="ad.text" required></textarea>
+	<label for="text" class="col-xs-2 control-label">Text</label>
+	<div class="col-xs-9">
+	  <textarea class="form-control" id="text" placeholder="Text" ng-model="ad.text" rows="4" required></textarea>
 	</div>
       </div>
       <div class="form-group">
-	<label for="link" class="col-md-2 control-label">Link</label>
-	<div class="col-md-9">
+	<label for="link" class="col-xs-2 control-label">Link</label>
+	<div class="col-xs-9">
 	  <input type="url" class="form-control" id="link" placeholder="Link" ng-model="ad.link" required>
 	</div>
       </div>
-      <div class="form-group">
-	<label for="advertiser" class="col-md-2 control-label">Advertiser</label>
-	<div class="col-md-9">
-	  <input type="text" class="form-control" id="advertiser" placeholder="Advertiser Name" ng-model="ad.advertiser">
-	</div>
-      </div>
-      <div class="form-group">
-	<label for="advertiser-id" class="col-md-2 control-label">Advertiser ID</label>
-	<div class="col-md-9">
-	  <input type="text" class="form-control" id="advertiser-id" placeholder="Advertiser ID" ng-model="ad.advertiserID">
-	</div>
-      </div>
     </div>
-    <div class="col-md-offset-1 col-md-3">
-      <img ng-src="{{imageSrc}}" fallback-src="http://placehold.it/240x240" class="ad-img img-rounded draggable" on-change="readFile()" image-drop="file">
+    <div class="col-xs-3">
+      <img ng-src="{{imageSrc}}" fallback-src="http://placehold.it/200x180" class="ad-img img-rounded draggable" on-change="readFile()" image-drop="file">
       <p class="text-muted">Drag and drop an image file here.</p>
     </div>
   </div>
   <div class="row">
-    <div class="col-md-offset-5 col-md-7">
-      <button class="btn btn-default" ng-click="create(newAdForm)">Create</button>
-      <a href="#/adspaces/{{adSpaceID}}/" class="btn btn-default">Back</a>
+    <div class="col-xs-5"></div>
+    <div class="col-xs-7">
+      <button class="btn btn-success" ng-click="create(newAdForm)"><strong>Create Ad</strong></button>
     </div>
   </div>
 </form>

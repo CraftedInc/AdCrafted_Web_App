@@ -3,7 +3,6 @@
   <head>
     <!-- META tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- TITLE -->
     <title>AdCrafted | Advertiser Console</title>
@@ -38,25 +37,29 @@
   </head>
   <body id="demo">
     <div id="wrap">
-      <!-- Fixed navbar -->
-      <div class="navbar navbar-default navbar-fixed-top">
+      <!-- Navbar -->
+      <div class="navbar navbar-inverse">
         <div class="container">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-	      <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="http://www.adcrafted.com">
-	      AdCrafted
-	    </a>
-          </div>
-          <div class="collapse navbar-collapse">
-            <ul class="nav navbar-nav navbar-right">
-              <li><a href="/logout">logout</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
+          <ul class="nav navbar-nav">
+	    <li>
+	      <a class="adcrafted-nav" href="#">
+		Home
+	      </a>
+	      <a class="adcrafted-nav" href="#">
+		Account
+	      </a>
+	      <a class="adcrafted-nav" href="/logout">
+		Logout
+	      </a>
+	    </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-adcrafted-home">
+	    <li>
+	      <a class="adcrafted-nav" href="http://www.adcrafted.com">
+		AdCrafted
+	      </a>
+	    </li>
+	  </ul>
         </div>
       </div>
       <!-- Page content -->
