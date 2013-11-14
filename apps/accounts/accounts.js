@@ -117,16 +117,18 @@ app.configure(function() {
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(app.router);
+    app.set("views", path.join(__dirname, config.APPS_VIEWS_PATH));
+    app.set("view engine", config.VIEW_ENGINE);
     app.use(express.compress());
     app.use(express.static(path.join(__dirname, "./public")));
     // Error handler.
     app.use(function(err, request, response, next){
 	console.error(err.stack);
-	response.send(500, '500 - Error.');
+	response.status(500).render("500");
     });
     // 404 handler.
     app.use(function(request, response, next){
-	response.send(404, '404 - Not Found.');
+	response.status(404).render("404");
     });
 });
 

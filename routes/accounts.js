@@ -81,18 +81,28 @@ exports.findOrCreate = function(db,
 			    },
 			    "SecretKey": {
 				"S": secret
-			    },
-			    "Email": {
-				"S": email
-			    },
-			    "Name": {
-				"S": name
 			    }
 			}
 		    };
+		    if (email) {
+			params.Item.Email = {"S": email + ""};
+		    }
+		    if (name) {
+			params.Item.Name = {"S": name + ""};
+		    }
 		    db.putItem(params, function(err, data) {
 			if (err) {
-			    // TODO: delete the associated OAuth2 table record.
+			    // Delete the associated OAuth2 table record if the
+			    // user record didn't write correctly.
+			    params = {
+				"TableName": oAuth2Table,
+				"Item": {
+				    "OAuth2ID": {
+					"S": oAuth2ID
+				    }
+				}
+			    };
+			    db.deleteItem(params).send();
 			    return done(err, null);
 			} else {
 			    return done(null, {id: userID, email: email});
