@@ -1,0 +1,32 @@
+<!-- Control bar -->
+<div class="form-inline row" id="account-control-bar">
+  <a href="#/account/" class="btn btn-default"><strong>Cancel</strong></a>
+</div>
+
+<!-- Edit account -->
+<form class="form-horizontal row" role="form" id="edit-account-form" name="AccountForm">
+  <div class="content-list">
+    <div class="row account-row form-group">
+      <label for="name" class="col-xs-6 control-label align-right">
+	<strong>Name</strong>
+      </label>
+      <div class="col-xs-3">
+	<input type="text" class="form-control" id="name" placeholder="Name" ng-model="account.Name">
+      </div>
+    </div>
+    <div class="row account-row form-group">
+      <label for="email" class="col-xs-6 control-label align-right">
+	<strong>Email</strong>
+      </label>
+      <div class="col-xs-3">
+	<input type="email" class="form-control" id="email" placeholder="Email" ng-model="account.Email">
+      </div>
+    </div>
+  </div>
+  <div class="row account-row">
+    <div class="col-xs-6"></div>
+    <div class="col-xs-6">
+      <button class="btn btn-success" ng-click="update(AccountForm)"><strong>Save Changes</strong></button>
+    </div>
+  </div>
+</form>

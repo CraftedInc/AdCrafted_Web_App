@@ -26,7 +26,8 @@ config.local = {
     S3_BUCKET: "adcrafted-dev",
     ADSPACE_TABLE_NAME: "AdCrafted-AdSpace-DEV",
     AD_TABLE_NAME: "AdCrafted-Ad-DEV",
-    USER_TABLE_NAME: "User-DEV",
+    USER_TABLE_NAME: "AdCrafted-User-DEV",
+    GOOGLE_TABLE_NAME: "AdCrafted-Google-DEV",
     METRICS_TABLE_NAME: "AdCrafted-Metrics-DEV",
     STATIC_PATH: "public/development"
 };
@@ -40,7 +41,8 @@ config.development = {
     S3_BUCKET: "adcrafted-dev",
     ADSPACE_TABLE_NAME: "AdCrafted-AdSpace-DEV",
     AD_TABLE_NAME: "AdCrafted-Ad-DEV",
-    USER_TABLE_NAME: "User-DEV",
+    USER_TABLE_NAME: "AdCrafted-User-DEV",
+    GOOGLE_TABLE_NAME: "AdCrafted-Google-DEV",
     METRICS_TABLE_NAME: "AdCrafted-Metrics-DEV",
     STATIC_PATH: "public/development"
 };
@@ -54,7 +56,8 @@ config.production = {
     S3_BUCKET: "adcrafted-prod",
     ADSPACE_TABLE_NAME: "AdCrafted-AdSpace-PROD",
     AD_TABLE_NAME: "AdCrafted-Ad-PROD",
-    USER_TABLE_NAME: "User-PROD",
+    USER_TABLE_NAME: "AdCrafted-User-PROD",
+    GOOGLE_TABLE_NAME: "AdCrafted-Google-PROD",
     METRICS_TABLE_NAME: "AdCrafted-Metrics-PROD",
     STATIC_PATH: "public/production"
 };

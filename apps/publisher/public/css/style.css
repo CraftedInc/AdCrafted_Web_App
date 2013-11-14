@@ -1,3 +1,7 @@
+html, body {
+    height: 100%;
+    color: #999 !important;
+}
 .adspace-thumbnail, .ad-thumbnail {
     padding: 20px 10px 20px 0;
     border-top: 1px solid #333;
@@ -6,9 +10,17 @@
     background-color: #222;
     border-radius: 0 0 5px 5px;
 }
-html, body {
-    height: 100%;
-    color: #999 !important;
+.account-row {
+    padding: 10px 0 0 0;
+    border-top: 1px solid #333;
+}
+#edit-account-form {
+    background-color: #222;
+    padding: 0 0 10px 0;
+    border-radius: 0 0 5px 5px;
+}
+.align-right {
+    text-align: right;
 }
 a.no-decoration:hover {
     text-decoration: none;
@@ -32,7 +44,7 @@ body {
 #input-group-search {
     width: 250px;
 }
-#adspace-control-bar {
+#adspace-control-bar, #account-control-bar {
     background-color: #333;
     padding: 15px;
     border-radius: 5px 5px 0 0;

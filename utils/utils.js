@@ -101,3 +101,17 @@ exports.getSubdomain = function(header) {
     var parts = header.split(".");
     return parts.length == 2 ? "www" : parts[0];
 };
+
+/**
+ * Generates a random key.
+ */
+exports.generateKey = function(length) {
+    var result = "";
+    var characters =
+	"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	.split("");
+    for (var i = 0; i < length; i++) {
+	result += characters[Math.floor(Math.random() * (characters.length))];
+    }
+    return result;
+};

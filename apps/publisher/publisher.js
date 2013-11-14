@@ -173,5 +173,15 @@ app.get("/api/adspace/:adspace_id/ad/:ad_id/metrics",
 	utils.ensureAuthenticated(),
 	ads.getMetrics);
 
+// GET a user's account (user must be logged in).
+app.get("/api/account",
+	utils.ensureAuthenticated(),
+	accounts.getAccount);
+
+// UPDATE a user's account (user must be logged in).
+app.put("/api/account",
+	utils.ensureAuthenticated(),
+	accounts.updateAccount);
+
 exports.app = app;
 

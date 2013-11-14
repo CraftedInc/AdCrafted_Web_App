@@ -168,3 +168,23 @@ function AdMetricsCtrl($scope, $routeParams, AdMetrics) {
 					  $scope.impressions) * 100) : 0;
 		      });
 }
+
+function AccountCtrl($scope, $routeParams, Account) {
+    $scope.account = Account.get();
+    $scope.showCredentials = false;
+}
+
+function EditAccountCtrl($scope, $routeParams, Account) {
+    $scope.account = Account.get();
+
+    $scope.update = function(AccountForm) {
+	if (AccountForm.$valid) {
+	    Account.update({},
+			   {"Name": $scope.account.Name,
+			    "Email": $scope.account.Email},
+			   function() {
+			       window.location = "#/account/";
+			   });
+	}
+    }
+}

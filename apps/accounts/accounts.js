@@ -33,6 +33,7 @@ app.configure("local", function() {
     app.use(express.logger("dev"));
     app.set("s3_bucket", config.local.S3_BUCKET);
     app.set("user_table_name", config.local.USER_TABLE_NAME);
+    app.set("google_table_name", config.local.GOOGLE_TABLE_NAME);
     app.set("DOMAIN", config.local.DOMAIN);
     app.set("TEST_DOMAIN", config.local.TEST_DOMAIN);
     app.set("PROTOCOL", config.local.PROTOCOL);
@@ -44,6 +45,7 @@ app.configure("development", function() {
     app.use(express.logger("dev"));
     app.set("s3_bucket", config.development.S3_BUCKET);
     app.set("user_table_name", config.development.USER_TABLE_NAME);
+    app.set("google_table_name", config.development.GOOGLE_TABLE_NAME);
     app.set("DOMAIN", config.development.DOMAIN);
     app.set("PROTOCOL", config.development.PROTOCOL);
     app.set("GOOGLE_CLIENT_ID", process.env.GOOGLE_CLIENT_ID);
@@ -53,6 +55,7 @@ app.configure("production", function() {
     app.use(express.logger("tiny"));
     app.set("s3_bucket", config.production.S3_BUCKET);
     app.set("user_table_name", config.production.USER_TABLE_NAME);
+    app.set("google_table_name", config.production.GOOGLE_TABLE_NAME);
     app.set("DOMAIN", config.production.DOMAIN);
     app.set("PROTOCOL", config.production.PROTOCOL);
     app.set("GOOGLE_CLIENT_ID", process.env.GOOGLE_CLIENT_ID);
@@ -83,8 +86,11 @@ passport.use(new GoogleStrategy(
     function(accessToken, refreshToken, profile, done) {
 	// Associate the Google profile with a user record in the DB.
 	accounts.findOrCreate(app.get("db"),
+			      app.get("google_table_name"),
 			      app.get("user_table_name"),
-			      profile,
+			      profile.id,
+			      profile.displayName,
+			      profile.emails[0].value,
 			      function(err, user) {
 				  return done(err, user);
 			      });
@@ -136,10 +142,6 @@ app.get("/", connect.ensureLoggedIn("/login"),
 	});
 
 /**
- * The internal API, secured by a session-based authentication service.
- */
-
-/**
  * Authentication routes are below.
  */
 
@@ -172,12 +174,12 @@ app.get("/auth/google/callback",
 	    { failureRedirect: "/login" }),
 	function(request, response) {
 	    // Successful authentication, redirect to the requested app.
-	    // But first, let's check that you're whitelisted.
-	    // NOTE: this whitelisting logic should be removed once our service
+	    // But first, let's check that you're white-listed.
+	    // NOTE: this white-listing logic should be removed once our service
 	    // goes public.
 	    var authorized = false;
 	    for (var i = 0; i < config.USER_WHITELIST.length; i++) {
-		if (config.USER_WHITELIST[i] == request.user._json.email) {
+		if (config.USER_WHITELIST[i] == request.user.email) {
 		    authorized = true;
 		    break;
 		}
@@ -187,7 +189,7 @@ app.get("/auth/google/callback",
 		var url = "http://" + subdomain + "." + request.app.get("DOMAIN");
 	    } else {
 		var url = "http://www." + request.app.get("DOMAIN") +
-		    "?email=" + request.user._json.email;
+		    "?email=" + request.user.email;
 		request.logout();
 	    }
 	    response.redirect(url);

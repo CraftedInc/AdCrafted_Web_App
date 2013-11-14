@@ -30,8 +30,140 @@ exports.logout = function(request, response) {
 };
 
 /**
- * Checks the database for the user, creating a new record if none exists.
+ * Checks the database for the user and creates a new record if none exists.
  */
-exports.findOrCreate = function(db, tableName, user, done) {
-    return done(null, user);
+exports.findOrCreate = function(db,
+				oAuth2Table,
+				userTable,
+				oAuth2ID,
+				name,
+				email,
+				done) {
+    // First, check if the mapping from OAuth2ID --> UserID exists.
+    var params = {
+	"TableName": oAuth2Table,
+	"Key": {
+	    "OAuth2ID": {
+		"S": oAuth2ID
+	    }
+	}
+    };
+    db.getItem(params, function(err, data) {
+	if (err) {
+	    // Some error occured.
+	    return done(err, null);
+	} else if (utils.isEmpty(data)) {
+	    // The records don't yet exist. Create them.
+	    // Generate a user ID.
+	    var userID = utils.generateKey(16);
+	    params = {
+		"TableName": oAuth2Table,
+		"Item": {
+		    "OAuth2ID": {
+			"S": oAuth2ID
+		    },
+		    "UserID": {
+			"S": userID
+		    }
+		}
+	    };
+	    db.putItem(params, function(err, data) {
+		if (err) {
+		    return done(err, null);
+		} else {
+		    // Generate a secret key for authentication purposes.
+		    var secret = utils.generateKey(16);
+		    params = {
+			"TableName": userTable,
+			"Item": {
+			    "UserID": {
+				"S": userID
+			    },
+			    "SecretKey": {
+				"S": secret
+			    },
+			    "Email": {
+				"S": email
+			    },
+			    "Name": {
+				"S": name
+			    }
+			}
+		    };
+		    db.putItem(params, function(err, data) {
+			if (err) {
+			    // TODO: delete the associated OAuth2 table record.
+			    return done(err, null);
+			} else {
+			    return done(null, {id: userID, email: email});
+			}
+		    });
+		}
+	    });
+	} else {
+	    // The records already exist
+	    var userID = data.Item.UserID.S;
+	    return done(null, {id: userID, email: email});
+	}
+    });
+};
+
+/**
+ * GET the user's account.
+ */
+exports.getAccount = function(request, response) {
+    var db = request.app.get("db");
+    var params = {
+	"TableName": request.app.get("user_table_name"),
+	"Key": {
+	    "UserID": {
+		"S": request.user.id
+	    }
+	}
+    };
+    db.getItem(params, function(err, data) {
+	if (err) {
+	    response.send(err);
+	} else if (utils.isEmpty(data)) {
+	    response.send({"status": 404,
+			   "message": "Account doesn't exist"});
+	} else {
+	    response.send(utils.parseItem(data.Item));
+	}
+    });
+};
+
+/**
+ * PUT (update) the user's account.
+ */
+exports.updateAccount = function(request, response) {
+    var db = request.app.get("db");
+    var account = request.body;
+    var params = {
+	"TableName": request.app.get("user_table_name"),
+	"Key": {
+	    "UserID": {
+		"S": request.user.id
+	    }
+	},
+	"AttributeUpdates": {}
+    };
+    for (var attr in account) {
+	if (attr == "Name" || attr == "Email") {
+	    params.AttributeUpdates[attr] = {
+		"Value": {
+		    "S": account[attr]
+		},
+		"Action": "PUT"
+	    };
+	}
+    }
+    db.updateItem(params, function(err, data) {
+	if (err) {
+	    response.send(err);
+	} else {
+	    response.send( {"status": 200,
+			    "message": "Account updated"} );
+	}
+    });
 };
