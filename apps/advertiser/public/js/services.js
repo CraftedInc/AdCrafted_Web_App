@@ -1,14 +1,14 @@
 // Create a module named "adSpaceServices" with a dependency on "ngResource".
 var adSpaceServices = angular.module("adSpaceServices", ["ngResource"]);
 
-adSpaceServices.factory("AdSpaceCollection", function($resource){
+adSpaceServices.factory("AdSpaceCollection", function($resource) {
     return $resource("/api/adspace", {}, {
 	create: {method: "POST"},
 	get: {method: "GET"}
     });
 });
 
-adSpaceServices.factory("SingleAdSpace", function($resource){
+adSpaceServices.factory("SingleAdSpace", function($resource) {
     return $resource("/api/adspace/:adSpaceID", {}, {
 	get: {method: "GET"},
 	update: {method: "PUT"},
@@ -26,7 +26,7 @@ adServices.factory("AdCollection", function($resource) {
     });
 });
 
-adServices.factory("SingleAd", function($resource){
+adServices.factory("SingleAd", function($resource) {
     return $resource("/api/adspace/:adSpaceID/ad/:adID", {}, {
 	get: {method: "GET"},
 	update: {method: "PUT"},
@@ -34,9 +34,19 @@ adServices.factory("SingleAd", function($resource){
     });
 });
 
-adServices.factory("AdMetrics", function($resource){
+adServices.factory("AdMetrics", function($resource) {
     return $resource("/api/adspace/:adSpaceID/ad/:adID/metrics", {}, {
 	get: {method: "GET", isArray: true}
+    });
+});
+
+// A module for Account services.
+var accountServices = angular.module("accountServices", ["ngResource"]);
+
+accountServices.factory("Account", function($resource) {
+    return $resource("/api/account", {}, {
+	get: {method: "GET"},
+	update: {method: "PUT"}
     });
 });
 

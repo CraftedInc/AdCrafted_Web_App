@@ -7,10 +7,10 @@ html, body {
 }
 .account-row {
     padding: 10px 0 0 0;
-    border-top: 1px solid #333;
+    border-top: 1px solid #CECECE;
 }
 #edit-account-form {
-    background-color: #222;
+    background-color: #f8f8f8;
     padding: 0 0 10px 0;
     border-radius: 0 0 5px 5px;
 }
