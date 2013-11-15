@@ -116,6 +116,10 @@ body {
     background: none !important;
     font-size: 16px !important;
 }
+.waiting {
+    width: 100px;
+    margin: 50px auto 0 auto;
+}
 /**
  * Override responsive Bootstrap.
  */
@@ -137,6 +141,9 @@ body {
 }
 .adcrafted-nav:hover {
     background-color: #333 !important;
+}
+.adcrafted-nav:active {
+    background-color: #5cb85c !important;
 }
 .navbar-inverse {
     border: none !important;

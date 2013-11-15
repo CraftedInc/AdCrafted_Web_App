@@ -3,8 +3,13 @@
   <a href="#/adspaces/{{adSpaceID}}/" class="btn btn-default"><strong>Back</strong></a>
 </div>
 
+<!-- Waiting GIF -->
+<div class="waiting" ng-class="{'hide': !waiting}">
+  <img src="/img/waiting.gif">
+</div>
+
 <!-- CREATION form -->
-<form class="form-horizontal row" role="form" id="create-ad-form" name="newAdForm">
+<form class="form-horizontal row" role="form" id="create-ad-form" name="newAdForm" ng-class="{'hide': waiting}">
   <div class="row">
     <div class="col-xs-9">
       <div class="form-group">

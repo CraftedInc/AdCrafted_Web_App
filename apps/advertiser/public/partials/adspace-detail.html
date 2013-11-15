@@ -27,6 +27,11 @@
   </div>
 </div>
 
+<!-- Waiting GIF -->
+<div class="waiting" ng-class="{'hide': !waiting}">
+  <img src="/img/waiting.gif">
+</div>
+
 <!-- ADSPACE list -->
 <div class="content-list">
   <div ng-repeat="Ad in AdCollection.Ads | orderBy:orderProp:orderReverse | filter:query" class="ad-thumbnail row">

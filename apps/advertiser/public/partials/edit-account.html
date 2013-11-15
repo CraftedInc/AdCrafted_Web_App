@@ -3,8 +3,13 @@
   <a href="#/account/" class="btn btn-default"><strong>Cancel</strong></a>
 </div>
 
+<!-- Waiting GIF -->
+<div class="waiting" ng-class="{'hide': !waiting}">
+  <img src="/img/waiting.gif">
+</div>
+
 <!-- Edit account -->
-<form class="form-horizontal row" role="form" id="edit-account-form" name="AccountForm">
+<form class="form-horizontal row" role="form" id="edit-account-form" name="AccountForm" ng-class="{'hide': waiting}">
   <div class="content-list">
     <div class="row account-row form-group">
       <label for="name" class="col-xs-6 control-label align-right">

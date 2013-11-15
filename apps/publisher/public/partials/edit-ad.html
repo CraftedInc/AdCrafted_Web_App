@@ -3,8 +3,13 @@
   <a href="#/adspaces/{{adSpaceID}}/" class="btn btn-default"><strong>Back</strong></a>
 </div>
 
+<!-- Waiting GIF -->
+<div class="waiting" ng-class="{'hide': !waiting}">
+  <img src="/img/waiting.gif">
+</div>
+
 <!-- EDIT form -->
-<form class="form-horizontal row" role="form" id="edit-ad-form" name="AdForm">
+<form class="form-horizontal row" role="form" id="edit-ad-form" name="AdForm" ng-class="{'hide': waiting}">
   <div class="row">
     <div class="col-xs-9">
       <div class="form-group">
@@ -35,7 +40,7 @@
     <div class="col-xs-4"></div>
     <div class="col-xs-8">
       <button class="btn btn-success" ng-click="update(AdForm)"><strong>Save Changes</strong></button>
-      <button class="btn btn-danger" ng-click="del()"><strong>Delete</strong></button>
+      <button class="btn btn-danger" confirm-delete><strong>Delete</strong></button>
     </div>
   </div>
 </form>

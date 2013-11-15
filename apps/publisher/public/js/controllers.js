@@ -3,7 +3,8 @@
  */
 
 function AdSpaceListCtrl($scope, AdSpaceCollection, SingleAdSpace) {
-    $scope.AdSpaces = AdSpaceCollection.get();
+    $scope.waiting = true;
+    $scope.AdSpaces = AdSpaceCollection.get({}, function() {$scope.waiting = false});
     $scope.orderReverse = false;
     $scope.orderProp = "date";
     $scope.populateSearch = function(tag) {
@@ -12,13 +13,16 @@ function AdSpaceListCtrl($scope, AdSpaceCollection, SingleAdSpace) {
 }
 
 function AdSpaceDetailCtrl($scope, $routeParams, AdCollection) {
+    $scope.waiting = true;
     $scope.AdSpaceID = $routeParams.AdSpaceID;
-    $scope.AdCollection = AdCollection.get({adSpaceID: $scope.AdSpaceID});
+    $scope.AdCollection = AdCollection.get({adSpaceID: $scope.AdSpaceID},
+					   function() {$scope.waiting = false});
     $scope.orderReverse = false;
     $scope.orderProp = "date";
 }
 
 function CreateAdSpaceCtrl($scope, AdSpaceCollection, CustomFileReader) {
+    $scope.waiting = false;
     $scope.adSpace = {};
 
     // Pre-populate the imageSrc with null to allow the fallback src attribute
@@ -41,6 +45,7 @@ function CreateAdSpaceCtrl($scope, AdSpaceCollection, CustomFileReader) {
     // the new AdSpace.
     $scope.create = function(newAdSpaceForm) {
 	if (newAdSpaceForm.$valid) {
+	    $scope.waiting = true;
 	    AdSpaceCollection.create($scope.adSpace, function() {
 		window.location = "#/adspaces/";
 	    });
@@ -49,6 +54,7 @@ function CreateAdSpaceCtrl($scope, AdSpaceCollection, CustomFileReader) {
 }
 
 function EditAdSpaceCtrl($scope, $routeParams, SingleAdSpace, CustomFileReader) {
+    $scope.waiting = false;
     $scope.adSpace =
 	SingleAdSpace.get({adSpaceID: $routeParams.AdSpaceID}, function() {
 	    $scope.imageSrc = $scope.adSpace.image ?
@@ -64,6 +70,7 @@ function EditAdSpaceCtrl($scope, $routeParams, SingleAdSpace, CustomFileReader) 
     };
 
     $scope.update = function(AdSpaceForm) {
+	$scope.waiting = true;
 	if (AdSpaceForm.$valid) {
 	    SingleAdSpace.update({adSpaceID: $routeParams.AdSpaceID},
 				 $scope.adSpace, function() {
@@ -73,6 +80,7 @@ function EditAdSpaceCtrl($scope, $routeParams, SingleAdSpace, CustomFileReader) 
     }
 
     $scope.del = function() {
+	$scope.waiting = true;
 	SingleAdSpace.del({adSpaceID: $routeParams.AdSpaceID}, function() {
 	    window.location = "#/adspaces/";
 	});
@@ -80,6 +88,7 @@ function EditAdSpaceCtrl($scope, $routeParams, SingleAdSpace, CustomFileReader) 
 }
 
 function CreateAdCtrl($scope, $routeParams, AdCollection, CustomFileReader) {
+    $scope.waiting = false;
     $scope.adSpaceID = $routeParams.AdSpaceID;
 
     $scope.ad = {};
@@ -96,6 +105,7 @@ function CreateAdCtrl($scope, $routeParams, AdCollection, CustomFileReader) {
 
     $scope.create = function(newAdForm) {
 	if (newAdForm.$valid) {
+	    $scope.waiting = true;
 	    AdCollection.create({adSpaceID: $routeParams.AdSpaceID},
 				$scope.ad, function() {
 				    window.location = "#/adspaces/" +
@@ -106,6 +116,7 @@ function CreateAdCtrl($scope, $routeParams, AdCollection, CustomFileReader) {
 }
 
 function EditAdCtrl($scope, $routeParams, SingleAd, CustomFileReader) {
+    $scope.waiting = false;
     $scope.adSpaceID = $routeParams.AdSpaceID;
 
     $scope.ad = SingleAd.get({adID: $routeParams.AdID,
@@ -124,6 +135,7 @@ function EditAdCtrl($scope, $routeParams, SingleAd, CustomFileReader) {
 
     $scope.update = function(AdForm) {
 	if (AdForm.$valid) {
+	    $scope.waiting = true;
 	    SingleAd.update({adSpaceID: $routeParams.AdSpaceID,
 			     adID: $routeParams.AdID},
 			    $scope.ad, function() {
@@ -134,6 +146,7 @@ function EditAdCtrl($scope, $routeParams, SingleAd, CustomFileReader) {
     }
 
     $scope.del = function() {
+	$scope.waiting = true;
 	SingleAd.del({adSpaceID: $routeParams.AdSpaceID,
 		      adID: $routeParams.AdID}, function() {
 			  window.location =
@@ -170,15 +183,18 @@ function AdMetricsCtrl($scope, $routeParams, AdMetrics) {
 }
 
 function AccountCtrl($scope, $routeParams, Account) {
-    $scope.account = Account.get();
+    $scope.waiting = true;
+    $scope.account = Account.get({}, function() {$scope.waiting = false});
     $scope.showCredentials = false;
 }
 
 function EditAccountCtrl($scope, $routeParams, Account) {
+    $scope.waiting = false;
     $scope.account = Account.get();
 
     $scope.update = function(AccountForm) {
 	if (AccountForm.$valid) {
+	    $scope.waiting = true;
 	    Account.update({},
 			   {"Name": $scope.account.Name,
 			    "Email": $scope.account.Email},

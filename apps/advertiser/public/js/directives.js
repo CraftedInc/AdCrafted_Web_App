@@ -138,3 +138,19 @@ customDirectives.directive("clicksLineChart", function() {
 	}
     };
 });
+
+customDirectives.directive("confirmDelete", function($compile, $location) {
+    return {
+	restrict: "A",
+	link: function(scope, element, attrs) {
+            element.bind("click", function(event) {
+		element.after($compile('<button class="btn btn-danger"' +
+				       ' ng-click="del()"><strong>Yes' +
+				       '</strong></button>')(scope));
+		element.after('<p style="display: inline; margin: 0 10px">' +
+			      '<strong>Are you sure?</strong></p>')
+		element.remove();
+	    });
+        }
+    }
+});

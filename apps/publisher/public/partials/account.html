@@ -4,8 +4,14 @@
   <a href="#/account/edit/" class="btn btn-default"><strong>Edit Account</strong></a>
 </div>
 
+
+<!-- Waiting GIF -->
+<div class="waiting" ng-class="{'hide': !waiting}">
+  <img src="/img/waiting.gif">
+</div>
+
 <!-- Account display -->
-<div class="content-list">
+<div class="content-list" ng-class="{'hide': waiting}">
   <div class="row account-row">
     <div class="col-xs-6 align-right">
       <p><strong>Name</strong></p>
@@ -33,7 +39,7 @@
 	</a>
       </div>
     </div>
-    <div ng-class="{ 'hide': !showCredentials }">
+    <div ng-class="{'hide': !showCredentials}">
       <div class="col-xs-6 align-right">
 	<p>Access Key</p>
 	<p>Secret Key</p>
