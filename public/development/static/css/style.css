@@ -11,6 +11,7 @@ body {
     background-image: url(/static/img/drops_900_blur.jpg);
     background-size: cover;
     background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 #about {
     padding: 60px 0;
