@@ -115,7 +115,7 @@ app.get("/adspace/:adspace_id/ad/:ad_id", ads.getAd);
 app.put("/adspace/:adspace_id/ad/:ad_id", ads.updateAd);
 
 // DELETE an ad without deleting the AdSpace.
-app.del("/adspace/:adspace_id/ad/:ad_id", ads.deleteAd)
+app.del("/adspace/:adspace_id/ad/:ad_id", ads.deleteAd);
 
 /**
  * Additional API methods that aren't part of the REST API.
