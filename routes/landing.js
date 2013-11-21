@@ -26,7 +26,7 @@ exports.collectEmail = function(request, response) {
 	 role: role}
     );
     var params = {
-	"Source": "james@adcrafted.com",//config.NOTIFICATIONS_EMAIL,
+	"Source": "AdCrafted Notifications <james@adcrafted.com>",//config.NOTIFICATIONS_EMAIL,
 	"Destination": {
 	    "ToAddresses": config.ADMIN_EMAILS
 	},
