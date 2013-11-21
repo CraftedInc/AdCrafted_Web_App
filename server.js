@@ -153,6 +153,9 @@ app.configure(function() {
 	"s3", new AWSManager.S3(s3_SDK, publisher.app.get("s3_bucket"),
 				config.ADSPACE_IMG_PREFIX,
 				config.AD_IMG_PREFIX));
+    // Create an SES service interface object.
+    var ses = new AWS.SES();
+    app.set("ses", ses);
     // Create and start a shared job scheduler (interval in milliseconds).
     var jobScheduler = new scheduler.JobScheduler(100);
     jobScheduler.start();

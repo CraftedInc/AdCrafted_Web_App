@@ -15,6 +15,8 @@ config.APPS_VIEWS_PATH = "/../../views";
 config.USER_WHITELIST = ["jbpasko@gmail.com", "james@adcrafted.com",
 			 "brandon@pepwuper.com", "brandon.wu.com@gmail.com",
 			 "brandon@adcrafted.com"];
+config.ADMIN_EMAILS = ["james@adcrafted.com", "brandon@adcrafted.com"];
+config.NOTIFICATIONS_EMAIL = "notifications@adcrafted.com";
 
 /**
  * Local configuration.
