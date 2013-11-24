@@ -128,7 +128,6 @@ app.configure(function() {
     app.use(express.compress());
     app.set("views", path.join(__dirname, config.VIEWS_PATH));
     app.set("view engine", config.VIEW_ENGINE);
-    app.set("email_table", config.EMAIL_TABLE);
     // Create a DynamoDB management instance and share among the applications.
     var db = new AWS.DynamoDB();
     app.set("db", db);

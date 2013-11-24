@@ -7,7 +7,6 @@ var config = {};
  * General configuration
  */
 config.VIEW_ENGINE = "jade";
-config.EMAIL_TABLE = "AdCrafted-emails";
 config.AD_IMG_PREFIX = "Ad-Images";
 config.ADSPACE_IMG_PREFIX = "AdSpace-Images";
 config.VIEWS_PATH = "/views";
