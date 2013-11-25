@@ -85,14 +85,41 @@ exports.parseItem = function(item) {
  * returns a 403.
  */
 exports.ensureAuthenticated = function() {
-    return function(req, res, next) {
-	if (!req.isAuthenticated || !req.isAuthenticated()) {
-	    res.send(403, "Not authenticated.");
+    return function(request, response, next) {
+	if (!request.isAuthenticated || !request.isAuthenticated()) {
+	    response.send(403, "Not authenticated.");
 	} else {
 	    next();
 	}
     }
 };
+
+/**
+ * Ensures that the API request is authenticated before proceeding, otherwise
+ * returns a 403.
+ */
+exports.ensureAuthenticatedAPI = function() {
+    return function(request, response, next) {
+	var db = request.app.get("db");
+	// Look up the Secret Key using the Access Key provided in the
+	// authorization header.
+
+	// Compute the sender's signature using the message and the Secret
+	// Key.
+
+	// If the computed signature matches the signature sent with the
+	// message, then set request.user.id = accesskey and proceed with the
+	// request, i.e. invoke next.
+
+	// else, respond with 403 -- Not authenticated.
+	if (!request.isAuthenticated || !request.isAuthenticated()) {
+	    response.send(403, "Not authenticated.");
+	} else {
+	    next();
+	}
+    }
+};
+
 
 /**
  * Parses the request header for the subdomain.

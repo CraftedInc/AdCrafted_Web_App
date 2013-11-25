@@ -87,23 +87,6 @@ app.configure(function() {
 /**
  * The REST API, to be secured by an authentication service.
  */
-// CREATE a new AdSpace.
-app.post("/adspace", adspaces.createAdSpace);
-
-// RETRIEVE all AdSpaces.
-app.get("/adspace", adspaces.getAllAdSpaces);
-
-// RETRIEVE a single AdSpace.
-app.get("/adspace/:adspace_id", adspaces.getAdSpace);
-
-// UPDATE an AdSpace.
-app.put("/adspace/:adspace_id", adspaces.updateAdSpace);
-
-// DELETE an AdSpace and all ads it may reference.
-app.del("/adspace/:adspace_id", adspaces.deleteAdSpace);
-
-// CREATE an ad in the specified AdSpace.
-app.post("/adspace/:adspace_id/ad", ads.createAd);
 
 // RETRIEVE all ads within the specified AdSpace.
 app.get("/adspace/:adspace_id/ad", ads.getAllAds);
@@ -111,19 +94,7 @@ app.get("/adspace/:adspace_id/ad", ads.getAllAds);
 // RETRIEVE a single ad from the specified AdSpace.
 app.get("/adspace/:adspace_id/ad/:ad_id", ads.getAd);
 
-// UPDATE an ad.
-app.put("/adspace/:adspace_id/ad/:ad_id", ads.updateAd);
-
-// DELETE an ad without deleting the AdSpace.
-app.del("/adspace/:adspace_id/ad/:ad_id", ads.deleteAd);
-
-/**
- * Additional API methods that aren't part of the REST API.
- */
-// GET the metrics of the ad.
-app.get("/adspace/:adspace_id/ad/:ad_id/metrics", ads.getMetrics);
-
-// Update the impression and click metrics.
+// UPDATE the impression and click metrics.
 app.post("/adspace/:adspace_id/ad/:ad_id/metrics", ads.updateMetrics);
 
 exports.app = app;
