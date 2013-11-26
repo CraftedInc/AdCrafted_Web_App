@@ -85,7 +85,7 @@ S3.prototype.deleteAdImage = function(adSpaceID, adID, callback) {
     this.s3.listObjects(params, function(err, data) {
 	if (err) {
 	    callback(err, data);
-	} else {
+	} else if (data.Contents.length > 0) {
 	    var keys = [];
 	    for (var i = 0; i < data.Contents.length; i++) {
 		keys[i] = {"Key": data.Contents[i].Key};
@@ -97,6 +97,9 @@ S3.prototype.deleteAdImage = function(adSpaceID, adID, callback) {
 		}
 	    };
 	    this.s3.deleteObjects(params, callback);
+	} else {
+	    // No data to delete.
+	    callback(err, data);
 	}
     }.bind(this));
 };

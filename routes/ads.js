@@ -27,10 +27,9 @@ exports.createAd = function(request, response) {
     // Check if the AdSpace exists.
     db.getItem(params, function(err, data) {
 	if (err) {
-	    response.send(err);
+	    response.send(500, {message: "An Error Occurred"});
 	} else if (utils.isEmpty(data)) {
-	    response.send( {"status": 400,
-			    "message": "AdSpace does not exist"} );
+	    response.send(400, {message: "AdSpace Does Not Exist"});
 	} else {
 	    params = {
 		"TableName": response.app.get("ads_table_name"),
@@ -47,7 +46,7 @@ exports.createAd = function(request, response) {
 	    // select an appropriate AdID.
 	    db.query(params, function(err, data) {
 		if (err) {
-		    response.send(err);
+		    response.send(500, {message: "An Error Occurred"});
 		} else {
 		    if (data.Count > 0) {
 			for (var i = 0; i < data.Count; i++) {
@@ -109,12 +108,11 @@ exports.createAd = function(request, response) {
 		    // Finally, put the new ad.
 		    db.putItem(params, function(err, data) {
 			if (err) {
-			    response.send(err);
+			    response.send(500, {message: "An Error Occurred"});
 			} else {
-			    response.send( {"status": 201,
-					    "message": "Success",
-					    "AdSpaceID": adSpaceID,
-					    "AdID": newAdID} );
+			    response.send(201, {message: "New Ad Created",
+						AdSpaceID: adSpaceID,
+						AdID: newAdID});
 			}
 		    });
 		}
@@ -141,12 +139,11 @@ exports.getAd = function(request, response) {
     };
     db.getItem(params, function(err, data) {
 	if (err) {
-	    response.send(err);
+	    response.send(500, {message: "An Error Occurred"});
 	} else if (!utils.isEmpty(data)) {
-	    response.send(utils.parseItem(data.Item));
+	    response.send(200, utils.parseItem(data.Item));
 	} else {
-	    response.send({"status": 404,
-			   "message": "No such ad"});
+	    response.send(404, {message: "No Such Ad"});
 	}
     });
 };
@@ -169,10 +166,11 @@ exports.getAllAds = function(request, response) {
     };
     db.query(params, function(err, data) {
 	if (err) {
-	    response.send(err);
+	    response.send(500, {message: "An Error Occurred"});
 	} else {
-	    var result = {"Count": data.Count,
-			  "Ads": []};
+	    var result = {message: "Success",
+			  Count: data.Count,
+			  Ads: []};
 	    for (var i = 0; i < data.Count; i++) {
 		result.Ads[i] = utils.parseItem(data.Items[i]);
 	    }
@@ -235,10 +233,9 @@ exports.updateAd = function(request, response) {
     }
     db.updateItem(params, function(err, data) {
 	if (err) {
-	    response.send(err);
+	    response.send(500, {message: "An Error Occurred"});
 	} else {
-	    response.send( {"status": 200,
-			    "message": "Success"} );
+	    response.send(200, {message: "Ad Updated"});
 	}
     });
 };
@@ -263,17 +260,17 @@ exports.deleteAd = function(request, response) {
     // Remove the item from the database.
     db.deleteItem(params, function(err, data) {
 	if (err) {
-	    response.send(err);
+	    response.send(500, {message: "An Error Occurred"});
 	} else {
 	    // Finally, delete any images the ad may reference.
 	    s3.deleteAdImage(request.params.adspace_id, request.params.ad_id,
 			     function(err, data) {
 				 if (err) {
-				     response.send( {"status": 500,
-						     "message": "Error"} );
+				     response.send(200, {message:
+							 "Ad Deleted"});
 				 } else {
-				     response.send( {"status": 200,
-						     "message": "Success"} );
+				     response.send(200, {message:
+							 "Ad Deleted"});
 				 }
 			     });
 	}
@@ -299,7 +296,7 @@ exports.getMetrics = function(request, response) {
     };
     db.query(params, function(err, data) {
 	if (err) {
-	    response.send(err);
+	    response.send(500, {message: "An Error Occurred"});
 	} else {
 	    var result = [];
 	    for (var i = 0; i < data.Count; i++) {
@@ -328,10 +325,8 @@ exports.updateMetrics = function(request, response) {
 				impressions,
 				clicks);
 	jobScheduler.add(metricsJob);
-	response.send( {"status": 200,
-			"message": "Success"} );
+	response.send(200, {message: "Metrics Updated"});
     } else {
-	response.send( {"status": 400,
-			"message": "Invalid request body"} );
+	response.send(400, {message: "Invalid Request Body"});
     }
 };

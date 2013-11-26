@@ -133,10 +133,9 @@ exports.getAccount = function(request, response) {
     };
     db.getItem(params, function(err, data) {
 	if (err) {
-	    response.send(err);
+	    response.send(500, {message: "An Error Occurred"});
 	} else if (utils.isEmpty(data)) {
-	    response.send({"status": 404,
-			   "message": "Account doesn't exist"});
+	    response.send(404, {message: "The Account Doesn't Exist"});
 	} else {
 	    response.send(utils.parseItem(data.Item));
 	}
@@ -170,10 +169,9 @@ exports.updateAccount = function(request, response) {
     }
     db.updateItem(params, function(err, data) {
 	if (err) {
-	    response.send(err);
+	    response.send(500, {message: "An Error Occurred"});
 	} else {
-	    response.send( {"status": 200,
-			    "message": "Account updated"} );
+	    response.send(200, {message: "Account Successfully Updated"});
 	}
     });
 };

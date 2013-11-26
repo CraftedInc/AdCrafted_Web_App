@@ -58,11 +58,10 @@ exports.createAdSpace = function(request, response) {
     }
     db.putItem(params, function(err, data) {
 	if (err) {
-	    response.send(err);
+	    response.send(500, {message: "An Error Occurred"});
 	} else {
-	    response.send( {"status": 201,
-			    "message": "Success",
-			    "AdSpaceID": adspace_id} );
+	    response.send(201, {message: "New AdSpace Created",
+				AdSpaceID: adspace_id});
 	}
     });
 };
@@ -76,12 +75,11 @@ exports.getAdSpace = function(request, response) {
 				       request.params.adspace_id);
     db.getItem(params, function(err, data) {
 	if (err) {
-	    response.send(err);
+	    response.send(500, {message: "An Error Occurred"});
 	} else if (!utils.isEmpty(data)) {
 	    response.send(utils.parseItem(data.Item));
 	} else {
-	    response.send({"status": 404,
-			   "message": "AdSpace does not exist"});
+	    response.send(404, {message: "AdSpace Does Not Exist"});
 	}
     });
 };
@@ -96,11 +94,11 @@ exports.getAllAdSpaces = function(request, response) {
     };
     db.scan(params, function(err, data) {
 	if (err) {
-	    response.send(err);
+	    response.send(500, {message: "An Error Occurred"});
 	} else {
-	    var result = {"status": 200,
-			  "Count": data.Count,
-			  "AdSpaces": []};
+	    var result = {message: "Success",
+			  Count: data.Count,
+			  AdSpaces: []};
 	    for (var i = 0; i < data.Count; i++) {
 		result.AdSpaces[i] = utils.parseItem(data.Items[i]);
 	    }
@@ -165,10 +163,9 @@ exports.updateAdSpace = function(request, response) {
     }
     db.updateItem(params, function(err, data) {
 	if (err) {
-	    response.send(err);
+	    response.send(500, {message: "An Error Occurred"});
 	} else {
-	    response.send( {"status": 200,
-			    "message": "Success"} );
+	    response.send(200, {message: "AdSpace Updated"});
 	}
     });
 };
@@ -200,7 +197,7 @@ exports.deleteAdSpace = function(request, response) {
     };
     db.query(params, function(err, data) {
 	if (err) {
-	    response.send(err);
+	    response.send(500, {message: "An Error Occurred"});
 	} else if (data.Count > 0) {
 	    var batch = [];
 	    for (var i = 0; i < data.Count; i++) {
@@ -226,15 +223,13 @@ exports.deleteAdSpace = function(request, response) {
 	    params.RequestItems[response.app.get("ads_table_name")] = batch;
 	    db.batchWriteItem(params, function(err, data) {
 		if (err) {
-		    response.send(err);
+		    response.send(500, {message: "An Error Occurred"});
 		} else {
-		    response.send( {"status": 200,
-				    "message": "Success"} );
+		    response.send(200, {message: "AdSpace Deleted"});
 		}
 	    });
 	} else {
-	    response.send( {"status": 200,
-			    "message": "Success"} );
+	    response.send(200, {message: "AdSpace Deleted"});
 	}
     });
 };

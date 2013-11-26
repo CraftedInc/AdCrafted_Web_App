@@ -79,11 +79,11 @@ app.configure(function() {
     // Error handler.
     app.use(function(err, request, response, next){
 	console.error(err.stack);
-	response.send(500, '500 - Error.');
+	response.send(500, {message: "An Error Occurred"});
     });
     // 404 handler.
     app.use(function(request, response, next){
-	response.send(404, '404 - Not Found.');
+	response.send(404, {message: "Resource Not Found"});
     });
 });
 
