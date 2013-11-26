@@ -47,6 +47,7 @@ app.configure("local", function() {
     app.set("s3_bucket", config.local.S3_BUCKET);
     app.set("adspace_table_name", config.local.ADSPACE_TABLE_NAME);
     app.set("ads_table_name", config.local.AD_TABLE_NAME);
+    app.set("user_table_name", config.local.USER_TABLE_NAME);
     app.set("metrics_table_name", config.local.METRICS_TABLE_NAME);
 });
 app.configure("development", function() {
@@ -54,6 +55,7 @@ app.configure("development", function() {
     app.set("s3_bucket", config.development.S3_BUCKET);
     app.set("adspace_table_name", config.development.ADSPACE_TABLE_NAME);
     app.set("ads_table_name", config.development.AD_TABLE_NAME);
+    app.set("user_table_name", config.development.USER_TABLE_NAME);
     app.set("metrics_table_name", config.development.METRICS_TABLE_NAME);
 });
 app.configure("production", function() {
@@ -61,6 +63,7 @@ app.configure("production", function() {
     app.set("s3_bucket", config.production.S3_BUCKET);
     app.set("adspace_table_name", config.production.ADSPACE_TABLE_NAME);
     app.set("ads_table_name", config.production.AD_TABLE_NAME);
+    app.set("user_table_name", config.production.USER_TABLE_NAME);
     app.set("metrics_table_name", config.production.METRICS_TABLE_NAME);
 });
 
@@ -90,9 +93,6 @@ app.configure(function() {
 
 // RETRIEVE all ads within the specified AdSpace.
 app.get("/adspace/:adspace_id/ad", ads.getAllAds);
-
-// RETRIEVE a single ad from the specified AdSpace.
-app.get("/adspace/:adspace_id/ad/:ad_id", ads.getAd);
 
 // UPDATE the impression and click metrics.
 app.post("/adspace/:adspace_id/ad/:ad_id/metrics", ads.updateMetrics);

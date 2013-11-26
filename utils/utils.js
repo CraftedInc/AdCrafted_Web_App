@@ -11,12 +11,7 @@
  * @return {boolean} Whether the object is empty.
  */
 exports.isEmpty = function(obj) {
-    for(var i in obj){
-        if(obj.hasOwnProperty(i)){
-            return false;
-        }
-    }
-    return true;
+    return isEmpty(obj);
 };
 
 /**
@@ -100,26 +95,46 @@ exports.ensureAuthenticated = function() {
  */
 exports.ensureAuthenticatedAPI = function() {
     return function(request, response, next) {
-	var db = request.app.get("db");
-	// Look up the Secret Key using the Access Key provided in the
-	// authorization header.
-
-	// Compute the sender's signature using the message and the Secret
-	// Key.
-
-	// If the computed signature matches the signature sent with the
-	// message, then set request.user.id = accesskey and proceed with the
-	// request, i.e. invoke next.
-
-	// else, respond with 403 -- Not authenticated.
-	if (!request.isAuthenticated || !request.isAuthenticated()) {
-	    response.send(403, "Not authenticated.");
+	var header    = request.headers["authorization"] || "",
+	    token     = header.split(/\s+/).pop() || "",
+	    auth      = new Buffer(token, "base64").toString(),
+	    parts     = auth.split(/:/),
+	    accessKey = parts[0],
+	    signature = parts[1];
+	if (!accessKey || !signature) {
+	    response.send(403, "Missing or Incorrect Authorization Header");
 	} else {
-	    next();
+	    var db = request.app.get("db");
+	    var params = {
+		"TableName": request.app.get("user_table_name"),
+		"Key": {
+		    "UserID": {
+			"S": accessKey
+		    }
+		}
+	    };
+	    db.getItem(params, function(err, data) {
+		if (err) {
+		    response.send(500, "Authentication Failed");
+		} else if (isEmpty(data)) {
+		    response.send(403, "Unrecognized Access Key");
+		} else {
+		    var secretKey = data.Item.SecretKey ?
+			data.Item.SecretKey.S : undefined;
+		    if (secretKey &&
+			computeSignature(request, secretKey) == signature) {
+			// Set the id on the request.user object.
+			request.user.id = accessKey;
+			// Continue with the request.
+			next();
+		    } else {
+			response.send(403, "Signature Not Verified");
+		    }
+		}
+	    });
 	}
     }
 };
-
 
 /**
  * Parses the request header for the subdomain.
@@ -142,3 +157,27 @@ exports.generateKey = function(length) {
     }
     return result;
 };
+
+
+/**
+ * Private helper functions.
+ */
+
+/**
+ * Computes the signature of the request using the provided secret key.
+ */
+function computeSignature(request, secretKey) {
+    return secretKey;
+}
+
+/**
+ * Tests whether an object is empty (contains no attributes of its own).
+ */
+function isEmpty(obj) {
+    for(var i in obj) {
+        if(obj.hasOwnProperty(i)){
+            return false;
+        }
+    }
+    return true;
+}
