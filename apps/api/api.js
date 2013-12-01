@@ -30,6 +30,7 @@
 var express  = require("express")
   , config   = require("./../../config")
   , path     = require("path")
+  , utils    = require("./../../utils/utils")
   , ads      = require("./../../routes/ads")
   , adspaces = require("./../../routes/adspaces");
 
@@ -88,7 +89,7 @@ app.configure(function() {
 });
 
 /**
- * The REST API, to be secured by an authentication service.
+ * The API, secured using an access key and signature combination.
  */
 
 // RETRIEVE all ads within the specified AdSpace.

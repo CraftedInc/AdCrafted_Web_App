@@ -93,8 +93,9 @@ exports.ensureAuthenticated = function() {
  * Ensures that the API request is authenticated before proceeding, otherwise
  * returns a 403.
  */
-exports.ensureAuthenticatedAPI = function() {
+exports.authenticateAPIRequest = function() {
     return function(request, response, next) {
+	request.user = null; // Clear any unauthorized user.
 	var header    = request.headers["authorization"] || "",
 	    token     = header.split(/\s+/).pop() || "",
 	    auth      = new Buffer(token, "base64").toString(),
