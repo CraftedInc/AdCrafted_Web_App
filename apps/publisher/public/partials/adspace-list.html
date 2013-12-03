@@ -35,14 +35,13 @@
 <div class="content-list">
   <div ng-repeat="AdSpace in AdSpaces.AdSpaces | orderBy:orderProp:orderReverse | filter:query" class="adspace-thumbnail row">
     <div class="col-xs-3">
-      <img ng-src="{{AdSpace.image}}" fallback-src="http://placehold.it/200x180" class="img-rounded adspace-img">
+      <img ng-show="AdSpace.image != 'null'" ng-src="{{AdSpace.image}}" class="img-rounded adspace-img">
+      <p ng-show="AdSpace.image == 'null'"><em>No Image</em></p>
     </div>
     <div class="col-xs-5">
       <div class="adspace-information">
-	<p><strong>{{AdSpace.title}}</strong></p>
-	<p>
-	  {{AdSpace.description}}
-	</p>
+	<p><strong>{{AdSpace.title}}</strong><em ng-show="!AdSpace.title">No Title</em></p>
+	<p>{{AdSpace.description}}<em ng-show="!AdSpace.description">No Description</em></p>
       </div>
     </div>
     <div class="col-xs-4">
@@ -51,6 +50,7 @@
 	<p><strong>Created: </strong>{{AdSpace.date | date:'longDate'}}</p>
 	<p>
 	  <strong>Tags: </strong>
+	  <em ng-show="!AdSpace.tags.length">none</em>
 	  <a class="label label-success tag" ng-repeat="tag in AdSpace.tags" ng-click="populateSearch(tag)">{{tag}}</a>
 	</p>
 	<a href="#/adspaces/{{AdSpace.AdSpaceID}}" class="btn btn-primary"><strong>Manage Ads</strong></a>

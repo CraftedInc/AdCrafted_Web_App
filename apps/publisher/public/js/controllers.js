@@ -24,20 +24,18 @@ function AdSpaceDetailCtrl($scope, $routeParams, AdCollection) {
 function CreateAdSpaceCtrl($scope, AdSpaceCollection, CustomFileReader) {
     $scope.waiting = false;
     $scope.adSpace = {};
-
-    // Pre-populate the imageSrc with null to allow the fallback src attribute
-    // to work properly.
-    $scope.imageSrc = "null";
+    $scope.hasImage = false;
 
     // Read the file from the drop event on the tag with imageDrop directive.
     // The tag with the directive must also specify an on-change attribute,
     // which should reference this function.
-    $scope.readFile = function() {         
+    $scope.readImageFile = function() {         
         CustomFileReader.readAsDataUrl($scope.file, $scope)
             .then(function(result) {
                 $scope.adSpace.image = result;
 		// Update imageSrc so that the image displays immediately.
 		$scope.imageSrc = result;
+		$scope.hasImage = true;
             });
     };
 
@@ -54,18 +52,21 @@ function CreateAdSpaceCtrl($scope, AdSpaceCollection, CustomFileReader) {
 }
 
 function EditAdSpaceCtrl($scope, $routeParams, SingleAdSpace, CustomFileReader) {
-    $scope.waiting = false;
+    $scope.waiting = true;
+    $scope.hasImage = false;
     $scope.adSpace =
 	SingleAdSpace.get({adSpaceID: $routeParams.AdSpaceID}, function() {
-	    $scope.imageSrc = $scope.adSpace.image ?
-		$scope.adSpace.image : "null";
+	    $scope.waiting = false;
+	    $scope.imageSrc = $scope.adSpace.image;
+	    $scope.hasImage = $scope.adSpace.image != "null";
 	});
 
-    $scope.readFile = function() {         
+    $scope.readImageFile = function() {         
         CustomFileReader.readAsDataUrl($scope.file, $scope)
             .then(function(result) {
                 $scope.adSpace.image = result;
 		$scope.imageSrc = result;
+		$scope.hasImage = true;
             });
     };
 
@@ -90,16 +91,16 @@ function EditAdSpaceCtrl($scope, $routeParams, SingleAdSpace, CustomFileReader) 
 function CreateAdCtrl($scope, $routeParams, AdCollection, CustomFileReader) {
     $scope.waiting = false;
     $scope.adSpaceID = $routeParams.AdSpaceID;
+    $scope.hasImage = false;
 
     $scope.ad = {};
 
-    $scope.imageSrc = "null";
-
-    $scope.readFile = function() {         
+    $scope.readImageFile = function() {         
         CustomFileReader.readAsDataUrl($scope.file, $scope)
             .then(function(result) {
                 $scope.ad.image = result;
 		$scope.imageSrc = result;
+		$scope.hasImage = true;
             });
     };
 
@@ -116,20 +117,23 @@ function CreateAdCtrl($scope, $routeParams, AdCollection, CustomFileReader) {
 }
 
 function EditAdCtrl($scope, $routeParams, SingleAd, CustomFileReader) {
-    $scope.waiting = false;
+    $scope.waiting = true;
+    $scope.hasImage = false;
     $scope.adSpaceID = $routeParams.AdSpaceID;
 
     $scope.ad = SingleAd.get({adID: $routeParams.AdID,
 			      adSpaceID: $routeParams.AdSpaceID}, function() {
-				  $scope.imageSrc = $scope.ad.image ?
-				      $scope.ad.image : "null";
+				  $scope.waiting = false;
+				  $scope.imageSrc = $scope.ad.image;
+				  $scope.hasImage = $scope.ad.image != "null";
 			      });
 
-    $scope.readFile = function() {         
+    $scope.readImageFile = function() {         
         CustomFileReader.readAsDataUrl($scope.file, $scope)
             .then(function(result) {
                 $scope.ad.image = result;
 		$scope.imageSrc = result;
+		$scope.hasImage = true;
             });
     };
 

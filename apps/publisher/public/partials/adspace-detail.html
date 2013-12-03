@@ -1,6 +1,8 @@
 <!-- ADSPACE control bar -->
 <div class="form-inline row" id="adspace-control-bar">
-  <a href="#/adspaces/" class="btn btn-default"><strong>Back</strong></a>
+  <a href="#/adspaces/" class="btn btn-default">
+    <strong><span class="glyphicon glyphicon-arrow-left"></span> Back</strong>
+  </a>
   <a href="#/adspaces/{{AdSpaceID}}/ad/new" class="btn btn-success"><strong>New Ad</strong></a>
   <div class="form-group pull-right">
     <div class="input-group" id="input-group-search">
@@ -36,14 +38,13 @@
 <div class="content-list">
   <div ng-repeat="Ad in AdCollection.Ads | orderBy:orderProp:orderReverse | filter:query" class="ad-thumbnail row">
     <div class="col-xs-3">
-      <img ng-src="{{Ad.image}}" fallback-src="http://placehold.it/200x180" class="img-rounded ad-img">
+      <img ng-show="Ad.image != 'null'" ng-src="{{Ad.image}}" class="img-rounded ad-img">
+      <p ng-show="Ad.image == 'null'"><em>No Image</em></p>
     </div>
     <div class="col-xs-5">
       <div class="adspace-information">
-	<p><strong>{{Ad.title}}</strong></p>
-	<p>
-	  {{Ad.text}}
-	</p>
+	<p><strong>{{Ad.title}}</strong><em ng-show="!Ad.title">No Title</em></p>
+	<p>{{Ad.text}}<em ng-show="!Ad.title">No Text</em></p>
       </div>
     </div>
     <div class="col-xs-4">
@@ -51,6 +52,8 @@
 	<p><strong>Ad ID: </strong><code>{{Ad.AdID}}</code></p>
 	<p><strong>AdSpace ID: </strong><code>{{AdSpaceID}}</code></p>
 	<p><strong>Link: </strong><a href={{Ad.link}} class="no-decoration" target="_blank">{{Ad.link}}</a>
+	  <em ng-show="!Ad.link">No Link</em>
+	</p>
 	<p><strong>Created: </strong>{{Ad.date | date:'longDate'}}</p>
 	<a href="#/adspaces/{{AdSpaceID}}/ad/{{Ad.AdID}}/metrics" class="btn btn-primary"><strong>Metrics</strong></a>
 	<a href="#/adspaces/{{AdSpaceID}}/ad/{{Ad.AdID}}/edit" class="btn btn-default"><strong>Edit</strong></a>

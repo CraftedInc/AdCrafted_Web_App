@@ -92,7 +92,17 @@ body {
     border-color: rgb(200, 200, 200);
 }
 .draggable {
-    border: 2px dotted rgb(150, 150, 150);
+    border: 2px dotted rgb(100, 100, 100);
+    border-radius: 5px;
+}
+.dropzone {
+    height: 192px;
+    width: 200px;
+    background-color: #CECECE;
+}
+.drag-drop-text {
+    margin-top: 80px;
+    text-align: center;
 }
 .text-blue {
     color: rgb(46, 105, 180);
@@ -166,4 +176,7 @@ body {
 }
 .navbar-adcrafted-home a {
     font-size: 16px;
+}
+code {
+    padding: 4px 4px 2px 4px !important;
 }

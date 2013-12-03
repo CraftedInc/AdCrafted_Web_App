@@ -49,6 +49,8 @@ customDirectives.directive("imageDrop", function ($parse) {
             element.bind("dragover", onDragOver)
                 .bind("dragleave", onDragEnd)
                 .bind("drop", function (e) {
+                    element.removeClass("draggable");
+                    element.removeClass("dropzone");
                     onDragEnd(e);
                     updateModel(e.dataTransfer.files[0]);
                 });
