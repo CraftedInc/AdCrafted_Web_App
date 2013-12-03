@@ -93,9 +93,13 @@ app.configure(function() {
  */
 
 // RETRIEVE all ads within the specified AdSpace.
-app.get("/adspace/:adspace_id/ad", ads.getAllAds);
+app.get("/adspace/:adspace_id/ad",
+	utils.authenticateAPIRequest(),
+	ads.getAllAdsInAdSpace);
 
 // UPDATE the impression and click metrics.
-app.post("/adspace/:adspace_id/ad/:ad_id/metrics", ads.updateMetrics);
+app.post("/adspace/:adspace_id/ad/:ad_id/metrics",
+	 utils.authenticateAPIRequest(),
+	 ads.updateMetrics);
 
 exports.app = app;

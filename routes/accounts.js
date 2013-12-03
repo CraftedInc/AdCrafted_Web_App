@@ -55,7 +55,7 @@ exports.findOrCreate = function(db,
 	} else if (utils.isEmpty(data)) {
 	    // The records don't yet exist. Create them.
 	    // Generate a user ID.
-	    var userID = utils.generateKey(16);
+	    var userID = utils.generateKey(20);
 	    params = {
 		"TableName": oAuth2Table,
 		"Item": {
@@ -72,7 +72,7 @@ exports.findOrCreate = function(db,
 		    return done(err, null);
 		} else {
 		    // Generate a secret key for authentication purposes.
-		    var secret = utils.generateKey(16);
+		    var secret = utils.generateKey(20);
 		    params = {
 			"TableName": userTable,
 			"Item": {

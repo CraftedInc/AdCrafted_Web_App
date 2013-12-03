@@ -46,20 +46,6 @@ exports.parseBase64Data = function(data){
 };
 
 /**
- * Creates a request parameters object for the AdSpace table.
- */
-exports.adSpaceParams = function(tableName, adSpaceID) {
-    return {
-	"TableName": tableName,
-	"Key": {
-	    "AdSpaceID": {
-		"S": adSpaceID
-	    }
-	}
-    };
-};
-
-/**
  * Parses an item returned from a query or getItem operation.
  */
 exports.parseItem = function(item) {
@@ -82,7 +68,10 @@ exports.parseItem = function(item) {
 exports.ensureAuthenticated = function() {
     return function(request, response, next) {
 	if (!request.isAuthenticated || !request.isAuthenticated()) {
-	    response.send(403, "Not authenticated.");
+	    response.send(403, "Not Authenticated");
+	} else if (!request.user || !request.user.id) {
+	    // Ensure that the session exists since routes rely on user IDs.
+	    response.send(500, "Error: Session Lost");
 	} else {
 	    next();
 	}
@@ -122,11 +111,11 @@ exports.authenticateAPIRequest = function() {
 		} else {
 		    var secretKey = data.Item.SecretKey ?
 			data.Item.SecretKey.S : undefined;
-		    if (secretKey &&
+		    if (!!secretKey &&
 			computeSignature(request, secretKey) == signature) {
-			// Set the id on the request.user object.
-			request.user.id = accessKey;
-			// Continue with the request.
+			// Set the id on the user object.
+			request.user = {id: accessKey};
+			// Continue processing the request.
 			next();
 		    } else {
 			response.send(403, "Signature Not Verified");

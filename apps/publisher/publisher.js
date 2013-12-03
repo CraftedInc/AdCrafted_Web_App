@@ -123,10 +123,15 @@ app.post("/api/adspace",
 	 utils.ensureAuthenticated(),
 	 adspaces.createAdSpace);
 
-// RETRIEVE all AdSpaces.
+// RETRIEVE all AdSpaces owned by the User.
 app.get("/api/adspace",
 	utils.ensureAuthenticated(),
-	adspaces.getAllAdSpaces);
+	adspaces.getAllUserAdSpaces);
+
+// RETRIEVE all public AdSpaces.
+app.get("/api/adspace/public",
+	utils.ensureAuthenticated(),
+	adspaces.getAllPublicAdSpaces);
 
 // RETRIEVE a single AdSpace.
 app.get("/api/adspace/:adspace_id",
@@ -151,12 +156,17 @@ app.post("/api/adspace/:adspace_id/ad",
 // RETRIEVE all ads within the specified AdSpace.
 app.get("/api/adspace/:adspace_id/ad",
 	utils.ensureAuthenticated(),
-	ads.getAllAds);
+	ads.getAllAdsInAdSpace);
 
 // RETRIEVE a single ad from the specified AdSpace.
 app.get("/api/adspace/:adspace_id/ad/:ad_id",
 	utils.ensureAuthenticated(),
 	ads.getAd);
+
+// RETRIEVE all Ads owned by the user.
+app.get("/api/ad",
+	utils.ensureAuthenticated(),
+	ads.getAllUserAds);
 
 // UPDATE an ad.
 app.put("/api/adspace/:adspace_id/ad/:ad_id",

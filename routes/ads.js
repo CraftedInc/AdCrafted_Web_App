@@ -10,39 +10,59 @@ var jobs = require("../utils/jobs");
 // A set of utility functions.
 var utils = require("../utils/utils");
 
-// UUIDs are used to name image files.
-var uuid = require("node-uuid");
+// Configuration.
+var config = require("../config");
 
 /**
  * Create a new Ad within the specified AdSpace.
  */
 exports.createAd = function(request, response) {
+    var userID = request.user.id;
     var db = response.app.get("db");
     var s3 = response.app.get("s3");
     var ad = request.body;
     var newAdID = 0;
     var adSpaceID = request.params.adspace_id;
-    var params = utils.adSpaceParams(response.app.get("adspace_table_name"),
-				     adSpaceID);
-    // Check if the AdSpace exists.
-    db.getItem(params, function(err, data) {
+    // Scan the table for the AdSpace since we don't know its UserID.
+    var params = {
+	"TableName": request.app.get("adspace_table_name"),
+	"ScanFilter": {
+            "AdSpaceID": {
+		"AttributeValueList": [
+                    {
+			"S": adSpaceID
+                    }
+		],
+		"ComparisonOperator": "EQ"
+            }
+	}
+    };
+    // Check if the AdSpace exists by scanning the table.
+    db.scan(params, function(err, data) {
 	if (err) {
 	    response.send(500, {message: "An Error Occurred"});
-	} else if (utils.isEmpty(data)) {
+	} else if (data.Count == 0) {
 	    response.send(400, {message: "AdSpace Does Not Exist"});
 	} else {
+	    // There should only be a single AdSpace matching the ScanFilter.
+	    var adSpaceUserID = data.Items[0].UserID ?
+		data.Items[0].UserID.S : null;
+	    if (!adSpaceUserID) {
+		// Terminate processing the request if the AdSpace has no owner.
+		response.send(500, {message: "An Error Occurred"});
+	    }
 	    params = {
 		"TableName": response.app.get("ads_table_name"),
 		"KeyConditions": {
 		    "AdSpaceID": {
-			"AttributeValueList" : [{
-			    "S": adSpaceID
-			}],
-			"ComparisonOperator" : "EQ"
+			"ComparisonOperator" : "EQ",
+			"AttributeValueList" : [
+			    {"S": adSpaceID}
+			]
 		    }
 		}
 	    };
-	    // Query to determine how many ads this AdSpace contains, and
+	    // Query to determine how many Ads this AdSpace contains, and
 	    // select an appropriate AdID.
 	    db.query(params, function(err, data) {
 		if (err) {
@@ -65,6 +85,12 @@ exports.createAd = function(request, response) {
 			    "AdID": {
 				"N": newAdID + ""
 			    },
+			    "UserID" : {
+				"S": userID
+			    },
+			    "AdSpaceUserID": {
+				"S": adSpaceUserID
+			    },
 			    "image": {
 				"S": "null"
 			    },
@@ -85,7 +111,7 @@ exports.createAd = function(request, response) {
 			if (attr == "image" && !!ad["image"]) {
 			    var file = utils.parseBase64Data(ad[attr]);
 			    if (file.isBase64) {
-				var name = uuid.v4();
+				var name = utils.generateKey(8);
 				var key = s3.generateAdKey(adSpaceID, newAdID,
 							   name, file.ext);
 				s3.upload(file.body, key, "image/" + file.ext,
@@ -122,9 +148,10 @@ exports.createAd = function(request, response) {
 };
 
 /**
- * Get a single Ad within the specified AdSpace.
+ * Get a single Ad specified by the AdID and AdSpaceID.
  */
 exports.getAd = function(request, response) {
+    var userID = request.user.id;
     var db = response.app.get("db");
     var params = {
 	"TableName": response.app.get("ads_table_name"),
@@ -141,7 +168,14 @@ exports.getAd = function(request, response) {
 	if (err) {
 	    response.send(500, {message: "An Error Occurred"});
 	} else if (!utils.isEmpty(data)) {
-	    response.send(200, utils.parseItem(data.Item));
+	    if ((!!data.Item.AdSpaceUserID &&
+		 data.Item.AdSpaceUserID.S == userID) ||
+		(!!data.Item.UserID && data.Item.UserID.S == userID)) {
+		// The user must own either this Ad or its AdSpace.
+		response.send(200, utils.parseItem(data.Item));
+	    } else {
+		response.send(403, {message: "Not Authorized"});
+	    }
 	} else {
 	    response.send(404, {message: "No Such Ad"});
 	}
@@ -149,18 +183,53 @@ exports.getAd = function(request, response) {
 };
 
 /**
+ * Gets all Ads belonging to the specified user.
+ */
+exports.getAllUserAds = function(request, response) {
+    var userID = request.user.id;
+    var db = response.app.get("db");
+    var params = {
+	"TableName": response.app.get("ads_table_name")
+    };
+    db.scan(params, function(err, data) {
+	if (err) {
+	    response.send(500, {message: "An Error Occurred"});
+	} else {
+	    var count = 0;
+	    var result = {message: "Success",
+			  Ads: []};
+	    for (var i = 0; i < data.Count; i++) {
+		if (!!data.Item.UserID && data.Item.UserID.S == userID) {
+		    result.Ads[count++] = utils.parseItem(data.Items[i]);
+		}
+	    }
+	    result.Count = count;
+	    response.send(result);
+	}
+    });
+};
+
+/**
  * Get all ads in the specified AdSpace.
  */
-exports.getAllAds = function(request, response) {
+exports.getAllAdsInAdSpace = function(request, response) {
+    var adSpaceUserID = request.user.id;
     var db = response.app.get("db");
     var params = {
 	"TableName": response.app.get("ads_table_name"),
+	"IndexName": config.ADSPACE_USER_ID_INDEX,
 	"KeyConditions": {
 	    "AdSpaceID": {
-		"AttributeValueList" : [{
-		    "S": request.params.adspace_id
-		}],
-		"ComparisonOperator" : "EQ"
+		"ComparisonOperator" : "EQ",
+		"AttributeValueList" : [
+		    {"S": request.params.adspace_id}
+		]
+	    },
+	    "AdSpaceUserID": {
+		"ComparisonOperator" : "EQ",
+		"AttributeValueList" : [
+		    {"S": adSpaceUserID}
+		]
 	    }
 	}
     };
@@ -183,6 +252,7 @@ exports.getAllAds = function(request, response) {
  * Updates the specified ad. If it doesn't exist, a new ad is created.
  */
 exports.updateAd = function(request, response) {
+    var userID = request.user.id;
     var db = response.app.get("db");
     var s3 = response.app.get("s3");
     var ad = request.body;
@@ -194,48 +264,80 @@ exports.updateAd = function(request, response) {
 	    "AdSpaceID": {
 		"S": adSpaceID
 	    },
-	    "AdID": {
+	    "AdID" : {
 		"N": adID + ""
 	    }
-	},
-	"AttributeUpdates": {}
-    };
-    for (var attr in ad) {
-	if (attr == "AdID" || attr == "AdSpaceID" ||
-	    attr == "impressions" || attr == "clicks") {
-	    continue;
-	} else if (attr == "image") {
-	    var file = utils.parseBase64Data(ad[attr]);
-	    if (file.isBase64) {
-		var name = uuid.v4();
-		var key = s3.generateAdKey(adSpaceID, adID, name, file.ext);
-		s3.upload(file.body, key, "image/" + file.ext,
-			  function(err, data) {
-			      if (err) {
-				  console.log(err);
-			      }
-			  });
-		params.AttributeUpdates[attr] = {
-		    "Value": {
-			"S": s3.getAdImageURL(adSpaceID, adID, name, file.ext)
-		    },
-		    "Action": "PUT"
-		};
-	    }
-	} else {
-	    params.AttributeUpdates[attr] = {
-		"Value": {
-		    "S": ad[attr]
-		},
-		"Action": "PUT"
-	    };
 	}
-    }
-    db.updateItem(params, function(err, data) {
+    };
+    db.getItem(params, function(err, data) {
 	if (err) {
 	    response.send(500, {message: "An Error Occurred"});
+	} else if (!!data.Item.UserID && data.Item.UserID.S == userID) {
+	    // The user must own this Ad in order to update it.
+	    params = {
+		"TableName": response.app.get("ads_table_name"),
+		"Key": {
+		    "AdSpaceID": {
+			"S": adSpaceID
+		    },
+		    "AdID": {
+			"N": adID + ""
+		    }
+		},
+		"AttributeUpdates": {}
+	    };
+	    for (var attr in ad) {
+		if (attr == "AdID" || attr == "AdSpaceID" ||
+		    attr == "UserID" || attr == "AdSpaceUserID" ||
+		    attr == "impressions" || attr == "clicks") {
+		    // These attributes shouldn't be changed here.
+		    continue;
+		} else if (attr == "image") {
+		    var file = utils.parseBase64Data(ad[attr]);
+		    if (file.isBase64) {
+			var name = utils.generateKey(8);
+			var key =
+			    s3.generateAdKey(adSpaceID, adID, name, file.ext);
+			s3.upload(file.body, key, "image/" + file.ext,
+				  function(err, data) {
+				      if (err) {
+					  console.log(err);
+				      }
+				  });
+			params.AttributeUpdates[attr] = {
+			    "Value": {
+				"S": s3.getAdImageURL(adSpaceID,
+						      adID,
+						      name,
+						      file.ext)
+			    },
+			    "Action": "PUT"
+			};
+		    }
+		} else {
+		    if (!!ad[attr]) {
+			params.AttributeUpdates[attr] = {
+			    "Value": {
+				"S": ad[attr]
+			    },
+			    "Action": "PUT"
+			};
+		    } else {
+			params.AttributeUpdates[attr] = {
+			    "Action": "DELETE"
+			};
+		    }
+		}
+	    }
+	    db.updateItem(params, function(err, data) {
+		if (err) {
+		    response.send(500, {message: "An Error Occurred"});
+		} else {
+		    response.send(200, {message: "Ad Updated"});
+		}
+	    });
 	} else {
-	    response.send(200, {message: "Ad Updated"});
+	    response.send(403, {message: "Not Authorized"});
 	}
     });
 };
@@ -244,35 +346,41 @@ exports.updateAd = function(request, response) {
  * Deletes the specified Ad if it exists without deleting the AdSpace.
  */
 exports.deleteAd = function(request, response) {
+    var userID = request.user.id;
     var db = response.app.get("db");
     var s3 = response.app.get("s3");
+    var adSpaceID = request.params.adspace_id;
+    var adID = request.params.ad_id;
     var params = {
 	"TableName": response.app.get("ads_table_name"),
 	"Key": {
 	    "AdSpaceID": {
-		"S": request.params.adspace_id
+		"S": adSpaceID
 	    },
-	    "AdID": {
-		"N": request.params.ad_id + ""
+	    "AdID" : {
+		"N": adID + ""
 	    }
 	}
     };
-    // Remove the item from the database.
-    db.deleteItem(params, function(err, data) {
+    db.getItem(params, function(err, data) {
 	if (err) {
 	    response.send(500, {message: "An Error Occurred"});
+	} else if (!!data.Item.UserID && data.Item.UserID.S == userID) {
+	    // The user must own this Ad in order to delete it.
+	    db.deleteItem(params, function(err, data) {
+		if (err) {
+		    response.send(500, {message: "An Error Occurred"});
+		} else {
+		    // Delete any images the ad may reference.
+		    s3.deleteAdImage(adSpaceID, adID,
+				     function(err, data) {
+					 response.send(200, {message:
+							     "Ad Deleted"});
+				     });
+		}
+	    });
 	} else {
-	    // Finally, delete any images the ad may reference.
-	    s3.deleteAdImage(request.params.adspace_id, request.params.ad_id,
-			     function(err, data) {
-				 if (err) {
-				     response.send(200, {message:
-							 "Ad Deleted"});
-				 } else {
-				     response.send(200, {message:
-							 "Ad Deleted"});
-				 }
-			     });
+	    response.send(403, {message: "Not Authorized"});
 	}
     });
 };
@@ -281,16 +389,17 @@ exports.deleteAd = function(request, response) {
  * Returns the metrics for the ad.
  */
 exports.getMetrics = function(request, response) {
+    var userID = request.user.id;
     var db = response.app.get("db");
     var id = request.params.adspace_id + request.params.ad_id;
     var params = {
 	"TableName": response.app.get("metrics_table_name"),
 	"KeyConditions": {
 	    "ID": {
-		"AttributeValueList" : [{
-		    "S": id
-		}],
-		"ComparisonOperator" : "EQ"
+		"ComparisonOperator" : "EQ",
+		"AttributeValueList" : [
+		    {"S": id}
+		]
 	    }
 	}
     };
@@ -311,6 +420,7 @@ exports.getMetrics = function(request, response) {
  * Registers a set of impressions and/or clicks.
  */
 exports.updateMetrics = function(request, response) {
+    var userID = request.user.id;
     var jobScheduler = response.app.get("jobScheduler");
     var impressions = request.body.impressions || 0;
     var clicks = request.body.clicks || 0;
