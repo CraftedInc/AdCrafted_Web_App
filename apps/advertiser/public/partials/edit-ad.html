@@ -1,6 +1,8 @@
 <!-- BACK bar -->
 <div class="form-inline row" id="adspace-control-bar">
-  <a href="#/adspaces/{{adSpaceID}}/" class="btn btn-default"><strong>Back</strong></a>
+  <a href="#/adspaces/{{adSpaceID}}/" class="btn btn-default">
+    <strong><span class="glyphicon glyphicon-arrow-left"></span> Back</strong>
+  </a>
 </div>
 
 <!-- Waiting GIF -->
@@ -32,8 +34,15 @@
       </div>
     </div>
     <div class="col-xs-3">
-      <img ng-src="{{imageSrc}}" fallback-src="http://placehold.it/200x180" class="ad-img img-rounded draggable" on-change="readFile()" image-drop="file">
-      <p class="text-muted">Drag and drop an image here.</p>
+      <div on-change="readImageFile()" image-drop="file" ng-class="{'draggable': !hasImage, 'dropzone': !hasImage}">
+	<p ng-show="!hasImage" class="text-muted drag-drop-text">
+	  Drag and drop an image here
+	</p>
+	<img ng-show="hasImage" ng-src="{{imageSrc}}" class="ad-img draggable">
+      </div>
+      <p ng-show="hasImage" class="text-muted">
+	Drag and drop an image here
+      </p>
     </div>
   </div>
   <div class="row">

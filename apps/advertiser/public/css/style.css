@@ -88,16 +88,16 @@ body {
 }
 .drag-over {
     opacity: 0.5;
-    border-color: rgb(200, 200, 200);
+    border-color: rgb(210, 210, 210);
 }
 .draggable {
-    border: 2px dotted rgb(100, 100, 100);
+    border: 2px dotted rgb(180, 180, 180);
     border-radius: 5px;
 }
 .dropzone {
     height: 192px;
     width: 200px;
-    background-color: #CECECE;
+    background-color: #DDD;
 }
 .drag-drop-text {
     margin-top: 80px;
