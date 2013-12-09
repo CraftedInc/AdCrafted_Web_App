@@ -18,6 +18,7 @@ var express  = require("express")
   , connect  = require("connect-ensure-login")
   , utils    = require("./../../utils/utils")
   , ads      = require("./../../routes/ads")
+  , assets   = require("./../../routes/assets")
   , cspaces  = require("./../../routes/craftedspaces")
   , accounts = require("./../../routes/accounts");
 
@@ -35,6 +36,7 @@ app.configure("local", function() {
     app.set("S3Bucket", config.local.S3_BUCKET);
     app.set("CSpaceTable", config.local.CSPACE_TABLE_NAME);
     app.set("AdTable", config.local.AD_TABLE_NAME);
+    app.set("AssetTable", config.local.ASSET_TABLE_NAME);
     app.set("UserTable", config.local.USER_TABLE_NAME);
     app.set("MetricsTable", config.local.METRICS_TABLE_NAME);
     app.set("DOMAIN", config.local.DOMAIN);
@@ -46,6 +48,7 @@ app.configure("development", function() {
     app.set("S3Bucket", config.development.S3_BUCKET);
     app.set("CSpaceTable", config.development.CSPACE_TABLE_NAME);
     app.set("AdTable", config.development.AD_TABLE_NAME);
+    app.set("AssetTable", config.development.ASSET_TABLE_NAME);
     app.set("UserTable", config.development.USER_TABLE_NAME);
     app.set("MetricsTable", config.development.METRICS_TABLE_NAME);
     app.set("DOMAIN", config.development.DOMAIN);
@@ -56,6 +59,7 @@ app.configure("production", function() {
     app.set("S3Bucket", config.production.S3_BUCKET);
     app.set("CSpaceTable", config.production.CSPACE_TABLE_NAME);
     app.set("AdTable", config.production.AD_TABLE_NAME);
+    app.set("AssetTable", config.production.ASSET_TABLE_NAME);
     app.set("UserTable", config.production.USER_TABLE_NAME);
     app.set("MetricsTable", config.production.METRICS_TABLE_NAME);
     app.set("DOMAIN", config.production.DOMAIN);

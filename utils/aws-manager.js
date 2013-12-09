@@ -10,7 +10,7 @@
  *
  * @constructor
  */
-function S3(s3, bucket, cSpacePrefix, adPrefix) {
+function S3(s3, bucket, cSpacePrefix, adPrefix, assetPrefix) {
     // AWS-SDK S3 object for Node.js.
     this.s3 = s3;
 
@@ -22,6 +22,9 @@ function S3(s3, bucket, cSpacePrefix, adPrefix) {
 
     // The folder holding Ad images.
     this.adPrefix = adPrefix;
+
+    // The folder holding Asset images.
+    this.assetPrefix = assetPrefix;
 }
 
 /**
@@ -48,27 +51,8 @@ S3.prototype.upload = function(body, key, contentType, callback) {
  * @param {function(Object, Object)} callback.
  */
 S3.prototype.deleteCraftedSpaceImage = function(cSpaceID, callback) {
-    var params = {
-	"Bucket": this.bucket,
-	"Prefix": this.cSpacePrefix + "/" + cSpaceID + "/"
-    };
-    this.s3.listObjects(params, function(err, data) {
-	if (err) {
-	    callback(err, data);
-	} else {
-	    var keys = [];
-	    for (var i = 0; i < data.Contents.length; i++) {
-		keys[i] = {"Key": data.Contents[i].Key};
-	    }
-	    params =  {
-		"Bucket": this.bucket,
-		"Delete": {
-		    "Objects": keys
-		}
-	    };
-	    this.s3.deleteObjects(params, callback);
-	}
-    }.bind(this));
+    var prefix = this.cSpacePrefix + "/" + cSpaceID + "/";
+    this._deleteFolder(prefix, callback);
 };
 
 /**
@@ -78,30 +62,19 @@ S3.prototype.deleteCraftedSpaceImage = function(cSpaceID, callback) {
  * @param {function(Object, Object)} callback.
  */
 S3.prototype.deleteAdImage = function(cSpaceID, adID, callback) {
-    var params = {
-	"Bucket": this.bucket,
-	"Prefix": this.adPrefix + "/" + cSpaceID + "/" + adID + "/"
-    };
-    this.s3.listObjects(params, function(err, data) {
-	if (err) {
-	    callback(err, data);
-	} else if (data.Contents.length > 0) {
-	    var keys = [];
-	    for (var i = 0; i < data.Contents.length; i++) {
-		keys[i] = {"Key": data.Contents[i].Key};
-	    }
-	    params =  {
-		"Bucket": this.bucket,
-		"Delete": {
-		    "Objects": keys
-		}
-	    };
-	    this.s3.deleteObjects(params, callback);
-	} else {
-	    // No data to delete.
-	    callback(err, data);
-	}
-    }.bind(this));
+    var prefix = this.adPrefix + "/" + cSpaceID + "/" + adID + "/";
+    this._deleteFolder(prefix, callback);
+};
+
+/**
+ * Deletes the image(s) for an Asset.
+ * @param {number} cSpaceID.
+ * @param {number} assetID.
+ * @param {function(Object, Object)} callback.
+ */
+S3.prototype.deleteAssetImage = function(cSpaceID, assetID, callback) {
+    var prefix = this.assetPrefix + "/" + cSpaceID + "/" + assetID + "/";
+    this._deleteFolder(prefix, callback);
 };
 
 /**
@@ -130,6 +103,19 @@ S3.prototype.getAdImageURL = function(cSpaceID, adID, name, ext) {
 };
 
 /**
+ * Returns the public URL for an Ad image.
+ * @param {number} cSpaceID.
+ * @param {number} assetID.
+ * @param {string} name.
+ * @param {string} ext.
+ * @return {string} The url.
+ */
+S3.prototype.getAssetImageURL = function(cSpaceID, assetID, name, ext) {
+    return "https://" + this.bucket + ".s3.amazonaws.com/" + this.assetPrefix +
+	"/" + cSpaceID + "/" + assetID + "/" + name + "." + ext;
+};
+
+/**
  * Constructs the key for an CraftedSpace image.
  * @param {number} cSpaceID.
  * @param {string} name.
@@ -151,6 +137,69 @@ S3.prototype.generateCraftedSpaceKey = function(cSpaceID, name, ext) {
 S3.prototype.generateAdKey = function(cSpaceID, adID, name, ext) {
     return this.adPrefix + "/" + cSpaceID + "/" + adID + "/" + name +
 	"." + ext;
+};
+
+/**
+ * Constructs the key for an Asset image.
+ * @param {number} cSpaceID.
+ * @param {number} assetID.
+ * @param {string} name.
+ * @param {string} ext.
+ * @return {string} The key.
+ */
+S3.prototype.generateAssetKey = function(cSpaceID, assetID, name, ext) {
+    return this.assetPrefix + "/" + cSpaceID + "/" + assetID + "/" + name +
+	"." + ext;
+};
+
+/**
+ * Private helper function to delete the contents of a folder.
+ * @param {string} prefix.
+ * @param {function(Object, Object)} callback.
+ */
+S3.prototype._deleteFolder = function(prefix, callback) {
+    var params = {
+	"Bucket": this.bucket,
+	"Prefix": prefix
+    };
+    this.s3.listObjects(params, function(err, data) {
+	if (err) {
+	    callback(err, data);
+	} else if (data.Contents.length > 0) {
+	    var keys = [];
+	    for (var i = 0; i < data.Contents.length; i++) {
+		keys[i] = {"Key": data.Contents[i].Key};
+	    }
+	    params =  {
+		"Bucket": this.bucket,
+		"Delete": {
+		    "Objects": keys
+		}
+	    };
+	    this.s3.deleteObjects(params, callback);
+	} else {
+	    // No data to delete.
+	    callback(err, data);
+	}
+    }.bind(this));
+};
+
+/**
+ * Private helper function to upload an object to S3.
+ * @param {Buffer} body The Buffer containing the file data.
+ * @param {number} key.
+ * @param {number} contentType.
+ * @param {function(Object, Object)} callback.
+ */
+S3.prototype._upload = function(body, key, contentType, callback) {
+    var params = {
+	"ACL": "public-read",
+	"Body": body,
+	"Bucket": this.bucket,
+	"Key": key,
+	"ContentType": contentType
+    };
+    this.s3.putObject(params, callback);
 };
 
 exports.S3 = S3;

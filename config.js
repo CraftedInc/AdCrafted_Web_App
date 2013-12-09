@@ -8,6 +8,7 @@ var config = {};
  */
 config.VIEW_ENGINE = "jade";
 config.AD_IMG_PREFIX = "Ad-Images";
+config.ASSET_IMG_PREFIX = "Asset-Images";
 config.CSPACE_IMG_PREFIX = "CraftedSpace-Images";
 config.VIEWS_PATH = "/views";
 config.APPS_VIEWS_PATH = "/../../views";
@@ -17,6 +18,7 @@ config.USER_WHITELIST = ["jbpasko@gmail.com", "james@adcrafted.com",
 config.ADMIN_EMAILS = ["james@adcrafted.com", "brandon@adcrafted.com"];
 config.NOTIFICATIONS_EMAIL = "AdCrafted Notifications <notifications@adcrafted.com>";
 config.CSPACE_USER_ID_INDEX = "CSpaceUserID-INDEX";
+config.ASSET_USER_ID_INDEX = "AssetUserID-INDEX";
 
 /**
  * Local configuration.
@@ -28,9 +30,11 @@ config.local = {
     S3_BUCKET: "adcrafted-dev",
     CSPACE_TABLE_NAME: "AdCrafted-CraftedSpace-DEV",
     AD_TABLE_NAME: "AdCrafted-Ad-DEV",
+    ASSET_TABLE_NAME: "AdCrafted-Asset-DEV",
     USER_TABLE_NAME: "AdCrafted-User-DEV",
     GOOGLE_TABLE_NAME: "AdCrafted-Google-DEV",
-    METRICS_TABLE_NAME: "AdCrafted-Metrics-DEV",
+    AD_METRICS_TABLE_NAME: "AdCrafted-AdMetrics-DEV",
+    ASSET_METRICS_TABLE_NAME: "AdCrafted-AssetMetrics-DEV",
     STATIC_PATH: "public/development"
 };
 
@@ -43,9 +47,11 @@ config.development = {
     S3_BUCKET: "adcrafted-dev",
     CSPACE_TABLE_NAME: "AdCrafted-CraftedSpace-DEV",
     AD_TABLE_NAME: "AdCrafted-Ad-DEV",
+    ASSET_TABLE_NAME: "AdCrafted-Asset-DEV",
     USER_TABLE_NAME: "AdCrafted-User-DEV",
     GOOGLE_TABLE_NAME: "AdCrafted-Google-DEV",
-    METRICS_TABLE_NAME: "AdCrafted-Metrics-DEV",
+    AD_METRICS_TABLE_NAME: "AdCrafted-AdMetrics-DEV",
+    ASSET_METRICS_TABLE_NAME: "AdCrafted-AssetMetrics-DEV",
     STATIC_PATH: "public/development"
 };
 
@@ -58,9 +64,11 @@ config.production = {
     S3_BUCKET: "adcrafted-prod",
     CSPACE_TABLE_NAME: "AdCrafted-CraftedSpace-PROD",
     AD_TABLE_NAME: "AdCrafted-Ad-PROD",
+    ASSET_TABLE_NAME: "AdCrafted-Asset-PROD",
     USER_TABLE_NAME: "AdCrafted-User-PROD",
     GOOGLE_TABLE_NAME: "AdCrafted-Google-PROD",
-    METRICS_TABLE_NAME: "AdCrafted-Metrics-PROD",
+    AD_METRICS_TABLE_NAME: "AdCrafted-AdMetrics-PROD",
+    ASSET_METRICS_TABLE_NAME: "AdCrafted-AssetMetrics-PROD",
     STATIC_PATH: "public/production"
 };
 

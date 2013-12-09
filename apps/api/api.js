@@ -32,6 +32,7 @@ var express = require("express")
   , path    = require("path")
   , utils   = require("./../../utils/utils")
   , ads     = require("./../../routes/ads")
+  , assets  = require("./../../routes/assets")
   , cspaces = require("./../../routes/craftedspaces");
 
 /**
@@ -48,24 +49,30 @@ app.configure("local", function() {
     app.set("S3Bucket", config.local.S3_BUCKET);
     app.set("CSpaceTable", config.local.CSPACE_TABLE_NAME);
     app.set("AdTable", config.local.AD_TABLE_NAME);
+    app.set("AssetTable", config.local.ASSET_TABLE_NAME);
     app.set("UserTable", config.local.USER_TABLE_NAME);
-    app.set("MetricsTable", config.local.METRICS_TABLE_NAME);
+    app.set("AdMetricsTable", config.local.AD_METRICS_TABLE_NAME);
+    app.set("AssetMetricsTable", config.local.ASSET_METRICS_TABLE_NAME);
 });
 app.configure("development", function() {
     app.use(express.logger("dev"));
     app.set("S3Bucket", config.development.S3_BUCKET);
     app.set("CSpaceTable", config.development.CSPACE_TABLE_NAME);
     app.set("AdTable", config.development.AD_TABLE_NAME);
+    app.set("AssetTable", config.development.ASSET_TABLE_NAME);
     app.set("UserTable", config.development.USER_TABLE_NAME);
-    app.set("MetricsTable", config.development.METRICS_TABLE_NAME);
+    app.set("AdMetricsTable", config.development.AD_METRICS_TABLE_NAME);
+    app.set("AssetMetricsTable", config.development.ASSET_METRICS_TABLE_NAME);
 });
 app.configure("production", function() {
     app.use(express.logger("tiny"));
     app.set("S3Bucket", config.production.S3_BUCKET);
     app.set("CSpaceTable", config.production.CSPACE_TABLE_NAME);
     app.set("AdTable", config.production.AD_TABLE_NAME);
+    app.set("AssetTable", config.production.ASSET_TABLE_NAME);
     app.set("UserTable", config.production.USER_TABLE_NAME);
-    app.set("MetricsTable", config.production.METRICS_TABLE_NAME);
+    app.set("AdMetricsTable", config.production.AD_METRICS_TABLE_NAME);
+    app.set("AssetMetricsTable", config.production.ASSET_METRICS_TABLE_NAME);
 });
 
 /**
@@ -92,14 +99,24 @@ app.configure(function() {
  * The API, secured using an access key and signature combination.
  */
 
-// RETRIEVE all ads within the specified CraftedSpace.
+// RETRIEVE all Ads within the specified CraftedSpace.
 app.get("/alpha/cspace/:cSpaceID/ad",
 	utils.authenticateAPIRequest(),
 	ads.getAllAdsInCraftedSpace);
 
-// UPDATE the impression and click metrics.
+// UPDATE the Ad impression and click metrics.
 app.post("/alpha/cspace/:cSpaceID/ad/:adID/metrics",
 	 utils.authenticateAPIRequest(),
 	 ads.updateMetrics);
+
+// RETRIEVE all Assets within the specified CraftedSpace.
+app.get("/alpha/cspace/:cSpaceID/asset",
+	utils.authenticateAPIRequest(),
+	assets.getAllAssetsInCraftedSpace);
+
+// UPDATE the Asset impression and click metrics.
+app.post("/alpha/cspace/:cSpaceID/asset/:assetID/metrics",
+	 utils.authenticateAPIRequest(),
+	 assets.updateMetrics);
 
 exports.app = app;

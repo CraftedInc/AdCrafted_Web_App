@@ -1,7 +1,7 @@
 /**
- * Functions for Creating, Reading, Updating, and Deleting Ads.
+ * Functions for Creating, Reading, Updating, and Deleting Assets.
  *
- * Author: James Pasko (james@adcrafted.com).
+ * Author: James Pasko (james@appcrafted.com).
  */
 
 // A set of jobs that can be scheduled using the job scheduler.
@@ -14,45 +14,35 @@ var utils = require("../utils/utils");
 var config = require("../config");
 
 /**
- * Create a new Ad within the specified CraftedSpace.
+ * Create a new Asset within the specified CraftedSpace.
  */
-exports.createAd = function(request, response) {
+exports.createAsset = function(request, response) {
     var userID = request.user.id;
     var db = response.app.get("db");
     var s3 = response.app.get("s3");
-    var ad = request.body;
-    var newAdID = 0;
+    var asset = request.body;
+    var newAssetID = 0;
     var cSpaceID = request.params.cSpaceID;
-    // Scan the table for the CraftedSpace since we don't know its UserID.
+    // Retrieve the CraftedSpace.
     var params = {
-	"TableName": request.app.get("CSpaceTable"),
-	"ScanFilter": {
-            "CSpaceID": {
-		"AttributeValueList": [
-                    {
-			"S": cSpaceID
-                    }
-		],
-		"ComparisonOperator": "EQ"
-            }
+	"TableName": response.app.get("CSpaceTable"),
+	"Key": {
+	    "CSpaceID": {
+		"S": cSpaceID
+	    },
+	    "UserID" : {
+		"S": userID
+	    }
 	}
     };
-    // Check if the CraftedSpace exists by scanning the table.
-    db.scan(params, function(err, data) {
+    db.getItem(params, function(err, data) {
 	if (err) {
 	    response.send(500, {message: "An Error Occurred"});
-	} else if (data.Count == 0) {
+	} else if (utils.isEmpty(data)) {
 	    response.send(400, {message: "CraftedSpace Does Not Exist"});
 	} else {
-	    // There should only be a single CraftedSpace matching the ScanFilter.
-	    var cSpaceUserID = data.Items[0].UserID ?
-		data.Items[0].UserID.S : null;
-	    if (!cSpaceUserID) {
-		// Terminate processing the request if the CraftedSpace has no owner.
-		response.send(500, {message: "An Error Occurred"});
-	    }
 	    params = {
-		"TableName": response.app.get("AdTable"),
+		"TableName": response.app.get("AssetTable"),
 		"KeyConditions": {
 		    "CSpaceID": {
 			"ComparisonOperator" : "EQ",
@@ -62,34 +52,31 @@ exports.createAd = function(request, response) {
 		    }
 		}
 	    };
-	    // Query to determine how many Ads this CraftedSpace contains, and
-	    // select an appropriate AdID.
+	    // Query to determine how many Assets this CraftedSpace contains,
+	    // and select an appropriate AssetID.
 	    db.query(params, function(err, data) {
 		if (err) {
 		    response.send(500, {message: "An Error Occurred"});
 		} else {
 		    if (data.Count > 0) {
 			for (var i = 0; i < data.Count; i++) {
-			    if (data.Items[i].AdID.N > newAdID) {
-				newAdID = data.Items[i].AdID.N;
+			    if (data.Items[i].AssetID.N > newAssetID) {
+				newAssetID = data.Items[i].AssetID.N;
 			    }
 			}
-			newAdID++;
+			newAssetID++;
 		    }
 		    params = {
-			"TableName": response.app.get("AdTable"),
+			"TableName": response.app.get("AssetTable"),
 			"Item": {
 			    "CSpaceID": {
 				"S": cSpaceID
 			    },
-			    "AdID": {
-				"N": newAdID + ""
+			    "AssetID": {
+				"N": newAssetID + ""
 			    },
 			    "UserID" : {
 				"S": userID
-			    },
-			    "CSpaceUserID": {
-				"S": cSpaceUserID
 			    },
 			    "image": {
 				"S": "null"
@@ -105,15 +92,16 @@ exports.createAd = function(request, response) {
 			    }
 			}
 		    };
-		    for (var attr in ad) {
+		    for (var attr in asset) {
 			// The image attribute is a Base64 encoded file and must
 			// be processed separately.
-			if (attr == "image" && !!ad["image"]) {
-			    var file = utils.parseBase64Data(ad[attr]);
+			if (attr == "image" && !!asset["image"]) {
+			    var file = utils.parseBase64Data(asset[attr]);
 			    if (file.isBase64) {
 				var name = utils.generateKey(8);
-				var key = s3.generateAdKey(cSpaceID, newAdID,
-							   name, file.ext);
+				var key = s3.generateAssetKey(cSpaceID,
+							      newAssetID,
+							      name, file.ext);
 				s3.upload(file.body, key, "image/" + file.ext,
 					  function(err, data) {
 					      if (err) {
@@ -121,24 +109,25 @@ exports.createAd = function(request, response) {
 					      }
 					  });
 				params.Item["image"] = {
-				    "S": s3.getAdImageURL(cSpaceID, newAdID,
-							  name, file.ext)
+				    "S": s3.getAssetImageURL(cSpaceID,
+							     newAssetID,
+							     name, file.ext)
 				};
 			    }
-			} else if (ad[attr] instanceof Array) {
-			    params.Item[attr] = {"SS": ad[attr]};
+			} else if (asset[attr] instanceof Array) {
+			    params.Item[attr] = {"SS": asset[attr]};
 			} else {
-			    params.Item[attr] = {"S": ad[attr]};
+			    params.Item[attr] = {"S": asset[attr]};
 			}
 		    }
-		    // Finally, put the new ad.
+		    // Finally, put the new asset.
 		    db.putItem(params, function(err, data) {
 			if (err) {
 			    response.send(500, {message: "An Error Occurred"});
 			} else {
-			    response.send(201, {message: "New Ad Created",
+			    response.send(201, {message: "New Asset Created",
 						CSpaceID: cSpaceID,
-						AdID: newAdID});
+						AssetID: newAssetID});
 			}
 		    });
 		}
@@ -148,19 +137,19 @@ exports.createAd = function(request, response) {
 };
 
 /**
- * Get a single Ad specified by the AdID and CSpaceID.
+ * Get a single Asset specified by the AssetID and CSpaceID.
  */
-exports.getAd = function(request, response) {
+exports.getAsset = function(request, response) {
     var userID = request.user.id;
     var db = response.app.get("db");
     var params = {
-	"TableName": response.app.get("AdTable"),
+	"TableName": response.app.get("AssetTable"),
 	"Key": {
 	    "CSpaceID": {
 		"S": request.params.cSpaceID
 	    },
-	    "AdID" : {
-		"N": request.params.adID + ""
+	    "AssetID" : {
+		"N": request.params.assetID + ""
 	    }
 	}
     };
@@ -168,28 +157,26 @@ exports.getAd = function(request, response) {
 	if (err) {
 	    response.send(500, {message: "An Error Occurred"});
 	} else if (!utils.isEmpty(data)) {
-	    if ((!!data.Item.CSpaceUserID &&
-		 data.Item.CSpaceUserID.S == userID) ||
-		(!!data.Item.UserID && data.Item.UserID.S == userID)) {
-		// The user must own either this Ad or its CraftedSpace.
+	    if (!!data.Item.UserID && data.Item.UserID.S == userID) {
+		// The user must own either this Asset or its CraftedSpace.
 		response.send(200, utils.parseItem(data.Item));
 	    } else {
 		response.send(403, {message: "Not Authorized"});
 	    }
 	} else {
-	    response.send(404, {message: "No Such Ad"});
+	    response.send(404, {message: "No Such Asset"});
 	}
     });
 };
 
 /**
- * Gets all Ads belonging to the specified user.
+ * Gets all Assets belonging to the specified user.
  */
-exports.getAllUserAds = function(request, response) {
+exports.getAllUserAssets = function(request, response) {
     var userID = request.user.id;
     var db = response.app.get("db");
     var params = {
-	"TableName": response.app.get("AdTable")
+	"TableName": response.app.get("AssetTable")
     };
     db.scan(params, function(err, data) {
 	if (err) {
@@ -197,10 +184,10 @@ exports.getAllUserAds = function(request, response) {
 	} else {
 	    var count = 0;
 	    var result = {message: "Success",
-			  Ads: []};
+			  Assets: []};
 	    for (var i = 0; i < data.Count; i++) {
 		if (!!data.Item.UserID && data.Item.UserID.S == userID) {
-		    result.Ads[count++] = utils.parseItem(data.Items[i]);
+		    result.Assets[count++] = utils.parseItem(data.Items[i]);
 		}
 	    }
 	    result.Count = count;
@@ -210,14 +197,14 @@ exports.getAllUserAds = function(request, response) {
 };
 
 /**
- * Get all ads in the specified CraftedSpace.
+ * Get all assets in the specified CraftedSpace.
  */
-exports.getAllAdsInCraftedSpace = function(request, response) {
-    var cSpaceUserID = request.user.id;
+exports.getAllAssetsInCraftedSpace = function(request, response) {
+    var userID = request.user.id;
     var db = response.app.get("db");
     var params = {
-	"TableName": response.app.get("AdTable"),
-	"IndexName": config.CSPACE_USER_ID_INDEX,
+	"TableName": response.app.get("AssetTable"),
+	"IndexName": config.ASSET_USER_ID_INDEX,
 	"KeyConditions": {
 	    "CSpaceID": {
 		"ComparisonOperator" : "EQ",
@@ -225,10 +212,10 @@ exports.getAllAdsInCraftedSpace = function(request, response) {
 		    {"S": request.params.cSpaceID}
 		]
 	    },
-	    "CSpaceUserID": {
+	    "UserID": {
 		"ComparisonOperator" : "EQ",
 		"AttributeValueList" : [
-		    {"S": cSpaceUserID}
+		    {"S": userID}
 		]
 	    }
 	}
@@ -239,9 +226,9 @@ exports.getAllAdsInCraftedSpace = function(request, response) {
 	} else {
 	    var result = {message: "Success",
 			  Count: data.Count,
-			  Ads: []};
+			  Assets: []};
 	    for (var i = 0; i < data.Count; i++) {
-		result.Ads[i] = utils.parseItem(data.Items[i]);
+		result.Assets[i] = utils.parseItem(data.Items[i]);
 	    }
 	    response.send(result);
 	}
@@ -249,23 +236,23 @@ exports.getAllAdsInCraftedSpace = function(request, response) {
 };
 
 /**
- * Updates the specified ad. If it doesn't exist, a new ad is created.
+ * Updates the specified asset. If it doesn't exist, a new asset is created.
  */
-exports.updateAd = function(request, response) {
+exports.updateAsset = function(request, response) {
     var userID = request.user.id;
     var db = response.app.get("db");
     var s3 = response.app.get("s3");
-    var ad = request.body;
+    var asset = request.body;
     var cSpaceID = request.params.cSpaceID;
-    var adID = request.params.adID;
+    var assetID = request.params.assetID;
     var params = {
-	"TableName": response.app.get("AdTable"),
+	"TableName": response.app.get("AssetTable"),
 	"Key": {
 	    "CSpaceID": {
 		"S": cSpaceID
 	    },
-	    "AdID" : {
-		"N": adID + ""
+	    "AssetID" : {
+		"N": assetID + ""
 	    }
 	}
     };
@@ -273,31 +260,31 @@ exports.updateAd = function(request, response) {
 	if (err) {
 	    response.send(500, {message: "An Error Occurred"});
 	} else if (!!data.Item.UserID && data.Item.UserID.S == userID) {
-	    // The user must own this Ad in order to update it.
+	    // The user must own this Asset in order to update it.
 	    params = {
-		"TableName": response.app.get("AdTable"),
+		"TableName": response.app.get("AssetTable"),
 		"Key": {
 		    "CSpaceID": {
 			"S": cSpaceID
 		    },
-		    "AdID": {
-			"N": adID + ""
+		    "AssetID": {
+			"N": assetID + ""
 		    }
 		},
 		"AttributeUpdates": {}
 	    };
-	    for (var attr in ad) {
-		if (attr == "AdID" || attr == "CSpaceID" ||
-		    attr == "UserID" || attr == "CSpaceUserID" ||
+	    for (var attr in asset) {
+		if (attr == "AssetID" || attr == "CSpaceID" ||
+		    attr == "UserID" ||
 		    attr == "impressions" || attr == "clicks") {
 		    // These attributes shouldn't be changed here.
 		    continue;
 		} else if (attr == "image") {
-		    var file = utils.parseBase64Data(ad[attr]);
+		    var file = utils.parseBase64Data(asset[attr]);
 		    if (file.isBase64) {
 			var name = utils.generateKey(8);
-			var key =
-			    s3.generateAdKey(cSpaceID, adID, name, file.ext);
+			var key = s3.generateAssetKey(cSpaceID, assetID,
+						      name, file.ext);
 			s3.upload(file.body, key, "image/" + file.ext,
 				  function(err, data) {
 				      if (err) {
@@ -306,8 +293,8 @@ exports.updateAd = function(request, response) {
 				  });
 			params.AttributeUpdates[attr] = {
 			    "Value": {
-				"S": s3.getAdImageURL(cSpaceID,
-						      adID,
+				"S": s3.getAssetImageURL(cSpaceID,
+						      assetID,
 						      name,
 						      file.ext)
 			    },
@@ -315,10 +302,10 @@ exports.updateAd = function(request, response) {
 			};
 		    }
 		} else {
-		    if (!!ad[attr]) {
+		    if (!!asset[attr]) {
 			params.AttributeUpdates[attr] = {
 			    "Value": {
-				"S": ad[attr]
+				"S": asset[attr]
 			    },
 			    "Action": "PUT"
 			};
@@ -333,7 +320,7 @@ exports.updateAd = function(request, response) {
 		if (err) {
 		    response.send(500, {message: "An Error Occurred"});
 		} else {
-		    response.send(200, {message: "Ad Updated"});
+		    response.send(200, {message: "Asset Updated"});
 		}
 	    });
 	} else {
@@ -343,22 +330,22 @@ exports.updateAd = function(request, response) {
 };
 
 /**
- * Deletes the specified Ad if it exists without deleting the CraftedSpace.
+ * Deletes the specified Asset if it exists without deleting the CraftedSpace.
  */
-exports.deleteAd = function(request, response) {
+exports.deleteAsset = function(request, response) {
     var userID = request.user.id;
     var db = response.app.get("db");
     var s3 = response.app.get("s3");
     var cSpaceID = request.params.cSpaceID;
-    var adID = request.params.adID;
+    var assetID = request.params.assetID;
     var params = {
-	"TableName": response.app.get("AdTable"),
+	"TableName": response.app.get("AssetTable"),
 	"Key": {
 	    "CSpaceID": {
 		"S": cSpaceID
 	    },
-	    "AdID" : {
-		"N": adID + ""
+	    "AssetID" : {
+		"N": assetID + ""
 	    }
 	}
     };
@@ -366,16 +353,16 @@ exports.deleteAd = function(request, response) {
 	if (err) {
 	    response.send(500, {message: "An Error Occurred"});
 	} else if (!!data.Item.UserID && data.Item.UserID.S == userID) {
-	    // The user must own this Ad in order to delete it.
+	    // The user must own this Asset in order to delete it.
 	    db.deleteItem(params, function(err, data) {
 		if (err) {
 		    response.send(500, {message: "An Error Occurred"});
 		} else {
-		    // Delete any images the ad may reference.
-		    s3.deleteAdImage(cSpaceID, adID,
+		    // Delete any images the asset may reference.
+		    s3.deleteAssetImage(cSpaceID, assetID,
 				     function(err, data) {
 					 response.send(200, {message:
-							     "Ad Deleted"});
+							     "Asset Deleted"});
 				     });
 		}
 	    });
@@ -386,14 +373,14 @@ exports.deleteAd = function(request, response) {
 };
 
 /**
- * Returns the metrics for the ad.
+ * Returns the metrics for the asset.
  */
 exports.getMetrics = function(request, response) {
     var userID = request.user.id;
     var db = response.app.get("db");
-    var id = request.params.cSpaceID + request.params.adID;
+    var id = request.params.cSpaceID + request.params.assetID;
     var params = {
-	"TableName": response.app.get("AdMetricsTable"),
+	"TableName": response.app.get("AssetMetricsTable"),
 	"KeyConditions": {
 	    "ID": {
 		"ComparisonOperator" : "EQ",
@@ -429,9 +416,9 @@ exports.updateMetrics = function(request, response) {
 	// Create an MetricsJob and add it to the Job Scheduler.
 	var metricsJob =
 	    new jobs.MetricsJob(response.app.get("db"),
-				response.app.get("AdMetricsTable"),
+				response.app.get("AssetMetricsTable"),
 				request.params.cSpaceID,
-				request.params.adID,
+				request.params.assetID,
 				impressions,
 				clicks);
 	jobScheduler.add(metricsJob);
