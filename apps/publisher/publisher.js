@@ -1,5 +1,5 @@
 /**
- * Publisher Portal for AdCrafted.
+ * Publisher portal for AdCrafted.
  *
  * Currently, 3 environments are supported.
  * See server.js for instructions.
@@ -18,7 +18,7 @@ var express  = require("express")
   , connect  = require("connect-ensure-login")
   , utils    = require("./../../utils/utils")
   , ads      = require("./../../routes/ads")
-  , adspaces = require("./../../routes/adspaces")
+  , cspaces  = require("./../../routes/craftedspaces")
   , accounts = require("./../../routes/accounts");
 
 /**
@@ -32,32 +32,32 @@ var app = express();
 app.configure("local", function() {
     console.log("Using local settings for Publisher Application.");
     app.use(express.logger("dev"));
-    app.set("s3_bucket", config.local.S3_BUCKET);
-    app.set("adspace_table_name", config.local.ADSPACE_TABLE_NAME);
-    app.set("ads_table_name", config.local.AD_TABLE_NAME);
-    app.set("user_table_name", config.local.USER_TABLE_NAME);
-    app.set("metrics_table_name", config.local.METRICS_TABLE_NAME);
+    app.set("S3Bucket", config.local.S3_BUCKET);
+    app.set("CSpaceTable", config.local.CSPACE_TABLE_NAME);
+    app.set("AdTable", config.local.AD_TABLE_NAME);
+    app.set("UserTable", config.local.USER_TABLE_NAME);
+    app.set("MetricsTable", config.local.METRICS_TABLE_NAME);
     app.set("DOMAIN", config.local.DOMAIN);
     app.set("TEST_DOMAIN", config.local.TEST_DOMAIN);
     app.set("PROTOCOL", config.local.PROTOCOL);
 });
 app.configure("development", function() {
     app.use(express.logger("dev"));
-    app.set("s3_bucket", config.development.S3_BUCKET);
-    app.set("adspace_table_name", config.development.ADSPACE_TABLE_NAME);
-    app.set("ads_table_name", config.development.AD_TABLE_NAME);
-    app.set("user_table_name", config.development.USER_TABLE_NAME);
-    app.set("metrics_table_name", config.development.METRICS_TABLE_NAME);
+    app.set("S3Bucket", config.development.S3_BUCKET);
+    app.set("CSpaceTable", config.development.CSPACE_TABLE_NAME);
+    app.set("AdTable", config.development.AD_TABLE_NAME);
+    app.set("UserTable", config.development.USER_TABLE_NAME);
+    app.set("MetricsTable", config.development.METRICS_TABLE_NAME);
     app.set("DOMAIN", config.development.DOMAIN);
     app.set("PROTOCOL", config.development.PROTOCOL);
 });
 app.configure("production", function() {
     app.use(express.logger("tiny"));
-    app.set("s3_bucket", config.production.S3_BUCKET);
-    app.set("adspace_table_name", config.production.ADSPACE_TABLE_NAME);
-    app.set("ads_table_name", config.production.AD_TABLE_NAME);
-    app.set("user_table_name", config.production.USER_TABLE_NAME);
-    app.set("metrics_table_name", config.production.METRICS_TABLE_NAME);
+    app.set("S3Bucket", config.production.S3_BUCKET);
+    app.set("CSpaceTable", config.production.CSPACE_TABLE_NAME);
+    app.set("AdTable", config.production.AD_TABLE_NAME);
+    app.set("UserTable", config.production.USER_TABLE_NAME);
+    app.set("MetricsTable", config.production.METRICS_TABLE_NAME);
     app.set("DOMAIN", config.production.DOMAIN);
     app.set("PROTOCOL", config.production.PROTOCOL);
 });
@@ -98,10 +98,10 @@ app.configure(function() {
 });
 
 /**
- * The publisher app.
+ * The advertiser portal app.
  */
 
-// This route ensures that the static content required to run the publisher
+// This route ensures that the static content required to run the advertiser
 // app is only accessible to authenticated users.
 app.get("/", connect.ensureLoggedIn("/login"),
 	function(request, response, next) {
@@ -118,48 +118,48 @@ app.get("/logout", accounts.logout);
  * The internal API, secured by a session-based authentication service.
  */
 
-// CREATE a new AdSpace.
-app.post("/api/adspace",
+// CREATE a new CraftedSpace.
+app.post("/api/cspace",
 	 utils.ensureAuthenticated(),
-	 adspaces.createAdSpace);
+	 cspaces.createCraftedSpace);
 
-// RETRIEVE all AdSpaces owned by the User.
-app.get("/api/adspace",
+// RETRIEVE all CraftedSpaces owned by the User.
+app.get("/api/cspace",
 	utils.ensureAuthenticated(),
-	adspaces.getAllUserAdSpaces);
+	cspaces.getAllUserCraftedSpaces);
 
-// RETRIEVE all public AdSpaces.
-app.get("/api/adspace/public",
+// RETRIEVE all public CraftedSpaces.
+app.get("/api/cspace/public",
 	utils.ensureAuthenticated(),
-	adspaces.getAllPublicAdSpaces);
+	cspaces.getAllPublicCraftedSpaces);
 
-// RETRIEVE a single AdSpace.
-app.get("/api/adspace/:adspace_id",
+// RETRIEVE a single CraftedSpace.
+app.get("/api/cspace/:cSpaceID",
 	utils.ensureAuthenticated(),
-	adspaces.getAdSpace);
+	cspaces.getCraftedSpace);
 
-// UPDATE an AdSpace.
-app.put("/api/adspace/:adspace_id",
+// UPDATE an CraftedSpace.
+app.put("/api/cspace/:cSpaceID",
 	utils.ensureAuthenticated(),
-	adspaces.updateAdSpace);
+	cspaces.updateCraftedSpace);
 
-// DELETE an AdSpace and all ads it may reference.
-app.del("/api/adspace/:adspace_id",
+// DELETE an CraftedSpace and all ads it may reference.
+app.del("/api/cspace/:cSpaceID",
 	utils.ensureAuthenticated(),
-	adspaces.deleteAdSpace);
+	cspaces.deleteCraftedSpace);
 
-// CREATE an ad in the specified AdSpace.
-app.post("/api/adspace/:adspace_id/ad",
+// CREATE an ad in the specified CraftedSpace.
+app.post("/api/cspace/:cSpaceID/ad",
 	 utils.ensureAuthenticated(),
 	 ads.createAd);
 
-// RETRIEVE all ads within the specified AdSpace.
-app.get("/api/adspace/:adspace_id/ad",
+// RETRIEVE all ads within the specified CraftedSpace.
+app.get("/api/cspace/:cSpaceID/ad",
 	utils.ensureAuthenticated(),
-	ads.getAllAdsInAdSpace);
+	ads.getAllAdsInCraftedSpace);
 
-// RETRIEVE a single ad from the specified AdSpace.
-app.get("/api/adspace/:adspace_id/ad/:ad_id",
+// RETRIEVE a single ad from the specified CraftedSpace.
+app.get("/api/cspace/:cSpaceID/ad/:adID",
 	utils.ensureAuthenticated(),
 	ads.getAd);
 
@@ -169,17 +169,17 @@ app.get("/api/ad",
 	ads.getAllUserAds);
 
 // UPDATE an ad.
-app.put("/api/adspace/:adspace_id/ad/:ad_id",
+app.put("/api/cspace/:cSpaceID/ad/:adID",
 	utils.ensureAuthenticated(),
 	ads.updateAd);
 
-// DELETE an ad without deleting the AdSpace.
-app.del("/api/adspace/:adspace_id/ad/:ad_id",
+// DELETE an ad without deleting the CraftedSpace.
+app.del("/api/cspace/:cSpaceID/ad/:adID",
 	utils.ensureAuthenticated(),
 	ads.deleteAd);
 
 // GET the metrics for an ad.
-app.get("/api/adspace/:adspace_id/ad/:ad_id/metrics",
+app.get("/api/cspace/:cSpaceID/ad/:adID/metrics",
 	utils.ensureAuthenticated(),
 	ads.getMetrics);
 
@@ -194,4 +194,3 @@ app.put("/api/account",
 	accounts.updateAccount);
 
 exports.app = app;
-

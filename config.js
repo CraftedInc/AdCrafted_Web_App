@@ -8,7 +8,7 @@ var config = {};
  */
 config.VIEW_ENGINE = "jade";
 config.AD_IMG_PREFIX = "Ad-Images";
-config.ADSPACE_IMG_PREFIX = "AdSpace-Images";
+config.CSPACE_IMG_PREFIX = "CraftedSpace-Images";
 config.VIEWS_PATH = "/views";
 config.APPS_VIEWS_PATH = "/../../views";
 config.USER_WHITELIST = ["jbpasko@gmail.com", "james@adcrafted.com",
@@ -16,7 +16,7 @@ config.USER_WHITELIST = ["jbpasko@gmail.com", "james@adcrafted.com",
 			 "brandon@adcrafted.com", "jpasko@uw.edu"];
 config.ADMIN_EMAILS = ["james@adcrafted.com", "brandon@adcrafted.com"];
 config.NOTIFICATIONS_EMAIL = "AdCrafted Notifications <notifications@adcrafted.com>";
-config.ADSPACE_USER_ID_INDEX = "AdSpaceUserID-INDEX";
+config.CSPACE_USER_ID_INDEX = "CSpaceUserID-INDEX";
 
 /**
  * Local configuration.
@@ -26,7 +26,7 @@ config.local = {
     DOMAIN: "test.com:8888",
     TEST_DOMAIN: "test.com",
     S3_BUCKET: "adcrafted-dev",
-    ADSPACE_TABLE_NAME: "AdCrafted-AdSpace-DEV",
+    CSPACE_TABLE_NAME: "AdCrafted-CraftedSpace-DEV",
     AD_TABLE_NAME: "AdCrafted-Ad-DEV",
     USER_TABLE_NAME: "AdCrafted-User-DEV",
     GOOGLE_TABLE_NAME: "AdCrafted-Google-DEV",
@@ -41,7 +41,7 @@ config.development = {
     PROTOCOL: "http://",
     DOMAIN: "citreo.us",
     S3_BUCKET: "adcrafted-dev",
-    ADSPACE_TABLE_NAME: "AdCrafted-AdSpace-DEV",
+    CSPACE_TABLE_NAME: "AdCrafted-CraftedSpace-DEV",
     AD_TABLE_NAME: "AdCrafted-Ad-DEV",
     USER_TABLE_NAME: "AdCrafted-User-DEV",
     GOOGLE_TABLE_NAME: "AdCrafted-Google-DEV",
@@ -56,7 +56,7 @@ config.production = {
     PROTOCOL: "http://",
     DOMAIN: "adcrafted.com",
     S3_BUCKET: "adcrafted-prod",
-    ADSPACE_TABLE_NAME: "AdCrafted-AdSpace-PROD",
+    CSPACE_TABLE_NAME: "AdCrafted-CraftedSpace-PROD",
     AD_TABLE_NAME: "AdCrafted-Ad-PROD",
     USER_TABLE_NAME: "AdCrafted-User-PROD",
     GOOGLE_TABLE_NAME: "AdCrafted-Google-PROD",

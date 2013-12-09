@@ -124,7 +124,7 @@ exports.findOrCreate = function(db,
 exports.getAccount = function(request, response) {
     var db = request.app.get("db");
     var params = {
-	"TableName": request.app.get("user_table_name"),
+	"TableName": request.app.get("UserTable"),
 	"Key": {
 	    "UserID": {
 		"S": request.user.id
@@ -149,7 +149,7 @@ exports.updateAccount = function(request, response) {
     var db = request.app.get("db");
     var account = request.body;
     var params = {
-	"TableName": request.app.get("user_table_name"),
+	"TableName": request.app.get("UserTable"),
 	"Key": {
 	    "UserID": {
 		"S": request.user.id

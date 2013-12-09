@@ -10,15 +10,15 @@
  *
  * @constructor
  */
-function S3(s3, bucket, adSpacePrefix, adPrefix) {
+function S3(s3, bucket, cSpacePrefix, adPrefix) {
     // AWS-SDK S3 object for Node.js.
     this.s3 = s3;
 
     // The S3 bucket name.
     this.bucket = bucket;
 
-    // The folder holding AdSpace images.
-    this.adSpacePrefix = adSpacePrefix;
+    // The folder holding CraftedSpace images.
+    this.cSpacePrefix = cSpacePrefix;
 
     // The folder holding Ad images.
     this.adPrefix = adPrefix;
@@ -43,14 +43,14 @@ S3.prototype.upload = function(body, key, contentType, callback) {
 };
 
 /**
- * Deletes the image(s) for an AdSpace.
- * @param {number} adSpaceID.
+ * Deletes the image(s) for an CraftedSpace.
+ * @param {number} cSpaceID.
  * @param {function(Object, Object)} callback.
  */
-S3.prototype.deleteAdSpaceImage = function(adSpaceID, callback) {
+S3.prototype.deleteCraftedSpaceImage = function(cSpaceID, callback) {
     var params = {
 	"Bucket": this.bucket,
-	"Prefix": this.adSpacePrefix + "/" + adSpaceID + "/"
+	"Prefix": this.cSpacePrefix + "/" + cSpaceID + "/"
     };
     this.s3.listObjects(params, function(err, data) {
 	if (err) {
@@ -73,14 +73,14 @@ S3.prototype.deleteAdSpaceImage = function(adSpaceID, callback) {
 
 /**
  * Deletes the image(s) for an Ad.
- * @param {number} adSpaceID.
+ * @param {number} cSpaceID.
  * @param {number} adID.
  * @param {function(Object, Object)} callback.
  */
-S3.prototype.deleteAdImage = function(adSpaceID, adID, callback) {
+S3.prototype.deleteAdImage = function(cSpaceID, adID, callback) {
     var params = {
 	"Bucket": this.bucket,
-	"Prefix": this.adPrefix + "/" + adSpaceID + "/" + adID + "/"
+	"Prefix": this.adPrefix + "/" + cSpaceID + "/" + adID + "/"
     };
     this.s3.listObjects(params, function(err, data) {
 	if (err) {
@@ -105,51 +105,51 @@ S3.prototype.deleteAdImage = function(adSpaceID, adID, callback) {
 };
 
 /**
- * Returns the public URL for an AdSpace image.
- * @param {number} adSpaceID.
+ * Returns the public URL for an CraftedSpace image.
+ * @param {number} cSpaceID.
  * @param {string} name.
  * @param {string} ext.
  * @return {string} The url.
  */
-S3.prototype.getAdSpaceImageURL = function(adSpaceID, name, ext) {
+S3.prototype.getCraftedSpaceImageURL = function(cSpaceID, name, ext) {
     return "https://" + this.bucket + ".s3.amazonaws.com/" +
-	this.adSpacePrefix + "/" + adSpaceID + "/" + name + "." + ext;
+	this.cSpacePrefix + "/" + cSpaceID + "/" + name + "." + ext;
 };
 
 /**
  * Returns the public URL for an Ad image.
- * @param {number} adSpaceID.
+ * @param {number} cSpaceID.
  * @param {number} adID.
  * @param {string} name.
  * @param {string} ext.
  * @return {string} The url.
  */
-S3.prototype.getAdImageURL = function(adSpaceID, adID, name, ext) {
+S3.prototype.getAdImageURL = function(cSpaceID, adID, name, ext) {
     return "https://" + this.bucket + ".s3.amazonaws.com/" + this.adPrefix +
-	"/" + adSpaceID + "/" + adID + "/" + name + "." + ext;
+	"/" + cSpaceID + "/" + adID + "/" + name + "." + ext;
 };
 
 /**
- * Constructs the key for an AdSpace image.
- * @param {number} adSpaceID.
+ * Constructs the key for an CraftedSpace image.
+ * @param {number} cSpaceID.
  * @param {string} name.
  * @param {string} ext.
  * @return {string} The key.
  */
-S3.prototype.generateAdSpaceKey = function(adSpaceID, name, ext) {
-    return this.adSpacePrefix + "/" + adSpaceID + "/" + name + "." + ext;
+S3.prototype.generateCraftedSpaceKey = function(cSpaceID, name, ext) {
+    return this.cSpacePrefix + "/" + cSpaceID + "/" + name + "." + ext;
 };
 
 /**
  * Constructs the key for an Ad image.
- * @param {number} adSpaceID.
+ * @param {number} cSpaceID.
  * @param {number} adID.
  * @param {string} name.
  * @param {string} ext.
  * @return {string} The key.
  */
-S3.prototype.generateAdKey = function(adSpaceID, adID, name, ext) {
-    return this.adPrefix + "/" + adSpaceID + "/" + adID + "/" + name +
+S3.prototype.generateAdKey = function(cSpaceID, adID, name, ext) {
+    return this.adPrefix + "/" + cSpaceID + "/" + adID + "/" + name +
 	"." + ext;
 };
 

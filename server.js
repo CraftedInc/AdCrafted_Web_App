@@ -137,20 +137,20 @@ app.configure(function() {
     publisher.app.set("db", db);
     // Create an S3 management instance and share among the applications.
     var s3_SDK = new AWS.S3();
-    api.app.set("s3", new AWSManager.S3(s3_SDK, api.app.get("s3_bucket"),
-					config.ADSPACE_IMG_PREFIX,
+    api.app.set("s3", new AWSManager.S3(s3_SDK, api.app.get("S3Bucket"),
+					config.CSPACE_IMG_PREFIX,
 					config.AD_IMG_PREFIX));
     accounts.app.set(
-	"s3", new AWSManager.S3(s3_SDK, accounts.app.get("s3_bucket"),
-				config.ADSPACE_IMG_PREFIX,
+	"s3", new AWSManager.S3(s3_SDK, accounts.app.get("S3Bucket"),
+				config.CSPACE_IMG_PREFIX,
 				config.AD_IMG_PREFIX));
     advertiser.app.set(
-	"s3", new AWSManager.S3(s3_SDK, advertiser.app.get("s3_bucket"),
-				config.ADSPACE_IMG_PREFIX,
+	"s3", new AWSManager.S3(s3_SDK, advertiser.app.get("S3Bucket"),
+				config.CSPACE_IMG_PREFIX,
 				config.AD_IMG_PREFIX));
     publisher.app.set(
-	"s3", new AWSManager.S3(s3_SDK, publisher.app.get("s3_bucket"),
-				config.ADSPACE_IMG_PREFIX,
+	"s3", new AWSManager.S3(s3_SDK, publisher.app.get("S3Bucket"),
+				config.CSPACE_IMG_PREFIX,
 				config.AD_IMG_PREFIX));
     // Create an SES service interface object.
     var ses = new AWS.SES();

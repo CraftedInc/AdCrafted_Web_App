@@ -49,7 +49,7 @@ customDirectives.directive("imageDrop", function ($parse) {
             element.bind("dragover", onDragOver)
                 .bind("dragleave", onDragEnd)
                 .bind("drop", function (e) {
-                    element.removeClass("draggable");
+		    element.removeClass("draggable");
                     element.removeClass("dropzone");
                     onDragEnd(e);
                     updateModel(e.dataTransfer.files[0]);
@@ -81,7 +81,7 @@ customDirectives.directive("barChart", function() {
 		hAxis: {textStyle: {color: "#999"},
 			gridlines: {color: "#999"},
 			baselineColor: "#999"},
-		legend: {textStyle: {color: "#999"}},
+		legend: {textStyle: {color: "#646464"}},
 		bar: {groupWidth: "25"},
 		colors: ["rgb(46, 105, 180)", "rgb(223, 49, 49)"],
 		tooltip: {trigger: "none"}

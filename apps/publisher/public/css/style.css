@@ -1,26 +1,25 @@
 html, body {
     height: 100%;
-    color: #999 !important;
 }
-.adspace-thumbnail, .ad-thumbnail {
+.cspace-thumbnail, .ad-thumbnail {
     padding: 20px 10px 20px 0;
-    border-top: 1px solid #333;
-}
-.content-list {
-    background-color: #222;
-    border-radius: 0 0 5px 5px;
+    border-top: 1px solid #CECECE;
 }
 .account-row {
     padding: 10px 0 0 0;
-    border-top: 1px solid #333;
+    border-top: 1px solid #CECECE;
 }
 #edit-account-form {
-    background-color: #222;
+    background-color: #f8f8f8;
     padding: 0 0 10px 0;
     border-radius: 0 0 5px 5px;
 }
 .align-right {
     text-align: right;
+}
+.content-list {
+    background-color: #f8f8f8;
+    border-radius: 0 0 5px 5px;
 }
 a.no-decoration:hover {
     text-decoration: none;
@@ -38,33 +37,33 @@ body {
 #footer {
     height: 30px;
 }
-#adspace-content {
+#cspace-content {
     padding-bottom: 10px;
 }
 #input-group-search {
     width: 250px;
 }
-#adspace-control-bar, #account-control-bar {
-    background-color: #333;
+#cspace-control-bar, #account-control-bar {
+    background-color: #CECECE;
     padding: 15px;
     border-radius: 5px 5px 0 0;
     max-height: 64px;
 }
 #metrics-bar {
-    background-color: #333;
+    background-color: #CECECE;
     padding: 15px 15px 12px 0;
     border-radius: 5px 5px 0 0;
     max-height: 64px;
 }
 .metrics-row {
-    background-color: #222;
+    background-color: #f8f8f8;
     padding: 10px;
     border-radius: 0 0 5px 5px;
 }
-.adspace-information {
+.cspace-information {
     display: inline-block;
 }
-.adspace-img, .ad-img {
+.cspace-img, .ad-img {
     max-width: 200px;
     display: inline-block;
 }
@@ -82,23 +81,23 @@ body {
 #select-sort-by {
     height: 34px;
 }
-#create-adspace-form, #create-ad-form, #edit-adspace-form, #edit-ad-form {
-    background-color: #222;
+#create-cspace-form, #create-ad-form, #edit-cspace-form, #edit-ad-form {
+    background-color: #f8f8f8;
     padding: 20px;
     border-radius: 0 0 5px 5px;
 }
 .drag-over {
     opacity: 0.5;
-    border-color: rgb(200, 200, 200);
+    border-color: rgb(210, 210, 210);
 }
 .draggable {
-    border: 2px dotted rgb(100, 100, 100);
+    border: 2px dotted rgb(180, 180, 180);
     border-radius: 5px;
 }
 .dropzone {
     height: 192px;
     width: 200px;
-    background-color: #CECECE;
+    background-color: #DDD;
 }
 .drag-drop-text {
     margin-top: 80px;
@@ -109,26 +108,60 @@ body {
     font-size: 1.4em;
 }
 .metrics-text {
-    text-align: center;
+    color: #646464;
     margin: 0;
+    text-align: center;
 }
 .line-chart {
     height: 300px;
 }
 .chart {
-    box-shadow: inset 0 0 6px #505050;
+    box-shadow: inset 0 0 6px #A0A0A0;
     padding: 10px;
     border-radius: 5px;
     margin-bottom: 10px;
 }
 .dygraph-legend {
-    color: #999;
+    color: #646464;
     background: none !important;
     font-size: 16px !important;
 }
 .waiting {
     width: 100px;
     margin: 50px auto 0 auto;
+}
+.info-header {
+    background-color: #F8F8F8;
+    padding: 15px 15px 12px 0;
+    text-align: center;
+}
+.info-header > h1 {
+    font-size: 20px;
+    text-shadow: 0px 1px 0px #E5E5EE;
+}
+.bottom-radius {
+    border-radius: 0 0 5px 5px;
+}
+.green {
+    color: #5cb85c;
+}
+.blue {
+    color: #428bca;
+}
+.link-no-decoration:hover {
+    text-decoration: none;
+}
+.center {
+    text-align: center;
+}
+.border-bottom {
+    border-bottom: 1px solid #CECECE;
+}
+.border-top {
+    border-top: 1px solid #CECECE;
+}
+.button-row {
+    padding: 20px 0 5px 0;
 }
 /**
  * Override responsive Bootstrap.
@@ -141,7 +174,7 @@ body {
     margin-left: 0 !important;
     margin-right: 0 !important;
 }
-.adcrafted-nav {
+.appcrafted-nav {
     padding: 5px 8px !important;
     margin: 0 0 0 6px;
     border-radius: 10px;
@@ -149,10 +182,10 @@ body {
     font-size: 12px;
     display: inline !important;
 }
-.adcrafted-nav:hover {
+.appcrafted-nav:hover {
     background-color: #333 !important;
 }
-.adcrafted-nav:active {
+.appcrafted-nav:active {
     background-color: #5cb85c !important;
 }
 .navbar-inverse {
@@ -169,14 +202,15 @@ body {
     margin: 0 !important;
     float: right !important;
 }
-.navbar-adcrafted-home {
+.navbar-appcrafted-home {
     position: absolute;
     left: 9px;
     top: 15px;
 }
-.navbar-adcrafted-home a {
+.navbar-appcrafted-home a {
     font-size: 16px;
 }
 code {
     padding: 4px 4px 2px 4px !important;
+    background-color: #CECECE !important;
 }

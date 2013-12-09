@@ -1,5 +1,5 @@
 /**
- * Functions for Creating, Reading, Updating, and Deleting AdSpaces.
+ * Functions for Creating, Reading, Updating, and Deleting CraftedSpaces.
  *
  * Author: James Pasko (james@adcrafted.com).
  */
@@ -8,22 +8,22 @@
 var utils = require("../utils/utils");
 
 /**
- * Create a new AdSpace, returning JSON indicating the new AdSpaceID.
+ * Create a new CraftedSpace, returning JSON indicating the new CSpaceID.
  */
-exports.createAdSpace = function(request, response) {
+exports.createCraftedSpace = function(request, response) {
     var userID = request.user.id;
     var db = response.app.get("db");
     var s3 = response.app.get("s3");
-    var adSpaceID = utils.generateKey(20);
-    var adspace_body = request.body;
+    var cSpaceID = utils.generateKey(20);
+    var cSpaceBody = request.body;
     var params = {
-	"TableName": response.app.get("adspace_table_name"),
+	"TableName": response.app.get("CSpaceTable"),
 	"Item": {
 	    "UserID": {
 		"S": userID
 	    },
-	    "AdSpaceID": {
-		"S": adSpaceID
+	    "CSpaceID": {
+		"S": cSpaceID
 	    },
 	    "date": {
 		"S": new Date().toISOString()
@@ -33,14 +33,14 @@ exports.createAdSpace = function(request, response) {
 	    }
 	}
     };
-    for (var attr in adspace_body) {
+    for (var attr in cSpaceBody) {
 	// The image attribute is a Base64 encoded file and must be processed
 	// separately.
-	if (attr == "image" && !!adspace_body["image"]) {
-	    var file = utils.parseBase64Data(adspace_body[attr]);
+	if (attr == "image" && !!cSpaceBody["image"]) {
+	    var file = utils.parseBase64Data(cSpaceBody[attr]);
 	    if (file.isBase64) {
 		var name = utils.generateKey(8);
-		var key = s3.generateAdSpaceKey(adSpaceID, name, file.ext);
+		var key = s3.generateCraftedSpaceKey(cSpaceID, name, file.ext);
 		s3.upload(file.body, key, "image/" + file.ext,
 			  function(err, data) {
 			      if (err) {
@@ -48,39 +48,39 @@ exports.createAdSpace = function(request, response) {
 			      }
 			  });
 		params.Item[attr] = {
-		    "S": s3.getAdSpaceImageURL(adSpaceID, name, file.ext)
+		    "S": s3.getCraftedSpaceImageURL(cSpaceID, name, file.ext)
 		};
 	    }
-	} else if (adspace_body[attr] instanceof Array) {
-	    params.Item[attr] = {"SS": adspace_body[attr]};
+	} else if (cSpaceBody[attr] instanceof Array) {
+	    params.Item[attr] = {"SS": cSpaceBody[attr]};
 	} else {
-	    params.Item[attr] = {"S": adspace_body[attr]};
+	    params.Item[attr] = {"S": cSpaceBody[attr]};
 	}
     }
     db.putItem(params, function(err, data) {
 	if (err) {
 	    response.send(500, {message: "An Error Occurred"});
 	} else {
-	    response.send(201, {message: "New AdSpace Created",
-				AdSpaceID: adSpaceID});
+	    response.send(201, {message: "New CraftedSpace Created",
+				ID: cSpaceID});
 	}
     });
 };
 
 /**
- * Get a single AdSpace that the user owns.
+ * Get a single CraftedSpace that the user owns.
  */
-exports.getAdSpace = function(request, response) {
+exports.getCraftedSpace = function(request, response) {
     var userID = request.user.id;
     var db = response.app.get("db");
     var params = {
-	"TableName": response.app.get("adspace_table_name"),
+	"TableName": response.app.get("CSpaceTable"),
 	"Key": {
 	    "UserID": {
 		"S": userID
 	    },
-	    "AdSpaceID": {
-		"S": request.params.adspace_id
+	    "CSpaceID": {
+		"S": request.params.cSpaceID
 	    }
 	}
     };
@@ -90,19 +90,19 @@ exports.getAdSpace = function(request, response) {
 	} else if (!utils.isEmpty(data)) {
 	    response.send(utils.parseItem(data.Item));
 	} else {
-	    response.send(404, {message: "AdSpace Does Not Exist"});
+	    response.send(404, {message: "CraftedSpace Does Not Exist"});
 	}
     });
 };
 
 /**
- * Get all AdSpaces that the user owns.
+ * Get all CraftedSpaces that the user owns.
  */
-exports.getAllUserAdSpaces = function(request, response) {
+exports.getAllUserCraftedSpaces = function(request, response) {
     var userID = request.user.id;
     var db = response.app.get("db");
     var params = {
-	"TableName": response.app.get("adspace_table_name"),
+	"TableName": response.app.get("CSpaceTable"),
 	"KeyConditions": {
 	    "UserID": {
 		"ComparisonOperator" : "EQ",
@@ -118,9 +118,9 @@ exports.getAllUserAdSpaces = function(request, response) {
 	} else {
 	    var result = {message: "Success",
 			  Count: data.Count,
-			  AdSpaces: []};
+			  CraftedSpaces: []};
 	    for (var i = 0; i < data.Count; i++) {
-		result.AdSpaces[i] = utils.parseItem(data.Items[i]);
+		result.CraftedSpaces[i] = utils.parseItem(data.Items[i]);
 	    }
 	    response.send(result);
 	}
@@ -128,23 +128,23 @@ exports.getAllUserAdSpaces = function(request, response) {
 };
 
 /**
- * Get all public AdSpaces.
+ * Get all public CraftedSpaces.
  */
-exports.getAllPublicAdSpaces = function(request, response) {
+exports.getAllPublicCraftedSpaces = function(request, response) {
     var db = response.app.get("db");
     var params = {
-	"TableName": response.app.get("adspace_table_name")
+	"TableName": response.app.get("CSpaceTable")
     };
     db.scan(params, function(err, data) {
 	if (err) {
 	    response.send(500, {message: "An Error Occurred"});
 	} else {
-	    // TODO: Check if the AdSpace is public via a boolean flag.
+	    // TODO: Check if the CraftedSpace is public via a boolean flag.
 	    var result = {message: "Success",
 			  Count: data.Count,
-			  AdSpaces: []};
+			  CraftedSpaces: []};
 	    for (var i = 0; i < data.Count; i++) {
-		result.AdSpaces[i] = utils.parseItem(data.Items[i]);
+		result.CraftedSpaces[i] = utils.parseItem(data.Items[i]);
 	    }
 	    response.send(result);
 	}
@@ -152,35 +152,36 @@ exports.getAllPublicAdSpaces = function(request, response) {
 };
 
 /**
- * Updates the specified AdSpace. If it doesn't exist, a new AdSpace is created.
+ * Updates the specified CraftedSpace. If it doesn't exist, a new CraftedSpace
+ * is created.
  */
-exports.updateAdSpace = function(request, response) {
+exports.updateCraftedSpace = function(request, response) {
     var userID = request.user.id;
     var db = response.app.get("db");
     var s3 = response.app.get("s3");
-    var adspace_body = request.body;
-    var adspace_id = request.params.adspace_id;
+    var cSpaceBody = request.body;
+    var cSpaceID = request.params.cSpaceID;
     var params = {
-	"TableName": response.app.get("adspace_table_name"),
+	"TableName": response.app.get("CSpaceTable"),
 	"AttributeUpdates": {},
 	"Key": {
 	    "UserID": {
 		"S": userID
 	    },
-	    "AdSpaceID": {
-		"S": adspace_id
+	    "CSpaceID": {
+		"S": cSpaceID
 	    }
 	}
     };
-    for (var attr in adspace_body) {
-	if (attr == "AdSpaceID" || attr == "UserID") {
+    for (var attr in cSpaceBody) {
+	if (attr == "CSpaceID" || attr == "UserID") {
 	    // These attributes should not be updated.
 	    continue;
 	} else if (attr == "image") {
-	    var file = utils.parseBase64Data(adspace_body[attr]);
+	    var file = utils.parseBase64Data(cSpaceBody[attr]);
 	    if (file.isBase64) {
 		var name = utils.generateKey(8);
-		var key = s3.generateAdSpaceKey(adspace_id, name, file.ext);
+		var key = s3.generateCraftedSpaceKey(cSpaceID, name, file.ext);
 		s3.upload(file.body, key, "image/" + file.ext,
 			  function(err, data) {
 			      if (err) {
@@ -189,15 +190,15 @@ exports.updateAdSpace = function(request, response) {
 			  });
 		params.AttributeUpdates[attr] = {
 		    "Value": {
-			"S": s3.getAdSpaceImageURL(adspace_id, name, file.ext)
+			"S": s3.getCraftedSpaceImageURL(cSpaceID,name,file.ext)
 		    },
 		    "Action": "PUT"
 		};
 	    }
-	} else if (adspace_body[attr] instanceof Array) {
-	    if (adspace_body[attr].length > 0) {
-		var uniqueTags = adspace_body[attr].filter(function(elem, pos) {
-		    return adspace_body[attr].indexOf(elem) == pos;
+	} else if (cSpaceBody[attr] instanceof Array) {
+	    if (cSpaceBody[attr].length > 0) {
+		var uniqueTags = cSpaceBody[attr].filter(function(elem, pos) {
+		    return cSpaceBody[attr].indexOf(elem) == pos;
 		});
 		params.AttributeUpdates[attr] = {
 		    "Value": {
@@ -211,10 +212,10 @@ exports.updateAdSpace = function(request, response) {
 		};
 	    }
 	} else {
-	    if (!!adspace_body[attr]) {
+	    if (!!cSpaceBody[attr]) {
 		params.AttributeUpdates[attr] = {
 		    "Value": {
-			"S": adspace_body[attr]
+			"S": cSpaceBody[attr]
 		    },
 		    "Action": "PUT"
 		};
@@ -230,41 +231,41 @@ exports.updateAdSpace = function(request, response) {
 	    console.log(err);
 	    response.send(500, {message: "An Error Occurred"});
 	} else {
-	    response.send(200, {message: "AdSpace Updated"});
+	    response.send(200, {message: "CraftedSpace Updated"});
 	}
     });
 };
 
 /**
- * Deletes an AdSpace and all Ads it references.
+ * Deletes an CraftedSpace and all Ads it references.
  */
-exports.deleteAdSpace = function(request, response) {
+exports.deleteCraftedSpace = function(request, response) {
     var userID = request.user.id;
     var db = response.app.get("db");
     var s3 = response.app.get("s3");
-    var adSpaceID = request.params.adspace_id;
+    var cSpaceID = request.params.cSpaceID;
     var params = {
-	"TableName": response.app.get("adspace_table_name"),
+	"TableName": response.app.get("CSpaceTable"),
 	"Key": {
 	    "UserID": {
 		"S": userID
 	    },
-	    "AdSpaceID": {
-		"S": adSpaceID
+	    "CSpaceID": {
+		"S": cSpaceID
 	    }
 	}
     };
-    // Delete the AdSpace from the database.
+    // Delete the CraftedSpace from the database.
     db.deleteItem(params).send();
     // Delete the image it may reference.
-    s3.deleteAdSpaceImage(adSpaceID, function(err, data) {});
+    s3.deleteCraftedSpaceImage(cSpaceID, function(err, data) {});
     // Reassign params to facilitate a query of the Ads table.
     params = {
-	"TableName": response.app.get("ads_table_name"),
+	"TableName": response.app.get("AdTable"),
 	"KeyConditions": {
-	    "AdSpaceID": {
+	    "CSpaceID": {
 		"AttributeValueList" : [{
-		    "S": request.params.adspace_id
+		    "S": request.params.cSpaceID
 		}],
 		"ComparisonOperator" : "EQ"
 	    }
@@ -277,13 +278,13 @@ exports.deleteAdSpace = function(request, response) {
 	    var batch = [];
 	    for (var i = 0; i < data.Count; i++) {
 		// Delete any images the ad may reference.
-		s3.deleteAdImage(adSpaceID, data.Items[i].AdID.N,
+		s3.deleteAdImage(cSpaceID, data.Items[i].AdID.N,
 				 function(err, data) {});
 		batch[i] = {
                     "DeleteRequest": {
 			"Key": {
-			    "AdSpaceID": {
-				"S": adSpaceID
+			    "CSpaceID": {
+				"S": cSpaceID
 			    },
 			    "AdID": {
 				"N": data.Items[i].AdID.N
@@ -295,16 +296,16 @@ exports.deleteAdSpace = function(request, response) {
 	    params = {
 		"RequestItems": {}
 	    };
-	    params.RequestItems[response.app.get("ads_table_name")] = batch;
+	    params.RequestItems[response.app.get("AdTable")] = batch;
 	    db.batchWriteItem(params, function(err, data) {
 		if (err) {
 		    response.send(500, {message: "An Error Occurred"});
 		} else {
-		    response.send(200, {message: "AdSpace Deleted"});
+		    response.send(200, {message: "CraftedSpace Deleted"});
 		}
 	    });
 	} else {
-	    response.send(200, {message: "AdSpace Deleted"});
+	    response.send(200, {message: "CraftedSpace Deleted"});
 	}
     });
 };

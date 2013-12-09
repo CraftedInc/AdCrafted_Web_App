@@ -1,7 +1,7 @@
 html, body {
     height: 100%;
 }
-.adspace-thumbnail, .ad-thumbnail {
+.cspace-thumbnail, .ad-thumbnail {
     padding: 20px 10px 20px 0;
     border-top: 1px solid #CECECE;
 }
@@ -37,13 +37,13 @@ body {
 #footer {
     height: 30px;
 }
-#adspace-content {
+#cspace-content {
     padding-bottom: 10px;
 }
 #input-group-search {
     width: 250px;
 }
-#adspace-control-bar, #account-control-bar {
+#cspace-control-bar, #account-control-bar {
     background-color: #CECECE;
     padding: 15px;
     border-radius: 5px 5px 0 0;
@@ -60,10 +60,10 @@ body {
     padding: 10px;
     border-radius: 0 0 5px 5px;
 }
-.adspace-information {
+.cspace-information {
     display: inline-block;
 }
-.adspace-img, .ad-img {
+.cspace-img, .ad-img {
     max-width: 200px;
     display: inline-block;
 }
@@ -81,7 +81,7 @@ body {
 #select-sort-by {
     height: 34px;
 }
-#create-adspace-form, #create-ad-form, #edit-adspace-form, #edit-ad-form {
+#create-cspace-form, #create-ad-form, #edit-cspace-form, #edit-ad-form {
     background-color: #f8f8f8;
     padding: 20px;
     border-radius: 0 0 5px 5px;
@@ -130,6 +130,39 @@ body {
     width: 100px;
     margin: 50px auto 0 auto;
 }
+.info-header {
+    background-color: #F8F8F8;
+    padding: 15px 15px 12px 0;
+    text-align: center;
+}
+.info-header > h1 {
+    font-size: 20px;
+    text-shadow: 0px 1px 0px #E5E5EE;
+}
+.bottom-radius {
+    border-radius: 0 0 5px 5px;
+}
+.green {
+    color: #5cb85c;
+}
+.blue {
+    color: #428bca;
+}
+.link-no-decoration:hover {
+    text-decoration: none;
+}
+.center {
+    text-align: center;
+}
+.border-bottom {
+    border-bottom: 1px solid #CECECE;
+}
+.border-top {
+    border-top: 1px solid #CECECE;
+}
+.button-row {
+    padding: 20px 0 5px 0;
+}
 /**
  * Override responsive Bootstrap.
  */
@@ -141,7 +174,7 @@ body {
     margin-left: 0 !important;
     margin-right: 0 !important;
 }
-.adcrafted-nav {
+.appcrafted-nav {
     padding: 5px 8px !important;
     margin: 0 0 0 6px;
     border-radius: 10px;
@@ -149,10 +182,10 @@ body {
     font-size: 12px;
     display: inline !important;
 }
-.adcrafted-nav:hover {
+.appcrafted-nav:hover {
     background-color: #333 !important;
 }
-.adcrafted-nav:active {
+.appcrafted-nav:active {
     background-color: #5cb85c !important;
 }
 .navbar-inverse {
@@ -169,12 +202,12 @@ body {
     margin: 0 !important;
     float: right !important;
 }
-.navbar-adcrafted-home {
+.navbar-appcrafted-home {
     position: absolute;
     left: 9px;
     top: 15px;
 }
-.navbar-adcrafted-home a {
+.navbar-appcrafted-home a {
     font-size: 16px;
 }
 code {

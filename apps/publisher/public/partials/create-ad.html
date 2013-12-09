@@ -1,6 +1,6 @@
 <!-- BACK bar -->
-<div class="form-inline row" id="adspace-control-bar">
-  <a href="#/adspaces/{{adSpaceID}}/" class="btn btn-default">
+<div class="form-inline row" id="cspace-control-bar">
+  <a href="#/cspaces/{{cSpaceID}}/" class="btn btn-default">
     <strong><span class="glyphicon glyphicon-arrow-left"></span> Back</strong>
   </a>
 </div>
@@ -8,6 +8,14 @@
 <!-- Waiting GIF -->
 <div class="waiting" ng-class="{'hide': !waiting}">
   <img src="/img/waiting.gif">
+</div>
+
+<!-- Information Header -->
+<div class="info-header border-bottom" ng-class="{'hide': waiting}">
+  <h1>
+    Create a new <span class="green">Ad</span> within <span class="green">CraftedSpace:</span>
+    <a class="link-no-decoration" href="#">{{cSpaceID}}</a>
+  </h1>
 </div>
 
 <!-- CREATION form -->
@@ -45,9 +53,8 @@
       </p>
     </div>
   </div>
-  <div class="row">
-    <div class="col-xs-5"></div>
-    <div class="col-xs-7">
+  <div class="row button-row">
+    <div class="center">
       <button class="btn btn-success" ng-click="create(newAdForm)"><strong>Create Ad</strong></button>
     </div>
   </div>

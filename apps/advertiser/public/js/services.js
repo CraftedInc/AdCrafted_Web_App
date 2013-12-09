@@ -1,15 +1,15 @@
-// Create a module named "adSpaceServices" with a dependency on "ngResource".
-var adSpaceServices = angular.module("adSpaceServices", ["ngResource"]);
+// Create a module named "cSpaceServices" with a dependency on "ngResource".
+var cSpaceServices = angular.module("cSpaceServices", ["ngResource"]);
 
-adSpaceServices.factory("AdSpaceCollection", function($resource) {
-    return $resource("/api/adspace", {}, {
+cSpaceServices.factory("CSpaceCollection", function($resource) {
+    return $resource("/api/cspace", {}, {
 	create: {method: "POST"},
 	get: {method: "GET"}
     });
 });
 
-adSpaceServices.factory("SingleAdSpace", function($resource) {
-    return $resource("/api/adspace/:adSpaceID", {}, {
+cSpaceServices.factory("SingleCSpace", function($resource) {
+    return $resource("/api/cspace/:cSpaceID", {}, {
 	get: {method: "GET"},
 	update: {method: "PUT"},
 	del: {method: "DELETE"}
@@ -20,14 +20,14 @@ adSpaceServices.factory("SingleAdSpace", function($resource) {
 var adServices = angular.module("adServices", ["ngResource"]);
 
 adServices.factory("AdCollection", function($resource) {
-    return $resource("/api/adspace/:adSpaceID/ad", {}, {
+    return $resource("/api/cspace/:cSpaceID/ad", {}, {
 	create: {method: "POST"},
 	get: {method: "GET"}
     });
 });
 
 adServices.factory("SingleAd", function($resource) {
-    return $resource("/api/adspace/:adSpaceID/ad/:adID", {}, {
+    return $resource("/api/cspace/:cSpaceID/ad/:adID", {}, {
 	get: {method: "GET"},
 	update: {method: "PUT"},
 	del: {method: "DELETE"}
@@ -35,7 +35,7 @@ adServices.factory("SingleAd", function($resource) {
 });
 
 adServices.factory("AdMetrics", function($resource) {
-    return $resource("/api/adspace/:adSpaceID/ad/:adID/metrics", {}, {
+    return $resource("/api/cspace/:cSpaceID/ad/:adID/metrics", {}, {
 	get: {method: "GET", isArray: true}
     });
 });

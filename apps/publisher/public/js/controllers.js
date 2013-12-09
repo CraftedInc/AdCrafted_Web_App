@@ -2,9 +2,9 @@
  * Controllers
  */
 
-function AdSpaceListCtrl($scope, AdSpaceCollection, SingleAdSpace) {
+function CSpaceListCtrl($scope, CSpaceCollection) {
     $scope.waiting = true;
-    $scope.AdSpaces = AdSpaceCollection.get({}, function() {$scope.waiting = false});
+    $scope.CSpaces = CSpaceCollection.get({}, function() {$scope.waiting = false});
     $scope.orderReverse = false;
     $scope.orderProp = "date";
     $scope.populateSearch = function(tag) {
@@ -12,18 +12,18 @@ function AdSpaceListCtrl($scope, AdSpaceCollection, SingleAdSpace) {
     }
 }
 
-function AdSpaceDetailCtrl($scope, $routeParams, AdCollection) {
+function AdListCtrl($scope, $routeParams, AdCollection) {
     $scope.waiting = true;
-    $scope.AdSpaceID = $routeParams.AdSpaceID;
-    $scope.AdCollection = AdCollection.get({adSpaceID: $scope.AdSpaceID},
+    $scope.CSpaceID = $routeParams.CSpaceID;
+    $scope.AdCollection = AdCollection.get({cSpaceID: $scope.CSpaceID},
 					   function() {$scope.waiting = false});
     $scope.orderReverse = false;
     $scope.orderProp = "date";
 }
 
-function CreateAdSpaceCtrl($scope, AdSpaceCollection, CustomFileReader) {
+function CreateCSpaceCtrl($scope, CSpaceCollection, CustomFileReader) {
     $scope.waiting = false;
-    $scope.adSpace = {};
+    $scope.cSpace = {};
     $scope.hasImage = false;
 
     // Read the file from the drop event on the tag with imageDrop directive.
@@ -32,7 +32,7 @@ function CreateAdSpaceCtrl($scope, AdSpaceCollection, CustomFileReader) {
     $scope.readImageFile = function() {         
         CustomFileReader.readAsDataUrl($scope.file, $scope)
             .then(function(result) {
-                $scope.adSpace.image = result;
+                $scope.cSpace.image = result;
 		// Update imageSrc so that the image displays immediately.
 		$scope.imageSrc = result;
 		$scope.hasImage = true;
@@ -40,57 +40,57 @@ function CreateAdSpaceCtrl($scope, AdSpaceCollection, CustomFileReader) {
     };
 
     // Call the create service which wraps a call to the REST API, thus creating
-    // the new AdSpace.
-    $scope.create = function(newAdSpaceForm) {
-	if (newAdSpaceForm.$valid) {
+    // the new CSpace.
+    $scope.create = function(newCSpaceForm) {
+	if (newCSpaceForm.$valid) {
 	    $scope.waiting = true;
-	    AdSpaceCollection.create($scope.adSpace, function() {
-		window.location = "#/adspaces/";
+	    CSpaceCollection.create($scope.cSpace, function() {
+		window.location = "#/cspaces/";
 	    });
 	}
     }
 }
 
-function EditAdSpaceCtrl($scope, $routeParams, SingleAdSpace, CustomFileReader) {
+function EditCSpaceCtrl($scope, $routeParams, SingleCSpace, CustomFileReader) {
     $scope.waiting = true;
     $scope.hasImage = false;
-    $scope.adSpace =
-	SingleAdSpace.get({adSpaceID: $routeParams.AdSpaceID}, function() {
+    $scope.cSpace =
+	SingleCSpace.get({cSpaceID: $routeParams.CSpaceID}, function() {
 	    $scope.waiting = false;
-	    $scope.imageSrc = $scope.adSpace.image;
-	    $scope.hasImage = $scope.adSpace.image != "null";
+	    $scope.imageSrc = $scope.cSpace.image;
+	    $scope.hasImage = $scope.cSpace.image != "null";
 	});
 
     $scope.readImageFile = function() {         
         CustomFileReader.readAsDataUrl($scope.file, $scope)
             .then(function(result) {
-                $scope.adSpace.image = result;
+                $scope.cSpace.image = result;
 		$scope.imageSrc = result;
 		$scope.hasImage = true;
             });
     };
 
-    $scope.update = function(AdSpaceForm) {
+    $scope.update = function(CSpaceForm) {
 	$scope.waiting = true;
-	if (AdSpaceForm.$valid) {
-	    SingleAdSpace.update({adSpaceID: $routeParams.AdSpaceID},
-				 $scope.adSpace, function() {
-				     window.location = "#/adspaces/";
+	if (CSpaceForm.$valid) {
+	    SingleCSpace.update({cSpaceID: $routeParams.CSpaceID},
+				 $scope.cSpace, function() {
+				     window.location = "#/cspaces/";
 				 });
 	}
     }
 
     $scope.del = function() {
 	$scope.waiting = true;
-	SingleAdSpace.del({adSpaceID: $routeParams.AdSpaceID}, function() {
-	    window.location = "#/adspaces/";
+	SingleCSpace.del({cSpaceID: $routeParams.CSpaceID}, function() {
+	    window.location = "#/cspaces/";
 	});
     }
 }
 
 function CreateAdCtrl($scope, $routeParams, AdCollection, CustomFileReader) {
     $scope.waiting = false;
-    $scope.adSpaceID = $routeParams.AdSpaceID;
+    $scope.cSpaceID = $routeParams.CSpaceID;
     $scope.hasImage = false;
 
     $scope.ad = {};
@@ -107,10 +107,10 @@ function CreateAdCtrl($scope, $routeParams, AdCollection, CustomFileReader) {
     $scope.create = function(newAdForm) {
 	if (newAdForm.$valid) {
 	    $scope.waiting = true;
-	    AdCollection.create({adSpaceID: $routeParams.AdSpaceID},
+	    AdCollection.create({cSpaceID: $routeParams.CSpaceID},
 				$scope.ad, function() {
-				    window.location = "#/adspaces/" +
-					$routeParams.AdSpaceID;
+				    window.location = "#/cspaces/" +
+					$routeParams.CSpaceID;
 				});
 	}
     }
@@ -119,10 +119,10 @@ function CreateAdCtrl($scope, $routeParams, AdCollection, CustomFileReader) {
 function EditAdCtrl($scope, $routeParams, SingleAd, CustomFileReader) {
     $scope.waiting = true;
     $scope.hasImage = false;
-    $scope.adSpaceID = $routeParams.AdSpaceID;
+    $scope.cSpaceID = $routeParams.CSpaceID;
 
     $scope.ad = SingleAd.get({adID: $routeParams.AdID,
-			      adSpaceID: $routeParams.AdSpaceID}, function() {
+			      cSpaceID: $routeParams.CSpaceID}, function() {
 				  $scope.waiting = false;
 				  $scope.imageSrc = $scope.ad.image;
 				  $scope.hasImage = $scope.ad.image != "null";
@@ -140,27 +140,27 @@ function EditAdCtrl($scope, $routeParams, SingleAd, CustomFileReader) {
     $scope.update = function(AdForm) {
 	if (AdForm.$valid) {
 	    $scope.waiting = true;
-	    SingleAd.update({adSpaceID: $routeParams.AdSpaceID,
+	    SingleAd.update({cSpaceID: $routeParams.CSpaceID,
 			     adID: $routeParams.AdID},
 			    $scope.ad, function() {
 				window.location =
-				    "#/adspaces/" + $routeParams.AdSpaceID;
+				    "#/cspaces/" + $routeParams.CSpaceID;
 			    });
 	}
     }
 
     $scope.del = function() {
 	$scope.waiting = true;
-	SingleAd.del({adSpaceID: $routeParams.AdSpaceID,
+	SingleAd.del({cSpaceID: $routeParams.CSpaceID,
 		      adID: $routeParams.AdID}, function() {
 			  window.location =
-			      "#/adspaces/" + $routeParams.AdSpaceID;
+			      "#/cspaces/" + $routeParams.CSpaceID;
 		      });
     }
 }
 
 function AdMetricsCtrl($scope, $routeParams, AdMetrics) {
-    $scope.AdSpaceID = $routeParams.AdSpaceID;
+    $scope.CSpaceID = $routeParams.CSpaceID;
     $scope.ctr = "--";
     $scope.impressions = 0;
     $scope.clicks = 0;
@@ -168,7 +168,7 @@ function AdMetricsCtrl($scope, $routeParams, AdMetrics) {
     $scope.clicksSeries = "";
     $scope.metrics =
 	AdMetrics.get({adID: $routeParams.AdID,
-		       adSpaceID: $routeParams.AdSpaceID},
+		       cSpaceID: $routeParams.CSpaceID},
 		      function() {
 			  var metrics = $scope.metrics;
 			  for (var i = 0; i < metrics.length; i++) {

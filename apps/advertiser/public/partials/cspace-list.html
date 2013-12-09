@@ -1,0 +1,72 @@
+<!-- CSPACE control bar -->
+<div class="form-inline row" id="cspace-control-bar">
+  <a href="#/cspaces/new" class="btn btn-success"><strong>New CraftedSpace</strong></a>
+  <div class="form-group pull-right">
+    <div class="input-group" id="input-group-search">
+      <span class="input-group-addon">
+	<span class="glyphicon glyphicon-search"></span>
+      </span>
+      <input type="text" class="form-control" placeholder="Search" ng-model="query">
+    </div>
+  </div>
+  <div class="form-group pull-right">
+    <label for="select-ordering">Order: </label>
+    <div class="btn-group" id="select-ordering">
+      <button class="btn btn-default" type="button" ng-model="orderReverse" btn-radio="false">Forward</button>
+      <button class="btn btn-default" type="button" ng-model="orderReverse" btn-radio="true">Reverse</button>
+    </div>
+  </div>
+  <div class="form-group pull-right">
+    <label>Sort by: </label>
+    <select class="btn btn-default" id="select-sort-by" ng-model="orderProp">
+      <option value="date">Date</option>
+      <option value="title">Title</option>
+      <option value="CSpaceID">ID</option>
+    </select>
+  </div>
+</div>
+
+<!-- Waiting GIF -->
+<div class="waiting" ng-class="{'hide': !waiting}">
+  <img src="/img/waiting.gif">
+</div>
+
+<!-- Information Header -->
+<div class="info-header" ng-class="{'hide': waiting, 'bottom-radius': !CSpaces.length}">
+  <h1 ng-show="!CSpaces.length">
+    <span class="glyphicon glyphicon-warning-sign"></span>
+    You have not created any <span class="green">CraftedSpaces</span>
+  </h1>
+  <p ng-show="!CSpaces.length">
+    <em><span class="green">CraftedSpaces</span> store <span class="green">Assets</span> that you can deliver to your apps</em>
+  </p>
+  <p ng-show="!CSpaces.length">
+    <a href="#/cspaces/new" class="btn btn-success"><strong>Create a CraftedSpace</strong></a>
+  </p>
+  <h1 ng-show="!!CSpaces.length">Your <span class="green">CraftedSpaces</span></h1>
+</div>
+
+<!-- CSPACE list -->
+<div class="content-list">
+  <div ng-repeat="CSpace in CSpaces | orderBy:orderProp:orderReverse | filter:query" class="cspace-thumbnail row">
+    <div class="col-xs-3">
+      <img ng-show="CSpace.image != 'null'" ng-src="{{CSpace.image}}" class="img-rounded cspace-img">
+      <p ng-show="CSpace.image == 'null'"><em>No Image</em></p>
+    </div>
+    <div class="col-xs-5">
+      <p><strong>{{CSpace.title}}</strong><em ng-show="!CSpace.title">No Title</em></p>
+      <p>{{CSpace.description}}<em ng-show="!CSpace.description">No Description</em></p>
+    </div>
+    <div class="col-xs-4">
+      <p><strong>ID: </strong><code>{{CSpace.CSpaceID}}</code></p>
+      <p><strong>Created: </strong>{{CSpace.date | date:'longDate'}}</p>
+      <p>
+	<strong>Tags: </strong>
+	<em ng-show="!CSpace.tags.length">none</em>
+	<a class="label label-success tag" ng-repeat="tag in CSpace.tags" ng-click="populateSearch(tag)">{{tag}}</a>
+      </p>
+      <a href="#/cspaces/{{CSpace.CSpaceID}}/ad" class="btn btn-primary"><strong>Manage Assets</strong></a>
+      <a href="#/cspaces/{{CSpace.CSpaceID}}/edit" class="btn btn-default"><strong>Edit</strong></a>
+    </div>
+  </div>
+</div>

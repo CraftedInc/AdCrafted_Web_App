@@ -5,7 +5,7 @@
     <meta charset="utf-8">
 
     <!-- TITLE -->
-    <title>AdCrafted | Advertiser Console</title>
+    <title>AppCrafted | Advertiser Console</title>
 
     <!-- FAVICON -->
     <link rel="icon" type="image/ico" href="img/favicon.ico">
@@ -31,7 +31,7 @@
     <script type="text/javascript">
       google.load("visualization", "1", {packages:["corechart", "annotatedtimeline"]});
       google.setOnLoadCallback(function() {
-        angular.bootstrap(document, ["adcrafted"]);
+        angular.bootstrap(document, ["appcrafted"]);
       });
     </script>
   </head>
@@ -42,21 +42,21 @@
         <div class="container">
           <ul class="nav navbar-nav">
 	    <li>
-	      <a class="adcrafted-nav" href="#">
+	      <a class="appcrafted-nav" href="#">
 		Home
 	      </a>
-	      <a class="adcrafted-nav" href="#/account">
+	      <a class="appcrafted-nav" href="#/account">
 		Account
 	      </a>
-	      <a class="adcrafted-nav" href="/logout">
+	      <a class="appcrafted-nav" href="/logout">
 		Logout
 	      </a>
 	    </li>
           </ul>
-          <ul class="nav navbar-nav navbar-adcrafted-home">
+          <ul class="nav navbar-nav navbar-appcrafted-home">
 	    <li>
-	      <a class="adcrafted-nav" href="http://www.adcrafted.com">
-		AdCrafted
+	      <a class="appcrafted-nav" href="http://www.appcrafted.com">
+		AppCrafted
 	      </a>
 	    </li>
 	  </ul>
@@ -65,7 +65,7 @@
       <!-- Page content -->
       <div class="container">
 	<!-- ANGULAR content -->
-	<div id="adspace-content" ng-view></div>
+	<div id="cspace-content" ng-view></div>
       </div>
     </div>
     <!-- Sticky footer -->
