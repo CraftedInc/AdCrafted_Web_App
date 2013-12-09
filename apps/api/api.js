@@ -93,12 +93,12 @@ app.configure(function() {
  */
 
 // RETRIEVE all ads within the specified CraftedSpace.
-app.get("alpha/cspace/:cSpaceID/ad",
+app.get("/alpha/cspace/:cSpaceID/ad",
 	utils.authenticateAPIRequest(),
 	ads.getAllAdsInCraftedSpace);
 
 // UPDATE the impression and click metrics.
-app.post("alpha/cspace/:cSpaceID/ad/:adID/metrics",
+app.post("/alpha/cspace/:cSpaceID/ad/:adID/metrics",
 	 utils.authenticateAPIRequest(),
 	 ads.updateMetrics);
 

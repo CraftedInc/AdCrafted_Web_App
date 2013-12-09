@@ -31,9 +31,9 @@ var app = express();
 app.configure("local", function() {
     console.log("Using local settings for Account Management Application.");
     app.use(express.logger("dev"));
-    app.set("s3_bucket", config.local.S3_BUCKET);
+    app.set("S3Bucket", config.local.S3_BUCKET);
     app.set("UserTable", config.local.USER_TABLE_NAME);
-    app.set("google_table_name", config.local.GOOGLE_TABLE_NAME);
+    app.set("GoogleTable", config.local.GOOGLE_TABLE_NAME);
     app.set("DOMAIN", config.local.DOMAIN);
     app.set("TEST_DOMAIN", config.local.TEST_DOMAIN);
     app.set("PROTOCOL", config.local.PROTOCOL);
@@ -43,9 +43,9 @@ app.configure("local", function() {
 });
 app.configure("development", function() {
     app.use(express.logger("dev"));
-    app.set("s3_bucket", config.development.S3_BUCKET);
+    app.set("S3Bucket", config.development.S3_BUCKET);
     app.set("UserTable", config.development.USER_TABLE_NAME5);
-    app.set("google_table_name", config.development.GOOGLE_TABLE_NAME);
+    app.set("GoogleTable", config.development.GOOGLE_TABLE_NAME);
     app.set("DOMAIN", config.development.DOMAIN);
     app.set("PROTOCOL", config.development.PROTOCOL);
     app.set("GOOGLE_CLIENT_ID", process.env.GOOGLE_CLIENT_ID);
@@ -53,9 +53,9 @@ app.configure("development", function() {
 });
 app.configure("production", function() {
     app.use(express.logger("tiny"));
-    app.set("s3_bucket", config.production.S3_BUCKET);
+    app.set("S3Bucket", config.production.S3_BUCKET);
     app.set("UserTable", config.production.USER_TABLE_NAME);
-    app.set("google_table_name", config.production.GOOGLE_TABLE_NAME);
+    app.set("GoogleTable", config.production.GOOGLE_TABLE_NAME);
     app.set("DOMAIN", config.production.DOMAIN);
     app.set("PROTOCOL", config.production.PROTOCOL);
     app.set("GOOGLE_CLIENT_ID", process.env.GOOGLE_CLIENT_ID);
@@ -86,7 +86,7 @@ passport.use(new GoogleStrategy(
     function(accessToken, refreshToken, profile, done) {
 	// Associate the Google profile with a user record in the DB.
 	accounts.findOrCreate(app.get("db"),
-			      app.get("google_table_name"),
+			      app.get("GoogleTable"),
 			      app.get("UserTable"),
 			      profile.id,
 			      profile.displayName,

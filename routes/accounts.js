@@ -8,8 +8,7 @@
 /**
  * Include modules here.
  */
-var utils = require("./../utils/utils")
-  , uuid  = require("node-uuid");
+var utils = require("./../utils/utils");
 
 /**
  * Render a page to login or create an account.

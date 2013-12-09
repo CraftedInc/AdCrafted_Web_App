@@ -58,8 +58,7 @@ var express    = require("express")
   , path       = require("path")
   , api        = require("./apps/api/api")
   , accounts   = require("./apps/accounts/accounts")
-  , advertiser = require("./apps/advertiser/advertiser")
-  , publisher  = require("./apps/publisher/publisher");
+  , developer  = require("./apps/developer/developer");
 
 /**
  * Express application.
@@ -77,8 +76,7 @@ app.configure("local", function() {
     // Subdomains for the API and the management application.
     app.use(express.vhost("api.test.com", api.app));
     app.use(express.vhost("accounts.test.com", accounts.app));
-    app.use(express.vhost("advertiser.test.com", advertiser.app));
-    app.use(express.vhost("publisher.test.com", publisher.app));
+    app.use(express.vhost("developer.test.com", developer.app));
     // Set up static files.
     app.use(express.static(path.join(__dirname, config.local.STATIC_PATH)));
     // Set the domain.
@@ -92,8 +90,7 @@ app.configure("development", function() {
     // Subdomains for the API and the management application.
     app.use(express.vhost("api.citreo.us", api.app));
     app.use(express.vhost("accounts.citreo.us", accounts.app));
-    app.use(express.vhost("advertiser.citreo.us", advertiser.app));
-    app.use(express.vhost("publisher.citreo.us", publisher.app));
+    app.use(express.vhost("developer.citreo.us", developer.app));
     // Set up static files.
     app.use(
 	express.static(path.join(__dirname, config.development.STATIC_PATH)));
@@ -108,8 +105,7 @@ app.configure("production", function() {
     // Subdomains for the API and the management application.
     app.use(express.vhost("api.adcrafted.com", api.app));
     app.use(express.vhost("accounts.adcrafted.com", accounts.app));
-    app.use(express.vhost("advertiser.adcrafted.com", advertiser.app));
-    app.use(express.vhost("publisher.adcrafted.com", publisher.app));
+    app.use(express.vhost("developer.adcrafted.com", developer.app));
     // Set up static files.
     app.use(
 	express.static(path.join(__dirname, config.production.STATIC_PATH)));
@@ -133,8 +129,7 @@ app.configure(function() {
     app.set("db", db);
     api.app.set("db", db);
     accounts.app.set("db", db);
-    advertiser.app.set("db", db);
-    publisher.app.set("db", db);
+    developer.app.set("db", db);
     // Create an S3 management instance and share among the applications.
     var s3_SDK = new AWS.S3();
     api.app.set("s3", new AWSManager.S3(s3_SDK, api.app.get("S3Bucket"),
@@ -144,12 +139,8 @@ app.configure(function() {
 	"s3", new AWSManager.S3(s3_SDK, accounts.app.get("S3Bucket"),
 				config.CSPACE_IMG_PREFIX,
 				config.AD_IMG_PREFIX));
-    advertiser.app.set(
-	"s3", new AWSManager.S3(s3_SDK, advertiser.app.get("S3Bucket"),
-				config.CSPACE_IMG_PREFIX,
-				config.AD_IMG_PREFIX));
-    publisher.app.set(
-	"s3", new AWSManager.S3(s3_SDK, publisher.app.get("S3Bucket"),
+    developer.app.set(
+	"s3", new AWSManager.S3(s3_SDK, developer.app.get("S3Bucket"),
 				config.CSPACE_IMG_PREFIX,
 				config.AD_IMG_PREFIX));
     // Create an SES service interface object.
@@ -160,8 +151,7 @@ app.configure(function() {
     jobScheduler.start();
     api.app.set("jobScheduler", jobScheduler);
     accounts.app.set("jobScheduler", jobScheduler);
-    advertiser.app.set("jobScheduler", jobScheduler);
-    publisher.app.set("jobScheduler", jobScheduler);
+    developer.app.set("jobScheduler", jobScheduler);
     // Error handler.
     app.use(function(err, request, response, next){
 	console.error(err.stack);

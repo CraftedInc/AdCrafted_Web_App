@@ -96,7 +96,7 @@ exports.authenticateAPIRequest = function() {
 	} else {
 	    var db = request.app.get("db");
 	    var params = {
-		"TableName": request.app.get("user_table_name"),
+		"TableName": request.app.get("UserTable"),
 		"Key": {
 		    "UserID": {
 			"S": accessKey

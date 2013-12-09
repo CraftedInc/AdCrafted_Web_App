@@ -1,5 +1,5 @@
 /**
- * Publisher portal for AdCrafted.
+ * Developer portal for AdCrafted.
  *
  * Currently, 3 environments are supported.
  * See server.js for instructions.
@@ -27,10 +27,10 @@ var express  = require("express")
 var app = express();
 
 /**
- * Publisher application environment-specific application configuration.
+ * Developer application environment-specific application configuration.
  */
 app.configure("local", function() {
-    console.log("Using local settings for Publisher Application.");
+    console.log("Using local settings for Developer Application.");
     app.use(express.logger("dev"));
     app.set("S3Bucket", config.local.S3_BUCKET);
     app.set("CSpaceTable", config.local.CSPACE_TABLE_NAME);
