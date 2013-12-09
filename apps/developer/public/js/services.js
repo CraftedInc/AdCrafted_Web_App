@@ -40,6 +40,30 @@ adServices.factory("AdMetrics", function($resource) {
     });
 });
 
+// A module for Asset services.
+var assetServices = angular.module("assetServices", ["ngResource"]);
+
+assetServices.factory("AssetCollection", function($resource) {
+    return $resource("/api/cspace/:cSpaceID/asset", {}, {
+	create: {method: "POST"},
+	get: {method: "GET"}
+    });
+});
+
+assetServices.factory("SingleAsset", function($resource) {
+    return $resource("/api/cspace/:cSpaceID/asset/:assetID", {}, {
+	get: {method: "GET"},
+	update: {method: "PUT"},
+	del: {method: "DELETE"}
+    });
+});
+
+assetServices.factory("AssetMetrics", function($resource) {
+    return $resource("/api/cspace/:cSpaceID/asset/:assetID/metrics", {}, {
+	get: {method: "GET", isArray: true}
+    });
+});
+
 // A module for Account services.
 var accountServices = angular.module("accountServices", ["ngResource"]);
 

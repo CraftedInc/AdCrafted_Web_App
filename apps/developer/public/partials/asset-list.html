@@ -1,0 +1,75 @@
+<!-- CSPACE control bar -->
+<div class="form-inline row" id="cspace-control-bar">
+  <a href="#/cspaces/" class="btn btn-default">
+    <strong><span class="glyphicon glyphicon-arrow-left"></span> Back</strong>
+  </a>
+  <a href="#/cspaces/{{CSpaceID}}/asset/new" class="btn btn-success"><strong>New Asset</strong></a>
+  <div class="form-group pull-right">
+    <div class="input-group" id="input-group-search">
+      <span class="input-group-addon">
+	<span class="glyphicon glyphicon-search"></span>
+      </span>
+      <input type="text" class="form-control" placeholder="Search" ng-model="query">
+    </div>
+  </div>
+  <div class="form-group pull-right">
+    <label for="select-ordering">Order: </label>
+    <div class="btn-group" id="select-ordering">
+      <button class="btn btn-default" type="button" ng-model="orderReverse" btn-radio="false">Forward</button>
+      <button class="btn btn-default" type="button" ng-model="orderReverse" btn-radio="true">Reverse</button>
+    </div>
+  </div>
+  <div class="form-group pull-right">
+    <label>Sort by: </label>
+    <select class="btn btn-default" id="select-sort-by" ng-model="orderProp">
+      <option value="title">Title</option>
+      <option value="AssetID">ID</option>
+      <option value="date">Date</option>
+    </select>
+  </div>
+</div>
+
+<!-- Waiting GIF -->
+<div class="waiting" ng-class="{'hide': !waiting}">
+  <img src="/img/waiting.gif">
+</div>
+
+<!-- Information Header -->
+<div class="info-header" ng-class="{'hide': waiting, 'bottom-radius': !AssetCollection.Assets.length}">
+  <h1 ng-show="!AssetCollection.Assets.length">
+    <span class="glyphicon glyphicon-warning-sign"></span>
+    This <span class="green">CraftedSpace</span> has no <span class="green">Assets</span>
+  </h1>
+  <p ng-show="!AssetCollection.Assets.length">
+    <em>Assets will be displayed here when they are created</em>
+  </p>
+  <h1 ng-show="!!AssetCollection.Assets.length">All assets in CraftedSpace <span class="green">{{CSpaceID}}</span></h1>
+</div>
+
+<!-- CSPACE list -->
+<div class="content-list">
+  <div ng-repeat="Asset in AssetCollection.Assets | orderBy:orderProp:orderReverse | filter:query" class="asset-thumbnail row">
+    <div class="col-xs-3">
+      <img ng-show="Asset.image != 'null'" ng-src="{{Asset.image}}" class="img-rounded asset-img">
+      <p ng-show="Asset.image == 'null'"><em>No Image</em></p>
+    </div>
+    <div class="col-xs-5">
+      <div class="cspace-information">
+	<p><strong>{{Asset.title}}</strong><em ng-show="!Asset.title">No Title</em></p>
+	<p>{{Asset.text}}<em ng-show="!Asset.title">No Text</em></p>
+      </div>
+    </div>
+    <div class="col-xs-4">
+      <div class="cspace-information">
+	<p><strong>Asset ID: </strong><code>{{Asset.AssetID}}</code></p>
+	<p><strong>CraftedSpace ID: </strong><code>{{CSpaceID}}</code></p>
+	<p><strong>Link: </strong><a href={{Asset.link}} class="no-decoration" target="_blank">{{Asset.link}}</a>
+	  <em ng-show="!Asset.link">No Link</em>
+	</p>
+	<p><strong>Created: </strong>{{Asset.date | date:'longDate'}}</p>
+	<a href="#/cspaces/{{CSpaceID}}/asset/{{Asset.AssetID}}/metrics" class="btn btn-primary"><strong>Metrics</strong></a>
+	<a href="#/cspaces/{{CSpaceID}}/asset/{{Asset.AssetID}}/edit" class="btn btn-default"><strong>Edit</strong></a>
+      </div>
+    </div>
+  </div>
+</div>

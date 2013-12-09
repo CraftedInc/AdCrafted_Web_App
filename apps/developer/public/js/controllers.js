@@ -1,5 +1,5 @@
 /**
- * Controllers
+ * CraftedSpace controllers.
  */
 
 function CSpaceListCtrl($scope, CSpaceCollection) {
@@ -13,15 +13,6 @@ function CSpaceListCtrl($scope, CSpaceCollection) {
     $scope.populateSearch = function(tag) {
 	$scope.query = tag;
     }
-}
-
-function AdListCtrl($scope, $routeParams, AdCollection) {
-    $scope.waiting = true;
-    $scope.CSpaceID = $routeParams.CSpaceID;
-    $scope.AdCollection = AdCollection.get({cSpaceID: $scope.CSpaceID},
-					   function() {$scope.waiting = false});
-    $scope.orderReverse = false;
-    $scope.orderProp = "date";
 }
 
 function CreateCSpaceCtrl($scope, CSpaceCollection, CustomFileReader) {
@@ -89,6 +80,19 @@ function EditCSpaceCtrl($scope, $routeParams, SingleCSpace, CustomFileReader) {
 	    window.location = "#/cspaces/";
 	});
     }
+}
+
+/**
+ * Ad controllers.
+ */
+
+function AdListCtrl($scope, $routeParams, AdCollection) {
+    $scope.waiting = true;
+    $scope.CSpaceID = $routeParams.CSpaceID;
+    $scope.AdCollection = AdCollection.get({cSpaceID: $scope.CSpaceID},
+					   function() {$scope.waiting = false});
+    $scope.orderReverse = false;
+    $scope.orderProp = "date";
 }
 
 function CreateAdCtrl($scope, $routeParams, AdCollection, CustomFileReader) {
@@ -190,6 +194,128 @@ function AdMetricsCtrl($scope, $routeParams, AdMetrics) {
 					  $scope.impressions) * 100) : 0;
 		      });
 }
+
+/**
+ * Asset controllers.
+ */
+
+function AssetListCtrl($scope, $routeParams, AssetCollection) {
+    $scope.waiting = true;
+    $scope.CSpaceID = $routeParams.CSpaceID;
+    $scope.AssetCollection = AssetCollection.get({cSpaceID: $scope.CSpaceID},
+						 function() {
+						     $scope.waiting = false
+						 });
+    $scope.orderReverse = false;
+    $scope.orderProp = "date";
+}
+
+function CreateAssetCtrl($scope, $routeParams, AssetCollection,
+			 CustomFileReader) {
+    $scope.waiting = false;
+    $scope.cSpaceID = $routeParams.CSpaceID;
+    $scope.hasImage = false;
+
+    $scope.asset = {};
+
+    $scope.readImageFile = function() {         
+        CustomFileReader.readAsDataUrl($scope.file, $scope)
+            .then(function(result) {
+                $scope.asset.image = result;
+		$scope.imageSrc = result;
+		$scope.hasImage = true;
+            });
+    };
+
+    $scope.create = function(newAssetForm) {
+	if (newAssetForm.$valid) {
+	    $scope.waiting = true;
+	    AssetCollection.create({cSpaceID: $routeParams.CSpaceID},
+				   $scope.asset, function() {
+				       window.location = "#/cspaces/" +
+					   $routeParams.CSpaceID + "/asset";
+				   });
+	}
+    }
+}
+
+function EditAssetCtrl($scope, $routeParams, SingleAsset, CustomFileReader) {
+    $scope.waiting = true;
+    $scope.hasImage = false;
+    $scope.cSpaceID = $routeParams.CSpaceID;
+
+    $scope.asset = SingleAsset.get({assetID: $routeParams.AssetID,
+				    cSpaceID: $routeParams.CSpaceID},
+				   function() {
+				       $scope.waiting = false;
+				       $scope.imageSrc = $scope.asset.image;
+				       $scope.hasImage = $scope.asset.image !=
+					   "null";
+				   });
+
+    $scope.readImageFile = function() {         
+        CustomFileReader.readAsDataUrl($scope.file, $scope)
+            .then(function(result) {
+                $scope.asset.image = result;
+		$scope.imageSrc = result;
+		$scope.hasImage = true;
+            });
+    };
+
+    $scope.update = function(AssetForm) {
+	if (AssetForm.$valid) {
+	    $scope.waiting = true;
+	    SingleAsset.update({cSpaceID: $routeParams.CSpaceID,
+				assetID: $routeParams.AssetID},
+			       $scope.asset, function() {
+				   window.location =
+				       "#/cspaces/" + $routeParams.CSpaceID +
+				       "/asset";
+			       });
+	}
+    }
+
+    $scope.del = function() {
+	$scope.waiting = true;
+	SingleAsset.del({cSpaceID: $routeParams.CSpaceID,
+			 assetID: $routeParams.AssetID}, function() {
+			     window.location =
+				 "#/cspaces/" + $routeParams.CSpaceID +
+				 "/asset";
+			 });
+    }
+}
+
+function AssetMetricsCtrl($scope, $routeParams, AssetMetrics) {
+    $scope.CSpaceID = $routeParams.CSpaceID;
+    $scope.ctr = "--";
+    $scope.impressions = 0;
+    $scope.clicks = 0;
+    $scope.impressionsSeries = "";
+    $scope.clicksSeries = "";
+    $scope.metrics =
+	AssetMetrics.get({assetID: $routeParams.AssetID,
+			  cSpaceID: $routeParams.CSpaceID},
+			 function() {
+			     var metrics = $scope.metrics;
+			     for (var i = 0; i < metrics.length; i++) {
+				 $scope.impressions += 
+				 parseInt(metrics[i].impressions);
+				 $scope.clicks += parseInt(metrics[i].clicks);
+				 $scope.impressionsSeries += metrics[i].Date +
+				     "," + metrics[i].impressions + "\n";
+				 $scope.clicksSeries += metrics[i].Date +
+				     "," + metrics[i].clicks + "\n";
+			     }
+			     $scope.ctr = $scope.impressions > 0 ?
+				 Math.floor(($scope.clicks /
+					     $scope.impressions) * 100) : 0;
+			 });
+}
+
+/**
+ * Account controllers.
+ */
 
 function AccountCtrl($scope, $routeParams, Account) {
     $scope.waiting = true;

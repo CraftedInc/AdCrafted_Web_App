@@ -1,0 +1,60 @@
+<!-- BACK bar -->
+<div class="form-inline row" id="cspace-control-bar">
+  <a href="#/cspaces/{{cSpaceID}}/" class="btn btn-default">
+    <strong><span class="glyphicon glyphicon-arrow-left"></span> Back</strong>
+  </a>
+</div>
+
+<!-- Waiting GIF -->
+<div class="waiting" ng-class="{'hide': !waiting}">
+  <img src="/img/waiting.gif">
+</div>
+
+<!-- Information Header -->
+<div class="info-header border-bottom" ng-class="{'hide': waiting}">
+  <h1>
+    Create a new <span class="green">Asset</span> within this <span class="green">CraftedSpace</span>
+  </h1>
+</div>
+
+<!-- CREATION form -->
+<form class="form-horizontal row" role="form" id="create-asset-form" name="newAssetForm" ng-class="{'hide': waiting}">
+  <div class="row">
+    <div class="col-xs-9">
+      <div class="form-group">
+	<label for="title" class="col-xs-2 control-label">Title</label>
+	<div class="col-xs-9">
+	  <input type="text" class="form-control" id="title" placeholder="Title" ng-model="asset.title">
+	</div>
+      </div>
+      <div class="form-group">
+	<label for="text" class="col-xs-2 control-label">Text</label>
+	<div class="col-xs-9">
+	  <textarea class="form-control" id="text" placeholder="Text" ng-model="asset.text" rows="4"></textarea>
+	</div>
+      </div>
+      <div class="form-group">
+	<label for="link" class="col-xs-2 control-label">Link</label>
+	<div class="col-xs-9">
+	  <input type="url" class="form-control" id="link" placeholder="Link" ng-model="asset.link">
+	</div>
+      </div>
+    </div>
+    <div class="col-xs-3">
+      <div on-change="readImageFile()" image-drop="file" ng-class="{'draggable': !hasImage, 'dropzone': !hasImage}">
+	<p ng-show="!hasImage" class="text-muted drag-drop-text">
+	  Drag and drop an image here
+	</p>
+	<img ng-show="hasImage" ng-src="{{imageSrc}}" class="asset-img draggable">
+      </div>
+      <p ng-show="hasImage" class="text-muted">
+	Drag and drop an image here
+      </p>
+    </div>
+  </div>
+  <div class="row button-row">
+    <div class="center">
+      <button class="btn btn-success" ng-click="create(newAssetForm)"><strong>Create Asset</strong></button>
+    </div>
+  </div>
+</form>
