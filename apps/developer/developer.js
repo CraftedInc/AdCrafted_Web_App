@@ -38,7 +38,8 @@ app.configure("local", function() {
     app.set("AdTable", config.local.AD_TABLE_NAME);
     app.set("AssetTable", config.local.ASSET_TABLE_NAME);
     app.set("UserTable", config.local.USER_TABLE_NAME);
-    app.set("MetricsTable", config.local.METRICS_TABLE_NAME);
+    app.set("AdMetricsTable", config.local.AD_METRICS_TABLE_NAME);
+    app.set("AssetMetricsTable", config.local.ASSET_METRICS_TABLE_NAME);
     app.set("DOMAIN", config.local.DOMAIN);
     app.set("TEST_DOMAIN", config.local.TEST_DOMAIN);
     app.set("PROTOCOL", config.local.PROTOCOL);
@@ -50,7 +51,8 @@ app.configure("development", function() {
     app.set("AdTable", config.development.AD_TABLE_NAME);
     app.set("AssetTable", config.development.ASSET_TABLE_NAME);
     app.set("UserTable", config.development.USER_TABLE_NAME);
-    app.set("MetricsTable", config.development.METRICS_TABLE_NAME);
+    app.set("AdMetricsTable", config.development.AD_METRICS_TABLE_NAME);
+    app.set("AssetMetricsTable", config.development.ASSET_METRICS_TABLE_NAME);
     app.set("DOMAIN", config.development.DOMAIN);
     app.set("PROTOCOL", config.development.PROTOCOL);
 });
@@ -61,7 +63,8 @@ app.configure("production", function() {
     app.set("AdTable", config.production.AD_TABLE_NAME);
     app.set("AssetTable", config.production.ASSET_TABLE_NAME);
     app.set("UserTable", config.production.USER_TABLE_NAME);
-    app.set("MetricsTable", config.production.METRICS_TABLE_NAME);
+    app.set("AdMetricsTable", config.production.AD_METRICS_TABLE_NAME);
+    app.set("AssetMetricsTable", config.production.ASSET_METRICS_TABLE_NAME);
     app.set("DOMAIN", config.production.DOMAIN);
     app.set("PROTOCOL", config.production.PROTOCOL);
 });
@@ -147,7 +150,7 @@ app.put("/api/cspace/:cSpaceID",
 	utils.ensureAuthenticated(),
 	cspaces.updateCraftedSpace);
 
-// DELETE an CraftedSpace and all ads it may reference.
+// DELETE a CraftedSpace and all Ads and Assets it may reference.
 app.del("/api/cspace/:cSpaceID",
 	utils.ensureAuthenticated(),
 	cspaces.deleteCraftedSpace);
@@ -186,6 +189,41 @@ app.del("/api/cspace/:cSpaceID/ad/:adID",
 app.get("/api/cspace/:cSpaceID/ad/:adID/metrics",
 	utils.ensureAuthenticated(),
 	ads.getMetrics);
+
+// CREATE an asset in the specified CraftedSpace.
+app.post("/api/cspace/:cSpaceID/asset",
+	 utils.ensureAuthenticated(),
+	 assets.createAsset);
+
+// RETRIEVE all assets within the specified CraftedSpace.
+app.get("/api/cspace/:cSpaceID/asset",
+	utils.ensureAuthenticated(),
+	assets.getAllAssetsInCraftedSpace);
+
+// RETRIEVE a single asset from the specified CraftedSpace.
+app.get("/api/cspace/:cSpaceID/asset/:assetID",
+	utils.ensureAuthenticated(),
+	assets.getAsset);
+
+// RETRIEVE all Assets owned by the user.
+app.get("/api/asset",
+	utils.ensureAuthenticated(),
+	assets.getAllUserAssets);
+
+// UPDATE an asset.
+app.put("/api/cspace/:cSpaceID/asset/:assetID",
+	utils.ensureAuthenticated(),
+	assets.updateAsset);
+
+// DELETE an asset without deleting the CraftedSpace.
+app.del("/api/cspace/:cSpaceID/asset/:assetID",
+	utils.ensureAuthenticated(),
+	assets.deleteAsset);
+
+// GET the metrics for an asset.
+app.get("/api/cspace/:cSpaceID/asset/:assetID/metrics",
+	utils.ensureAuthenticated(),
+	assets.getMetrics);
 
 // GET a user's account (user must be logged in).
 app.get("/api/account",

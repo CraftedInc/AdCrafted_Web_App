@@ -1,7 +1,7 @@
 html, body {
     height: 100%;
 }
-.cspace-thumbnail, .ad-thumbnail {
+.cspace-thumbnail, .ad-thumbnail, .asset-thumbnail {
     padding: 20px 10px 20px 0;
     border-top: 1px solid #CECECE;
 }
@@ -63,7 +63,7 @@ body {
 .cspace-information {
     display: inline-block;
 }
-.cspace-img, .ad-img {
+.cspace-img, .ad-img, .asset-img {
     max-width: 200px;
     display: inline-block;
 }
@@ -81,7 +81,7 @@ body {
 #select-sort-by {
     height: 34px;
 }
-#create-cspace-form, #create-ad-form, #edit-cspace-form, #edit-ad-form {
+#create-cspace-form, #create-ad-form, #edit-cspace-form, #edit-ad-form, #create-asset-form, #edit-asset-form {
     background-color: #f8f8f8;
     padding: 20px;
     border-radius: 0 0 5px 5px;

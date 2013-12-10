@@ -164,7 +164,7 @@ S3.prototype._deleteFolder = function(prefix, callback) {
     };
     this.s3.listObjects(params, function(err, data) {
 	if (err) {
-	    callback(err, data);
+	    callback.call(this, err, data);
 	} else if (data.Contents.length > 0) {
 	    var keys = [];
 	    for (var i = 0; i < data.Contents.length; i++) {
@@ -179,7 +179,7 @@ S3.prototype._deleteFolder = function(prefix, callback) {
 	    this.s3.deleteObjects(params, callback);
 	} else {
 	    // No data to delete.
-	    callback(err, data);
+	    callback.call(this, err, data);
 	}
     }.bind(this));
 };

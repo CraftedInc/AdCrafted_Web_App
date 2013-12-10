@@ -93,6 +93,10 @@ exports.createAsset = function(request, response) {
 			}
 		    };
 		    for (var attr in asset) {
+			// Skip over items containing an empty string.
+			if (asset[attr] == "") {
+			    continue;
+			}
 			// The image attribute is a Base64 encoded file and must
 			// be processed separately.
 			if (attr == "image" && !!asset["image"]) {

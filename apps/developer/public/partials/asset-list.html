@@ -43,7 +43,11 @@
   <p ng-show="!AssetCollection.Assets.length">
     <em>Assets will be displayed here when they are created</em>
   </p>
-  <h1 ng-show="!!AssetCollection.Assets.length">All assets in CraftedSpace <span class="green">{{CSpaceID}}</span></h1>
+  <a ng-show="!AssetCollection.Assets.length" href="#/cspaces/{{CSpaceID}}/asset/new" class="btn btn-success">
+    <strong>Create Asset</strong>
+  </a>
+  <h1 ng-show="!!AssetCollection.Assets.length">All <span class="green">Assets</span> in <span class="green">CraftedSpace</span></h1>
+  <p ng-show="!!AssetCollection.Assets.length">CraftedSpace ID: <code>{{CSpaceID}}</code></p>
 </div>
 
 <!-- CSPACE list -->
@@ -62,7 +66,6 @@
     <div class="col-xs-4">
       <div class="cspace-information">
 	<p><strong>Asset ID: </strong><code>{{Asset.AssetID}}</code></p>
-	<p><strong>CraftedSpace ID: </strong><code>{{CSpaceID}}</code></p>
 	<p><strong>Link: </strong><a href={{Asset.link}} class="no-decoration" target="_blank">{{Asset.link}}</a>
 	  <em ng-show="!Asset.link">No Link</em>
 	</p>

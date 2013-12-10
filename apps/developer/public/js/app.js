@@ -1,7 +1,7 @@
 /**
  * App Module.
  */
-angular.module("appcrafted", ["cSpaceServices", "adServices", "accountServices", "customDirectives", "fileServices", "ui.bootstrap"]).
+angular.module("appcrafted", ["cSpaceServices", "adServices", "assetServices", "accountServices", "customDirectives", "fileServices", "ui.bootstrap"]).
     config(["$routeProvider",  function($routeProvider) {
 	$routeProvider.
 	    when("/cspaces", {templateUrl: "partials/cspace-list.html",   controller: CSpaceListCtrl}).

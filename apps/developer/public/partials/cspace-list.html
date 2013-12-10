@@ -38,10 +38,10 @@
     You have not created any <span class="green">CraftedSpaces</span>
   </h1>
   <p ng-show="!CSpaces.length">
-    <em><span class="green">CraftedSpaces</span> store <span class="green">Assets</span> that you can deliver to your apps</em>
+    <em><span class="green">CraftedSpaces</span> allow you to deliver <span class="green">Assets</span> to your apps</em>
   </p>
   <p ng-show="!CSpaces.length">
-    <a href="#/cspaces/new" class="btn btn-success"><strong>Create a CraftedSpace</strong></a>
+    <a href="#/cspaces/new" class="btn btn-success"><strong>Create CraftedSpace</strong></a>
   </p>
   <h1 ng-show="!!CSpaces.length">Your <span class="green">CraftedSpaces</span></h1>
 </div>
@@ -65,7 +65,7 @@
 	<em ng-show="!CSpace.tags.length">none</em>
 	<a class="label label-success tag" ng-repeat="tag in CSpace.tags" ng-click="populateSearch(tag)">{{tag}}</a>
       </p>
-      <a href="#/cspaces/{{CSpace.CSpaceID}}/ad" class="btn btn-primary"><strong>Manage Assets</strong></a>
+      <a href="#/cspaces/{{CSpace.CSpaceID}}/asset" class="btn btn-primary"><strong>Manage Assets</strong></a>
       <a href="#/cspaces/{{CSpace.CSpaceID}}/edit" class="btn btn-default"><strong>Edit</strong></a>
     </div>
   </div>

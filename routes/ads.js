@@ -106,6 +106,10 @@ exports.createAd = function(request, response) {
 			}
 		    };
 		    for (var attr in ad) {
+			// Skip over items containing an empty string.
+			if (ad[attr] == "") {
+			    continue;
+			}
 			// The image attribute is a Base64 encoded file and must
 			// be processed separately.
 			if (attr == "image" && !!ad["image"]) {

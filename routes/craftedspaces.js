@@ -42,11 +42,7 @@ exports.createCraftedSpace = function(request, response) {
 		var name = utils.generateKey(8);
 		var key = s3.generateCraftedSpaceKey(cSpaceID, name, file.ext);
 		s3.upload(file.body, key, "image/" + file.ext,
-			  function(err, data) {
-			      if (err) {
-				  console.log(err);
-			      }
-			  });
+			  function(err, data) {});
 		params.Item[attr] = {
 		    "S": s3.getCraftedSpaceImageURL(cSpaceID, name, file.ext)
 		};
@@ -183,11 +179,7 @@ exports.updateCraftedSpace = function(request, response) {
 		var name = utils.generateKey(8);
 		var key = s3.generateCraftedSpaceKey(cSpaceID, name, file.ext);
 		s3.upload(file.body, key, "image/" + file.ext,
-			  function(err, data) {
-			      if (err) {
-				  console.log(err);
-			      }
-			  });
+			  function(err, data) {});
 		params.AttributeUpdates[attr] = {
 		    "Value": {
 			"S": s3.getCraftedSpaceImageURL(cSpaceID,name,file.ext)
@@ -228,7 +220,6 @@ exports.updateCraftedSpace = function(request, response) {
     }
     db.updateItem(params, function(err, data) {
 	if (err) {
-	    console.log(err);
 	    response.send(500, {message: "An Error Occurred"});
 	} else {
 	    response.send(200, {message: "CraftedSpace Updated"});
@@ -259,8 +250,83 @@ exports.deleteCraftedSpace = function(request, response) {
     db.deleteItem(params).send();
     // Delete the image it may reference.
     s3.deleteCraftedSpaceImage(cSpaceID, function(err, data) {});
-    // Reassign params to facilitate a query of the Ads table.
-    params = {
+    // Delete the Ads and the Assets in this CraftedSpace.
+    _deleteAssets(request, response, cSpaceID, function(err, data) {
+	if (err) {
+	    response.send(500, {message: "An Error Occurred"});
+	} else {
+	    _deleteAds(request, response, cSpaceID, function(err, data) {
+		if (err) {
+		    response.send(500, {message: "An Error Occurred"});
+		} else {
+		    response.send(200, {message: "CraftedSpace Deleted"});
+		}
+	    });
+	}
+    });
+};
+
+/**
+ * Private helper functions.
+ */
+
+/**
+ * Private helper function to delete all Assets in a CraftedSpace.
+ */
+function _deleteAssets(request, response, cSpaceID, callback) {
+    var db = response.app.get("db");
+    var s3 = response.app.get("s3");
+    var params = {
+	"TableName": response.app.get("AssetTable"),
+	"KeyConditions": {
+	    "CSpaceID": {
+		"AttributeValueList" : [{
+		    "S": request.params.cSpaceID
+		}],
+		"ComparisonOperator" : "EQ"
+	    }
+	}
+    };
+    db.query(params, function(err, data) {
+	if (err || data.Count == 0) {
+	    callback.call(this, err, data);
+	} else {
+	    var batch = [];
+	    for (var i = 0; i < data.Count; i++) {
+		// Delete any images the asset may reference.
+		s3.deleteAssetImage(cSpaceID, data.Items[i].AssetID.N,
+				    function(err, data) {});
+		batch[i] = {
+                    "DeleteRequest": {
+			"Key": {
+			    "CSpaceID": {
+				"S": cSpaceID
+			    },
+			    "AssetID": {
+				"N": data.Items[i].AssetID.N
+			    }
+			}
+		    }
+		};
+	    }
+	    params = {
+		"RequestItems": {}
+	    };
+	    params.RequestItems[response.app.get("AssetTable")] = batch;
+	    db.batchWriteItem(params, function(err, data) {
+		callback.call(this, err, data);
+	    });
+	}
+    });
+}
+
+/**
+ * Private helper function to delete all Ads in a CraftedSpace.
+ */
+function _deleteAds(request, response, cSpaceID, callback) {
+    var db = response.app.get("db");
+    var s3 = response.app.get("s3");
+    var params = {
 	"TableName": response.app.get("AdTable"),
 	"KeyConditions": {
 	    "CSpaceID": {
@@ -272,9 +338,9 @@ exports.deleteCraftedSpace = function(request, response) {
 	}
     };
     db.query(params, function(err, data) {
-	if (err) {
-	    response.send(500, {message: "An Error Occurred"});
-	} else if (data.Count > 0) {
+	if (err || data.Count == 0) {
+	    callback.call(this, err, data);
+	} else {
 	    var batch = [];
 	    for (var i = 0; i < data.Count; i++) {
 		// Delete any images the ad may reference.
@@ -298,14 +364,8 @@ exports.deleteCraftedSpace = function(request, response) {
 	    };
 	    params.RequestItems[response.app.get("AdTable")] = batch;
 	    db.batchWriteItem(params, function(err, data) {
-		if (err) {
-		    response.send(500, {message: "An Error Occurred"});
-		} else {
-		    response.send(200, {message: "CraftedSpace Deleted"});
-		}
+		callback.call(this, err, data);
 	    });
-	} else {
-	    response.send(200, {message: "CraftedSpace Deleted"});
 	}
     });
-};
+}
