@@ -1,5 +1,5 @@
 /**
- * Configuration file for AdCrafted application.
+ * Configuration file for AppCrafted application.
  */
 var config = {};
 
@@ -12,11 +12,10 @@ config.ASSET_IMG_PREFIX = "Asset-Images";
 config.CSPACE_IMG_PREFIX = "CraftedSpace-Images";
 config.VIEWS_PATH = "/views";
 config.APPS_VIEWS_PATH = "/../../views";
-config.USER_WHITELIST = ["jbpasko@gmail.com", "james@adcrafted.com",
-			 "brandon@pepwuper.com", "brandon.wu.com@gmail.com",
-			 "brandon@adcrafted.com", "jpasko@uw.edu"];
+config.USER_WHITELIST = ["jbpasko@gmail.com", "jpasko@uw.edu",
+			 "brandon@pepwuper.com", "brandon.wu.com@gmail.com"];
 config.ADMIN_EMAILS = ["james@adcrafted.com", "brandon@adcrafted.com"];
-config.NOTIFICATIONS_EMAIL = "AdCrafted Notifications <notifications@adcrafted.com>";
+config.NOTIFICATIONS_EMAIL = "AppCrafted Notifications <notifications@appcrafted.com>";
 config.CSPACE_USER_ID_INDEX = "CSpaceUserID-INDEX";
 config.ASSET_USER_ID_INDEX = "AssetUserID-INDEX";
 
@@ -60,15 +59,15 @@ config.development = {
  */
 config.production = {
     PROTOCOL: "http://",
-    DOMAIN: "adcrafted.com",
-    S3_BUCKET: "adcrafted-prod",
-    CSPACE_TABLE_NAME: "AdCrafted-CraftedSpace-PROD",
-    AD_TABLE_NAME: "AdCrafted-Ad-PROD",
-    ASSET_TABLE_NAME: "AdCrafted-Asset-PROD",
-    USER_TABLE_NAME: "AdCrafted-User-PROD",
-    GOOGLE_TABLE_NAME: "AdCrafted-Google-PROD",
-    AD_METRICS_TABLE_NAME: "AdCrafted-AdMetrics-PROD",
-    ASSET_METRICS_TABLE_NAME: "AdCrafted-AssetMetrics-PROD",
+    DOMAIN: "appcrafted.com",
+    S3_BUCKET: "appcrafted-prod",
+    CSPACE_TABLE_NAME: "AppCrafted-CraftedSpace-PROD",
+    AD_TABLE_NAME: "AppCrafted-Ad-PROD",
+    ASSET_TABLE_NAME: "AppCrafted-Asset-PROD",
+    USER_TABLE_NAME: "AppCrafted-User-PROD",
+    GOOGLE_TABLE_NAME: "AppCrafted-Google-PROD",
+    AD_METRICS_TABLE_NAME: "AppCrafted-AdMetrics-PROD",
+    ASSET_METRICS_TABLE_NAME: "AppCrafted-AssetMetrics-PROD",
     STATIC_PATH: "public/production"
 };
 
