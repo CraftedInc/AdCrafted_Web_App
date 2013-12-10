@@ -103,9 +103,9 @@ app.configure("production", function() {
     // AWS configuration and AWS-related settings.
     AWS.config.update({region: 'us-east-1'});
     // Subdomains for the API and the management application.
-    app.use(express.vhost("api.adcrafted.com", api.app));
-    app.use(express.vhost("accounts.adcrafted.com", accounts.app));
-    app.use(express.vhost("developer.adcrafted.com", developer.app));
+    app.use(express.vhost("api.appcrafted.com", api.app));
+    app.use(express.vhost("accounts.appcrafted.com", accounts.app));
+    app.use(express.vhost("developer.appcrafted.com", developer.app));
     // Set up static files.
     app.use(
 	express.static(path.join(__dirname, config.production.STATIC_PATH)));
