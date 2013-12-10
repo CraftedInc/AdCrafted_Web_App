@@ -119,4 +119,14 @@ app.post("/alpha/cspace/:cSpaceID/asset/:assetID/metrics",
 	 utils.authenticateAPIRequest(),
 	 assets.updateMetrics);
 
+// RETRIEVE all Assets within the specified CraftedSpace (no authentication).
+app.get("/exp/cspace/:cSpaceID/asset",
+	utils.setUserIDOnRequest(),
+	assets.getAllAssetsInCraftedSpace);
+
+// UPDATE the Asset impression and click metrics (no authentication).
+app.post("/exp/cspace/:cSpaceID/asset/:assetID/metrics",
+	 utils.setUserIDOnRequest(),
+	 assets.updateMetrics);
+
 exports.app = app;

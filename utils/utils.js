@@ -127,6 +127,27 @@ exports.authenticateAPIRequest = function() {
 };
 
 /**
+ * Sets the user id without any authentication.
+ */
+exports.setUserIDOnRequest = function() {
+    return function(request, response, next) {
+	request.user = null; // Clear any unauthorized user.
+	var header    = request.headers["authorization"] || "",
+	    token     = header.split(/\s+/).pop() || "",
+	    auth      = new Buffer(token, "base64").toString(),
+	    parts     = auth.split(/:/),
+	    accessKey = parts[0],
+	    signature = parts[1];
+	if (!accessKey) {
+	    response.send(403, "Missing or Incorrect Authorization Header");
+	} else {
+	    request.user = {id: accessKey};
+	    next();
+	}
+    }
+};
+
+/**
  * Parses the request header for the subdomain.
  */
 exports.getSubdomain = function(header) {
