@@ -35,7 +35,7 @@
 	  <p><em>Overview</em></p>
 	</div>
 	<div class="col-xs-10">
-	  <p>AppCrafted allows developers to deliver <span class="green">Assets</span> (content such as text, links, and files) into their mobile applications. Developers can create and manage these Assets, and their changes will be reflected in their applications without requiring an update to the application.</p>
+	  <p>AppCrafted allows developers to deliver <span class="green">Assets</span> (content such as text, links, and files) to their mobile applications. Developers can create and manage these Assets, and their changes will be reflected in their applications without requiring an update to the application.</p>
 	  <p>Currently, AppCrafted supports a simple Web API as well as a Unity Plugin to facilitate integration with Unity applications.</p>
 	</div>
       </div>
@@ -58,6 +58,23 @@
 	<div class="col-xs-10">
 	  <div class="light-red-bg">
 	    <p><strong>Warning:</strong> The Web API documentation is being actively updated.</p>
+	    </div>
+	</div>
+      </div>
+      <div class="row docs-row">
+	<div class="col-xs-2"></div>
+	<div class="col-xs-10">
+	  <div class="light-yellow-bg">
+	    <p><strong>Experimental API:</strong> Some changes are necessary to use the experimental API.</p>
+	    <p>
+	      Change the URL to <code>http://api.appcrafted.com/exp/cspace/&lt;rest of URL&gt;</code> (i.e. change
+	      <code>alpha</code> to <code>exp</code>).
+	    </p>
+	    <p>
+	      Omit the <code>&lt;Signature&gt;</code> part of the <code>Authorization</code> 
+	      header (but keep the <code>:</code>). For example, when retrieving all Assets in a CraftedSpace, issue this request:
+	    </p>
+	    <pre>$ curl http://api.appcrafted.com/alpha/cspace/<span class="red">&lt;CraftedSpaceID&gt;</span>/asset -u <span class="red">&lt;AccessKey&gt;:</span></pre>
 	    </div>
 	</div>
       </div>
@@ -131,7 +148,7 @@
 	<div class="col-xs-10">
 	  <p>Register metrics by issuing a <strong>POST</strong> request with the number of <code>clicks</code> and/or <code>impressions</code> you wish to record.</p>
 	  <p><strong>cURL</strong> example:</p>
-	  <pre>$ curl http://api.test.com:8888/alpha/cspace/<span class="red">&lt;CraftedSpaceID&gt;</span>/asset/<span class="red">&lt;AssetID&gt;</span>/metrics \
+	  <pre>$ curl http://api.appcrafted.com/alpha/cspace/<span class="red">&lt;CraftedSpaceID&gt;</span>/asset/<span class="red">&lt;AssetID&gt;</span>/metrics \
   -i -X POST -H 'Content-Type: application/json' \
   -d '{"impressions": 100, "clicks": 5}' \
   -u <span class="red">&lt;AccessKey&gt;:&lt;Signature&gt;</span> </pre>

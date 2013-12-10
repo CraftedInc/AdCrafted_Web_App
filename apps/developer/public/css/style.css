@@ -167,6 +167,11 @@ body {
     border-radius: 4px;
     padding: 9.5px;
 }
+.light-yellow-bg {
+    background-color: #FCF9D2;
+    border-radius: 4px;
+    padding: 9.5px;
+}
 .link-no-decoration:hover {
     text-decoration: none;
 }
