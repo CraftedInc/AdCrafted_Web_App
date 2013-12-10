@@ -5,9 +5,15 @@ html, body {
     padding: 20px 10px 20px 0;
     border-top: 1px solid #CECECE;
 }
-.account-row, .docs-row {
+.account-row, .docs-section {
     padding: 10px 0 0 0;
     border-top: 1px solid #CECECE;
+}
+.docs-row {
+    margin: 10px 0 20px 0;
+}
+.doc-header {
+    font-size: 20px;
 }
 #edit-account-form {
     background-color: #f8f8f8;
@@ -148,6 +154,19 @@ body {
 .blue {
     color: #428bca;
 }
+.red {
+    color: #d9534f
+}
+.light-red-bg {
+    background-color: #FCD2D2;
+    border-radius: 4px;
+    padding: 9.5px;
+}
+.light-green-bg {
+    background-color: #D4FCD2;
+    border-radius: 4px;
+    padding: 9.5px;
+}
 .link-no-decoration:hover {
     text-decoration: none;
 }
@@ -214,6 +233,10 @@ code {
     padding: 4px 4px 2px 4px !important;
     background-color: #CECECE !important;
 }
-.docs-row code {
-    color: #333;
+.docs-section pre {
+    background-color: #EEE !important;
+}
+.docs-section code {
+    color: #333 !important;
+    background-color: #CECECE !important;
 }
