@@ -11,7 +11,7 @@
 exports.index = function(request, response) {
     response.render("index",
 		    {
-			title: "AdCrafted | Technology for Mobile Creativity",
+			title: "AppCrafted | Technology for Mobile Creativity",
 			domain: request.app.get("DOMAIN"),
 			modal: request.query.signin || false,
 			email: request.query.email

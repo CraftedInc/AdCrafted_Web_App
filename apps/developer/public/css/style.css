@@ -5,7 +5,7 @@ html, body {
     padding: 20px 10px 20px 0;
     border-top: 1px solid #CECECE;
 }
-.account-row {
+.account-row, .docs-row {
     padding: 10px 0 0 0;
     border-top: 1px solid #CECECE;
 }
@@ -43,7 +43,7 @@ body {
 #input-group-search {
     width: 250px;
 }
-#cspace-control-bar, #account-control-bar {
+#cspace-control-bar, #account-control-bar, #control-bar {
     background-color: #CECECE;
     padding: 15px;
     border-radius: 5px 5px 0 0;
@@ -213,4 +213,7 @@ body {
 code {
     padding: 4px 4px 2px 4px !important;
     background-color: #CECECE !important;
+}
+.docs-row code {
+    color: #333;
 }

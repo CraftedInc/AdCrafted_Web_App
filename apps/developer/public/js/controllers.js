@@ -339,3 +339,12 @@ function EditAccountCtrl($scope, $routeParams, Account) {
 	}
     }
 }
+
+/**
+ * Documentation controller.
+ */
+
+function DocsCtrl($scope, $routeParams) {
+    $scope.showAPIDocs = false;
+    $scope.showUnityPluginDocs = false;
+}

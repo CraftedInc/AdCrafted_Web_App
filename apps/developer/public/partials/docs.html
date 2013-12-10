@@ -1,0 +1,55 @@
+<!-- Control bar -->
+<div class="form-inline row" id="control-bar">
+  <a href="#/cspaces/" class="btn btn-success"><strong>Home</strong></a>
+</div>
+
+<!-- Information Header -->
+<div class="info-header">
+  <h1>
+    AppCrafted Documentation
+  </h1>
+</div>
+
+<!-- Documentation display -->
+<div class="content-list">
+  <div class="row docs-row">
+    <div class="row" style="padding-bottom: 10px">
+      <div class="col-xs-6 align-right">
+	<p style="margin-top: 5px"><strong>Web API</strong></p>
+      </div>
+      <div class="col-xs-6">
+	<a ng-click="showAPIDocs = !showAPIDocs" class="btn" ng-class="{'btn-danger': showAPIDocs, 'btn-success': !showAPIDocs}">
+	  <strong>{{showAPIDocs && 'Hide' || 'Show'}}</strong>
+	</a>
+      </div>
+    </div>
+    <div ng-class="{'hide': !showAPIDocs}">
+      <div class="col-xs-6 align-right">
+	<p>Item 1</p>
+      </div>
+      <div class="col-xs-6">
+	<p><code>some code goes here</code></p>
+      </div>
+    </div>
+  </div>
+  <div class="row docs-row">
+    <div class="row" style="padding-bottom: 10px">
+      <div class="col-xs-6 align-right">
+	<p style="margin-top: 5px"><strong>Unity Plugin</strong></p>
+      </div>
+      <div class="col-xs-6">
+	<a ng-click="showUnityPluginDocs = !showUnityPluginDocs" class="btn" ng-class="{'btn-danger': showUnityPluginDocs, 'btn-success': !showUnityPluginDocs}">
+	  <strong>{{showUnityPluginDocs && 'Hide' || 'Show'}}</strong>
+	</a>
+      </div>
+    </div>
+    <div ng-class="{'hide': !showUnityPluginDocs}">
+      <div class="col-xs-6 align-right">
+	<p>Item 2</p>
+      </div>
+      <div class="col-xs-6">
+	<p><code>some more code goes here</code></p>
+      </div>
+    </div>
+  </div>
+</div>

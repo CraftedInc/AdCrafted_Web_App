@@ -13,7 +13,8 @@ config.CSPACE_IMG_PREFIX = "CraftedSpace-Images";
 config.VIEWS_PATH = "/views";
 config.APPS_VIEWS_PATH = "/../../views";
 config.USER_WHITELIST = ["jbpasko@gmail.com", "jpasko@uw.edu",
-			 "brandon@pepwuper.com", "brandon.wu.com@gmail.com"];
+			 "brandon@pepwuper.com", "brandon.wu.com@gmail.com",
+			 "michael.nadel@gmail.com", "ianrosenwach@gmail.com"];
 config.ADMIN_EMAILS = ["james@adcrafted.com", "brandon@adcrafted.com"];
 config.NOTIFICATIONS_EMAIL = "AppCrafted Notifications <notifications@appcrafted.com>";
 config.CSPACE_USER_ID_INDEX = "CSpaceUserID-INDEX";

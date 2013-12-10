@@ -1,9 +1,15 @@
 <!-- Control bar -->
 <div class="form-inline row" id="account-control-bar">
   <a href="#/cspaces/" class="btn btn-success"><strong>Home</strong></a>
-  <a href="#/account/edit/" class="btn btn-default"><strong>Edit Account</strong></a>
+  <a href="#/account/edit/" class="btn btn-default"><strong>Edit Your Account</strong></a>
 </div>
 
+<!-- Information Header -->
+<div class="info-header" ng-class="{'hide': waiting}">
+  <h1>
+    Your Account
+  </h1>
+</div>
 
 <!-- Waiting GIF -->
 <div class="waiting" ng-class="{'hide': !waiting}">
@@ -31,7 +37,7 @@
   <div class="row account-row">
     <div class="row" style="padding-bottom: 10px">
       <div class="col-xs-6 align-right">
-	<p style="margin-top: 5px"><strong>AdCrafted Credentials</strong></p>
+	<p style="margin-top: 5px"><strong>AppCrafted Credentials</strong></p>
       </div>
       <div class="col-xs-6">
 	<a ng-click="showCredentials = !showCredentials" class="btn" ng-class="{'btn-danger': showCredentials, 'btn-success': !showCredentials}">
