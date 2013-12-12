@@ -22,6 +22,14 @@ exports.isInt = function(n) {
 };
 
 /**
+ * Tests (via regex) whether a string is a valid email address.
+ */
+exports.isEmail = function(email) {
+    var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    return regex.test(email);
+};
+
+/**
  * Extracts the metadata from the Base64 encoded data and returns an object
  * containing the metadata and the Base64 encoded body.
  * @param {string} data The URL/Base64 encoded data.

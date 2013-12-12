@@ -5,6 +5,7 @@
  */
 
 var config = require("./../config");
+var utils  = require("./../utils/utils");
 var jade   = require("jade");
 var fs     = require("fs");
 
@@ -41,7 +42,7 @@ exports.collectEmail = function(request, response) {
 	    }
 	}
     };
-    if (request.body.email) {
+    if (request.body.email && utils.isEmail(request.body.email)) {
 	params["ReplyToAddresses"] = [request.body.email];
     }
     ses.sendEmail(params, function(err, data) {

@@ -12,7 +12,7 @@ config.ASSET_IMG_PREFIX = "Asset-Images";
 config.CSPACE_IMG_PREFIX = "CraftedSpace-Images";
 config.VIEWS_PATH = "/views";
 config.APPS_VIEWS_PATH = "/../../views";
-config.USER_WHITELIST = ["jbpasko@gmail.com", "jpasko@uw.edu",
+config.USER_WHITELIST = ["jbpasko@gmail.com",
 			 "brandon@pepwuper.com", "brandon.wu.com@gmail.com",
 			 "michael.nadel@gmail.com", "ianrosenwach@gmail.com"];
 config.ADMIN_EMAILS = ["james@adcrafted.com", "brandon@adcrafted.com"];

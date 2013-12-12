@@ -15,56 +15,17 @@ $(document).ready(function() {
 	    window.location.hash = target;
 	});
     });
-    // Validate the email, and prompt the user for more information.
-    $("#email-send").click(function() {
-	var email = $("#email-input").val();
-	if (isEmail(email)) {
-	    $("#comment-modal").modal();
-	} else {
-	    $("#invalid-email").fadeIn();
-	}
-    });
-    // Fade out the error message on focus.
-    $("#email-input").focus(function() {
-	$("#invalid-email").fadeOut();
-    });
-    // Fade out the error message when the input is changed. The enter key
-    // triggers a click.
-    $("#email-input").keyup(function(event) {
-        if (event.keyCode != 13) {
-	    $("#invalid-email").fadeOut();
-        } else {
-	    $("#email-send").click();
-	}
-    });
     // Collect and send all the info to the server.
-    $("#send-info").click(function() {
+    $("#send-info, #send-info-2").click(function() {
 	var email = $("#email-input").val() || "Not provided";
-	var developer = $("#developer-checkbox").prop("checked");
-	var advertiser = $("#advertiser-checkbox").prop("checked");
-	var role = developer ? advertiser ? "Both" : "Developer" :
-	advertiser ? "Advertiser" : "Not provided";
+	var name = $("#comment-name").val() || "Not provided";
 	var comment = $("#comment").val() || "Not provided";
 	$.ajax({
 	    type: "POST",
 	    url: "/email",
 	    data: {"email": email,
-		   "role": role,
-		   "comment": comment},
-	    success: function(data) {
-		if (data.status != 200) {
-		    $("#server-message").text(data.message);
-		    $("#server-message").fadeIn();
-		} else {
-		    $("#server-message").fadeOut();
-		    $("#incentive").fadeOut();
-		    $("#email-input-wrapper").fadeOut(400, function() {
-			$("#thank-you").fadeIn(10, function() {
-			    $("#thank-you").fadeOut(3000);
-			});
-		    });
-		}
-	    }
+		   "name": name,
+		   "comment": comment}
 	});
     });
     // Send the contact form and manage the alerts.
