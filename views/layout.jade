@@ -8,8 +8,8 @@ html
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     meta(name='keywords', content='advertising, mobile, custom, platform, technology')
-    meta(name='description', content='Say goodbye to banner ads. Sign up for AppCrafted today!')
-    script(type='text/javascript', src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js').
+    meta(name='description', content='Say goodbye to banner ads. Sign up for Appcrafted today!')
+    script(type='text/javascript', src='//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js').
     script(type='text/javascript', src='/static/js/landing.js').
     script(type='text/javascript', src='/static/js/bootstrap.min.js').
     script(type='text/javascript').
@@ -24,30 +24,30 @@ html
       })();
     block head
 
-  body#landing-body
+  body
     // Navbar.
-    div.navbar.navbar-inverse.navbar-fixed-top
+    div.navbar.navbar-default.navbar-static-top(role='navigation')
       div.container
         div.navbar-header
           button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
+            span.sr-only Toggle navigation
             span.icon-bar
             span.icon-bar
             span.icon-bar
+          a#logo.navbar-brand(href='/', title="Appcrafted")
         div.navbar-collapse.collapse
-          ul.nav.navbar-nav.navbar-left
+          ul.nav.navbar-nav
             li
-              a#nav-link(href='#home') Home
+              a.nav-link(href='#about') ABOUT
             li
-              a#nav-link(href='#about') About
+              a.nav-link(href='#contact') CONTACT
             li
-              a#nav-link(href='#contact') Contact
+              a.nav-link(href='#team') TEAM
             li
-              a#nav-link(href='#team') Team
-            li
-              a#nav-link(href='http://blog.adcrafted.com', target='_blank') Blog
+              a.nav-link(href='http://blog.adcrafted.com', target='_blank') BLOG
           ul.nav.navbar-nav.navbar-right
             li
-              a#nav-link(href='http://developer.' + domain, data-toggle='modal') Developers
+              a#developers.nav-link.btn.btn-default(href='http://developer.' + domain, data-toggle='modal') DEVELOPERS
     // Content.
     block content
     // Footer.

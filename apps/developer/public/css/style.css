@@ -1,6 +1,9 @@
 html, body {
     height: 100%;
 }
+#appcrafted-logo {
+    font-family: 'Comfortaa', Helvetica, Arial, sans-serif !important;
+}
 .cspace-thumbnail, .ad-thumbnail, .asset-thumbnail {
     padding: 20px 10px 20px 0;
     border-top: 1px solid #CECECE;

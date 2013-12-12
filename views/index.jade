@@ -52,15 +52,14 @@ block content
             strong OK
   // Top of page.
   div#home
-    div.container
-      div#landing-email
-        div#email-input-wrapper
-          p#incentive Request an invitation:
-          input#email-input(placeholder='Email')
-          button#email-send Send
-        p#invalid-email Please enter a valid email address.
-        p#server-message
-        p#thank-you Thanks!
+    div#dark-overlay
+      div.container
+        div#home-content.row
+          div.col-md-6
+            h1#tagline SEND CONTENT TO YOUR APP.
+          div#get-started-container.col-md-6
+            a#get-started(href='http://developer.' + domain, data-toggle='modal') GET STARTED
+
   // About.
   div#about
     div.container

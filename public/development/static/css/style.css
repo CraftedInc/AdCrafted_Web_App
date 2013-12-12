@@ -1,17 +1,56 @@
+/*
+ * Custom LESS variables used to customize Bootstrap. All other variables
+ * are left at their Bootstrap defaults.
+ *
+ * @grid-float-breakpoint = @screen-md-min;
+ * @navbar-height = 100px;
+ * @navbar-margin-bottom = 0px;
+ * @nav-link-hover-bg = transparent;
+ */
 body {
+    min-width: 300px;
     padding: 0;
     margin: 0;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
-#landing-body {
-    background-color: rgb(63, 169, 245);
-}
 #home {
-    min-height: 650px;
+    background-color: rgb(63, 169, 245);
+    min-height: 330px;
     background-image: url(/static/img/drops_900_blur.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
+}
+#dark-overlay {
+    background-color: rgba(0,0,0,0.4);
+    min-height: 330px;
+}
+#home-content {
+    padding: 80px 0;
+}
+#tagline {
+    color: white;
+    font-size: 60px;
+    font-weight: bold;
+}
+#get-started-container {
+    margin-top: 60px;
+    text-align: center;
+    min-height: 90px;
+}
+#get-started {
+    color: #FFF;
+    font-size: 30px;
+    font-weight: bold;
+    background-color: #3FA9F5;
+    padding: 20px;
+    transition: 0.25s;
+    border: 3px solid #3FA9F5;
+}
+#get-started:hover {
+    background: transparent;
+    text-decoration: none;
+    color: #3FA9F5;
 }
 #about {
     padding: 60px 0;
@@ -28,12 +67,17 @@ body {
     max-width: 950px;
 }
 #team {
+    background-color: rgb(63, 169, 245);
     padding: 60px 0 40px 0;
     text-align: center;
 }
 .img-team {
+    transition: 0.15s;
     border: 5px solid white;
     box-shadow: 0 0 10px rgb(100, 100, 100);
+}
+.img-team:hover {
+    margin: -5px 0 5px 0;
 }
 .team-member {
     color: rgb(250, 250, 250);
@@ -58,22 +102,24 @@ body {
 }
 #contact-form {
     padding-top: 20px;
-    width: 500px;
+    max-width: 500px;
     margin: 0 auto;
 }
 #contact-email {
     height: 40px;
     display: inline;
-    width: 248px;
+    max-width: 248px;
     margin-right: 4px;
+    margin-bottom: 10px;
 }
 #contact-name {
     height: 40px;
     display: inline;
-    width: 248px;
+    max-width: 248px;
+    margin-bottom: 10px;
 }
 #contact-comment {
-    margin: 10px 0 20px 0;
+    margin: 0 0 20px 0;
 }
 #not-found {
     color: black;
@@ -81,44 +127,7 @@ body {
     text-align: center;
     margin-top: 320px;
 }
-#landing-email {
-    background-image: url(/static/img/Logo-circular.png);
-    background-repeat: no-repeat;
-    background-position: center 40px;
-    width: 400px;
-    padding-top: 474px;
-    margin: 44px auto 0 auto;
-}
-#incentive {
-    color: white;
-    margin: 0 0 5px 0;
-    font-size: 1.5em;
-}
-#email-input-wrapper {
-    margin: 0 auto;
-    width: 360px;
-    background-color: rgba(22,22,22,0.65);
-    padding: 8px 15px 15px 15px;
-    border-radius: 2px;
-    box-shadow: 0 0 2px rgb(30,30,30);
-}
-#email-input {
-    padding: 0 10px;
-    margin: 0;
-    width: 235px;
-    height: 40px;
-    display: inline;
-    font-size: 1.2em;
-    border: none;
-    border-radius: 5px;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-#email-input:focus {
-    outline: none;
-}
-#email-send, #contact-send {
+#contact-send {
     padding: 0;
     margin: 0 0 0 5px;
     width: 90px;
@@ -131,12 +140,12 @@ body {
     font-size: 1.2em;
     text-align: center;
 }
-#email-send:hover, #contact-send:hover {
+#contact-send:hover {
     cursor: pointer;
     background-color: rgb(116, 189, 241);
 }
 .email-sending {
-    width: 110px !important;
+    max-width: 110px !important;
     background-color: rgb(116, 189, 241) !important;
 }
 #footer {
@@ -171,12 +180,6 @@ body {
 #signin-modal {
     padding-top: 150px;
 }
-#nav-link {
-    color: rgb(230,230,230);
-}
-#nav-link:hover {
-    color: rgb(63, 169, 245);
-}
 .checkbox {
     margin-left: 20px;
 }
@@ -186,19 +189,15 @@ body {
     right: -14px;
     color: rgb(50,50,50);
     background: white;
-    font-size: 1.8em;
-    border-bottom: 5px solid white;
-    border-left: 3px solid white;
-    border-right: 3px solid white;
-    border-top: 1px solid white;
+    font-size: 35px;
+    height: 34px;
+    width: 34px;
     border-radius: 16px;
-    box-shadow: 0 0 1px rgb(40,40,40);
+    box-shadow: 0 0 7px #FFF;
 }
 #signin-modal-close:hover {
     cursor: pointer;
-    color: rgb(10,10,10);
-    background-color: rgb(200,200,200);
-    border-color: rgb(200,200,200);
+    color: rgb(209,15,15);
 }
 .modal-footer p, #signin-body p {
     text-align: center;
@@ -213,4 +212,39 @@ body {
     padding-left: 0;
     padding-right: 0;
     text-align: center;
+}
+.nav-link {
+    margin-left: 50px;
+    transition: 0.5s;
+}
+#logo {
+    background-image: url(/static/img/Appcrafted-Logo.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 225px;
+    height: 45px;
+    margin: 25px 0 0 3px;
+    padding: 0;
+}
+#developers {
+    color: #3FA9F5;
+    transition: 0.5s;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    margin-top: 26px;
+    width: 127px;
+    border-color: #3FA9F5;
+    background: transparent;
+}
+#developers:hover {
+    color: #777;
+    border-color: #777;
+    background: transparent;
+}
+/**
+ * The following are additional CSS rules assigned to various Bootstrap
+ * classes.
+ */
+.navbar {
+    box-shadow: 0 0 5px 0 white;
 }

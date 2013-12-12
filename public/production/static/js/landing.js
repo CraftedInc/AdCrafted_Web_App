@@ -1,14 +1,4 @@
 $(document).ready(function() {
-    $(".img-team").hover(
-	function() {
-	    $(this).stop();
-	    $(this).animate({margin: "-5px 0 5px 0"}, 150);
-	},
-	function() {
-	    $(this).stop();
-	    $(this).animate({margin: "0"}, 150);
-	}
-    );
     // Regex email validator.
     var isEmail = function(email) {
 	var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;

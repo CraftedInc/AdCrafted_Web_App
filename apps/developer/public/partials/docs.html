@@ -5,7 +5,7 @@
 
 <!-- Information Header -->
 <div class="info-header">
-  <h1>AppCrafted Documentation</h1>
+  <h1>Appcrafted Documentation</h1>
 </div>
 
 <!-- Documentation display -->
@@ -26,7 +26,7 @@
 	<div class="col-xs-2"></div>
 	<div class="col-xs-10">
 	  <div class="light-red-bg">
-	    <p><strong>Warning:</strong> The AppCrafted documentation is being actively updated.</p>
+	    <p><strong>Warning:</strong> The Appcrafted documentation is being actively updated.</p>
 	    </div>
 	</div>
       </div>
@@ -35,8 +35,8 @@
 	  <p><em>Overview</em></p>
 	</div>
 	<div class="col-xs-10">
-	  <p>AppCrafted allows developers to deliver <span class="green">Assets</span> (content such as text, links, and files) to their mobile applications. Developers can create and manage these Assets, and their changes will be reflected in their applications without requiring an update to the application.</p>
-	  <p>Currently, AppCrafted supports a simple Web API as well as a Unity Plugin to facilitate integration with Unity applications.</p>
+	  <p>Appcrafted allows developers to deliver <span class="green">Assets</span> (content such as text, links, and files) to their mobile applications. Developers can create and manage these Assets, and their changes will be reflected in their applications without requiring an update to the application.</p>
+	  <p>Currently, Appcrafted supports a simple Web API as well as a Unity Plugin to facilitate integration with Unity applications.</p>
 	</div>
       </div>
     </div>
@@ -93,13 +93,13 @@
 	  <p><em>Authentication</em></p>
 	</div>
 	<div class="col-xs-10">
-	  <p>You must authenticate each request to the AppCrafted Web API. You do so by setting the <code>Authorization</code> header on each of your requests.</p>
+	  <p>You must authenticate each request to the Appcrafted Web API. You do so by setting the <code>Authorization</code> header on each of your requests.</p>
 	  <p><strong>Possible errors:</strong></p>
-	  <p>If the <code>Authorization</code> header is incorrectly formatted, the AppCrafted server will return <code>HTTP 403</code>:</p>
+	  <p>If the <code>Authorization</code> header is incorrectly formatted, the Appcrafted server will return <code>HTTP 403</code>:</p>
 	  <pre>{"message": "Missing or Incorrect Authorization Header"}</pre>
-	  <p>If your <code>Access Key</code> is incorrect, the AppCrafted server will return <code>HTTP 403</code>:</p>
+	  <p>If your <code>Access Key</code> is incorrect, the Appcrafted server will return <code>HTTP 403</code>:</p>
 	  <pre>{"message": "Unrecognized Access Key"}</pre>
-	  <p>If the <code>Signature</code> is incorrectly computed, the AppCrafted server will return <code>HTTP 403</code>:</p>
+	  <p>If the <code>Signature</code> is incorrectly computed, the Appcrafted server will return <code>HTTP 403</code>:</p>
 	  <pre>{"message": "Signature Not Verified"}</pre>
 	</div>
       </div>
@@ -108,7 +108,7 @@
 	  <p><em>Response</em></p>
 	</div>
 	<div class="col-xs-10">
-	  <p>The AppCrafted server will respond with <code>JSON</code>.</p>
+	  <p>The Appcrafted server will respond with <code>JSON</code>.</p>
 	</div>
       </div>
       <div class="row docs-row">
@@ -152,9 +152,9 @@
   -i -X POST -H 'Content-Type: application/json' \
   -d '{"impressions": 100, "clicks": 5}' \
   -u <span class="red">&lt;AccessKey&gt;:&lt;Signature&gt;</span> </pre>
-	  <p>Upon success, the AppCrafted server will return <code>HTTP 200</code>:</p>
+	  <p>Upon success, the Appcrafted server will return <code>HTTP 200</code>:</p>
 	  <pre>{"message": "Metrics Updated"}</pre>
-	  <p>If the request body is incorrectly formatted, the AppCrafted server will return <code>HTTP 400</code>:</p>
+	  <p>If the request body is incorrectly formatted, the Appcrafted server will return <code>HTTP 400</code>:</p>
 	  <pre>{"message": "Invalid Request Body"}</pre>
 	</div>
       </div>
