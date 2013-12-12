@@ -19,13 +19,11 @@ $(document).ready(function() {
     $("#send-info, #send-info-2").click(function() {
 	var email = $("#email-input").val() || "Not provided";
 	var name = $("#comment-name").val() || "Not provided";
-	var comment = $("#comment").val() || "Not provided";
 	$.ajax({
 	    type: "POST",
 	    url: "/email",
 	    data: {"email": email,
-		   "name": name,
-		   "comment": comment}
+		   "name": name}
 	});
     });
     // Send the contact form and manage the alerts.

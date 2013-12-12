@@ -67,7 +67,7 @@ body {
     max-width: 950px;
 }
 #team {
-    background-color: rgb(63, 169, 245);
+    background-color: #3FA9F5;
     padding: 60px 0 40px 0;
     text-align: center;
 }
@@ -136,7 +136,7 @@ body {
     border: none;
     border-radius: 5px;
     color: white;
-    background-color: rgb(63, 169, 245);
+    background-color: #3FA9F5;
     font-size: 1.2em;
     text-align: center;
 }
@@ -174,8 +174,18 @@ body {
     background: rgb(200,200,200);
 }
 #comment-modal {
+    text-align: center;
     padding-top: 100px;
     color: rgb(50, 50, 50);
+}
+#email-input {
+    max-width: 250px;
+    display: inline;
+}
+#comment-name {
+    max-width: 250px;
+    display: inline;
+    margin-right: 5px;
 }
 #signin-modal {
     padding-top: 150px;

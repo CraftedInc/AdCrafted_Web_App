@@ -178,13 +178,14 @@ body {
     padding-top: 100px;
     color: rgb(50, 50, 50);
 }
-#comment-name {
-    max-width: 400px;
-    margin: 0 auto 10px auto;
+#email-input {
+    max-width: 250px;
+    display: inline;
 }
-#comment {
-    max-width: 400px;
-    margin: 0 auto;
+#comment-name {
+    max-width: 250px;
+    display: inline;
+    margin-right: 5px;
 }
 #signin-modal {
     padding-top: 150px;

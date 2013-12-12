@@ -35,10 +35,8 @@ block content
         div.modal-header
           h4#comment-header.text-muted Our service is currently private. Fill out this form to request access.
         div.modal-body
-          // Hidden email input field.
-          input#email-input.hide
           input#comment-name.form-control(placeholder='Your name')
-          textarea#comment.form-control(rows='5', placeholder="Please share any comments you have with us")
+          input#email-input.form-control(placeholder='Your email')
         div.modal-footer
           button#send-info.btn.btn-primary(type='button', data-dismiss='modal') Send
           button#send-info-2.btn.btn-default(type='button', data-dismiss='modal') Close
