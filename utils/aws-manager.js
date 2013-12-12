@@ -8,9 +8,15 @@
  * A manager to simplify interactions with Amazon's S3 through their Node.js
  * SDK. 
  *
+ * @param {Object} s3 The AWS S3 client.
+ * @param {string} bucket The name of the AWS S3 bucket to place assets into.
+ * @param {string} cSpacePrefix The prefix to assign to all CSpace uploads.
+ * @param {string} adPrefix The prefix to assign to all Ad uploads.
+ * @param {string} assetPrefix The prefix to assign to all Asset uploads.
+ * @param {string} endpoint The optional URL endpoint for assets.
  * @constructor
  */
-function S3(s3, bucket, cSpacePrefix, adPrefix, assetPrefix) {
+function S3(s3, bucket, cSpacePrefix, adPrefix, assetPrefix, endpoint) {
     // AWS-SDK S3 object for Node.js.
     this.s3 = s3;
 
@@ -25,6 +31,9 @@ function S3(s3, bucket, cSpacePrefix, adPrefix, assetPrefix) {
 
     // The folder holding Asset images.
     this.assetPrefix = assetPrefix;
+
+    // The URL endpoint for generating asset URLs.
+    this.endpoint = endpoint || "https://" + bucket + ".s3.amazonaws.com/";
 }
 
 /**
@@ -85,8 +94,8 @@ S3.prototype.deleteAssetImage = function(cSpaceID, assetID, callback) {
  * @return {string} The url.
  */
 S3.prototype.getCraftedSpaceImageURL = function(cSpaceID, name, ext) {
-    return "https://" + this.bucket + ".s3.amazonaws.com/" +
-	this.cSpacePrefix + "/" + cSpaceID + "/" + name + "." + ext;
+    return this.endpoint + this.cSpacePrefix + "/" + cSpaceID + "/" + name +
+	"." + ext;
 };
 
 /**
@@ -98,8 +107,8 @@ S3.prototype.getCraftedSpaceImageURL = function(cSpaceID, name, ext) {
  * @return {string} The url.
  */
 S3.prototype.getAdImageURL = function(cSpaceID, adID, name, ext) {
-    return "https://" + this.bucket + ".s3.amazonaws.com/" + this.adPrefix +
-	"/" + cSpaceID + "/" + adID + "/" + name + "." + ext;
+    return this.endpoint + this.adPrefix + "/" + cSpaceID + "/" + adID +
+	"/" + name + "." + ext;
 };
 
 /**
@@ -111,8 +120,8 @@ S3.prototype.getAdImageURL = function(cSpaceID, adID, name, ext) {
  * @return {string} The url.
  */
 S3.prototype.getAssetImageURL = function(cSpaceID, assetID, name, ext) {
-    return "https://" + this.bucket + ".s3.amazonaws.com/" + this.assetPrefix +
-	"/" + cSpaceID + "/" + assetID + "/" + name + "." + ext;
+    return this.endpoint + this.assetPrefix + "/" + cSpaceID + "/" + assetID +
+	"/" + name + "." + ext;
 };
 
 /**

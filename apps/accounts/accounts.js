@@ -31,7 +31,6 @@ var app = express();
 app.configure("local", function() {
     console.log("Using local settings for Account Management Application.");
     app.use(express.logger("dev"));
-    app.set("S3Bucket", config.local.S3_BUCKET);
     app.set("UserTable", config.local.USER_TABLE_NAME);
     app.set("GoogleTable", config.local.GOOGLE_TABLE_NAME);
     app.set("DOMAIN", config.local.DOMAIN);
@@ -43,7 +42,6 @@ app.configure("local", function() {
 });
 app.configure("development", function() {
     app.use(express.logger("dev"));
-    app.set("S3Bucket", config.development.S3_BUCKET);
     app.set("UserTable", config.development.USER_TABLE_NAME5);
     app.set("GoogleTable", config.development.GOOGLE_TABLE_NAME);
     app.set("DOMAIN", config.development.DOMAIN);
@@ -53,7 +51,6 @@ app.configure("development", function() {
 });
 app.configure("production", function() {
     app.use(express.logger("tiny"));
-    app.set("S3Bucket", config.production.S3_BUCKET);
     app.set("UserTable", config.production.USER_TABLE_NAME);
     app.set("GoogleTable", config.production.GOOGLE_TABLE_NAME);
     app.set("DOMAIN", config.production.DOMAIN);

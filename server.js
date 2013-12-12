@@ -132,20 +132,28 @@ app.configure(function() {
     developer.app.set("db", db);
     // Create an S3 management instance and share among the applications.
     var s3_SDK = new AWS.S3();
+    switch (process.env.NODE_ENV) {
+    case "production":
+	var endpoint = config.production.CDN_ENDPOINT;
+	break;
+    case "development":
+	var endpoint = config.development.CDN_ENDPOINT;
+	break;
+    case "local":
+	var endpoint = config.local.CDN_ENDPOINT;
+	break;
+    default:
+	var endpoint = null;
+    }
     api.app.set("s3", new AWSManager.S3(s3_SDK, api.app.get("S3Bucket"),
 					config.CSPACE_IMG_PREFIX,
 					config.AD_IMG_PREFIX,
-					config.ASSET_IMG_PREFIX));
-    accounts.app.set(
-	"s3", new AWSManager.S3(s3_SDK, accounts.app.get("S3Bucket"),
-				config.CSPACE_IMG_PREFIX,
-				config.AD_IMG_PREFIX,
-				config.ASSET_IMG_PREFIX));
+					config.ASSET_IMG_PREFIX, endpoint));
     developer.app.set(
 	"s3", new AWSManager.S3(s3_SDK, developer.app.get("S3Bucket"),
 				config.CSPACE_IMG_PREFIX,
 				config.AD_IMG_PREFIX,
-				config.ASSET_IMG_PREFIX));
+				config.ASSET_IMG_PREFIX, endpoint));
     // Create an SES service interface object.
     var ses = new AWS.SES();
     app.set("ses", ses);
