@@ -4,6 +4,17 @@ $(document).ready(function() {
 	var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 	return regex.test(email);
     };
+    // The Fader object manages transitions between the elements specified by
+    // jQuery selectors given to the constructor.
+    var fader = new Fader([$("#tagline-1"), $("#tagline-2"), $("#tagline-3")],
+			  [$("#nav-1"), $("#nav-2"), $("#nav-3")],
+			  7000, 400, 200);
+    fader.start();
+    // Override the Fader when one of the navigation elements is clicked. The
+    // Fader will also be placed into "manual-mode".
+    $(".fader-nav").click(function() {
+	fader.show($(this).attr('data-index'));
+    });
     // Scroll animation on href="#...".
     $('a[href^="#"]').on("click",function (e) {
 	e.preventDefault();
@@ -69,3 +80,44 @@ $(document).ready(function() {
 	$("#contact-success").addClass("hide");
     });
 });
+function Fader($elementArray, $navigationArray, period, fadeOutDur, fadeInDur) {
+    this.elements   = $elementArray;
+    this.nav        = $navigationArray;
+    this.period     = period;
+    this.fadeOutDur = fadeOutDur;
+    this.fadeInDur  = fadeInDur;
+    this.index      = 0;
+    this.queue      = {};
+    // Hide all elements except the first one.
+    for (var i = 1; i < this.elements.length; i++) {
+	this.elements[i].hide();
+    }
+    if (this.nav.length > 0) {
+	this.nav[0].addClass("fader-nav-active");
+    }
+}
+Fader.prototype.start = function() {
+    this.queue = setTimeout(function() {
+	this.elements[this.index].fadeOut(this.fadeOutDur, function() {
+	    this.nav[this.index].removeClass("fader-nav-active");
+	    this.index = (this.index + 1) % this.elements.length;
+	    this.nav[this.index].addClass("fader-nav-active");
+	    this.elements[this.index].fadeIn(this.fadeInDur);
+	    this.start();
+	}.bind(this));
+    }.bind(this), this.period);
+};
+Fader.prototype.stop = function() {
+    clearTimeout(this.queue);
+};
+Fader.prototype.show = function(index) {
+    if (index >= 0 && index < this.elements.length && index != this.index) {
+	this.stop();
+	this.elements[this.index].fadeOut(this.fadeOutDur, function() {
+	    this.nav[this.index].removeClass("fader-nav-active");
+	    this.nav[index].addClass("fader-nav-active");
+	    this.index = index;
+	    this.elements[index].fadeIn(this.fadeInDur);
+	}.bind(this));
+    }
+};
