@@ -14,7 +14,7 @@ body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 #home {
-    background-color: rgb(63, 169, 245);
+    background-color: #3FA9F5;
     min-height: 330px;
     background-image: url(/static/img/drops_900_blur.jpg);
     background-size: cover;
@@ -26,15 +26,32 @@ body {
     min-height: 330px;
 }
 #home-content {
-    padding: 80px 0;
+    padding: 80px 0 70px 0;
 }
-#tagline {
+.tagline {
     color: white;
     font-size: 60px;
     font-weight: bold;
 }
+#fader-nav-area {
+    margin: 20px 0 0 0;
+    padding: 0;
+}
+.fader-nav {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    margin: 0 7px;
+    background: #FFF;
+    text-indent: -999px;
+    border-radius: 999px;
+    cursor: pointer;
+}
+.fader-nav-active {
+    background: #3FA9F5 !important;
+}
 #get-started-container {
-    margin-top: 60px;
+    margin-top: 68px;
     text-align: center;
     min-height: 90px;
 }
