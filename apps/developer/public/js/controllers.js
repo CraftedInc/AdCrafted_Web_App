@@ -13,6 +13,9 @@ function CSpaceListCtrl($scope, CSpaceCollection) {
     $scope.populateSearch = function(tag) {
 	$scope.query = tag;
     }
+    $scope.clearSearch = function() {
+	$scope.query = "";
+    }
 }
 
 function CreateCSpaceCtrl($scope, CSpaceCollection, CustomFileReader) {

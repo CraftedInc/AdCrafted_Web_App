@@ -33,6 +33,9 @@ html, body {
 a.no-decoration:hover {
     text-decoration: none;
 }
+#clear-search {
+    cursor: pointer;
+}
 body {
     background-color: rgb(22, 22, 22) !important;
 }

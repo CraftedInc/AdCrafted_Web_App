@@ -7,6 +7,9 @@
 	<span class="glyphicon glyphicon-search"></span>
       </span>
       <input type="text" class="form-control" placeholder="Search" ng-model="query">
+      <span ng-show="!!query" ng-click="clearSearch()" class="input-group-addon" id="clear-search">
+	<span class="glyphicon glyphicon-remove"></span>
+      </span>
     </div>
   </div>
   <div class="form-group pull-right">
