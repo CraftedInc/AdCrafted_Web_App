@@ -19,6 +19,9 @@ config.ADMIN_EMAILS = ["james@adcrafted.com", "brandon@adcrafted.com"];
 config.NOTIFICATIONS_EMAIL = "AppCrafted Notifications <notifications@appcrafted.com>";
 config.CSPACE_USER_ID_INDEX = "CSpaceUserID-INDEX";
 config.ASSET_USER_ID_INDEX = "AssetUserID-INDEX";
+config.ALLOW_ORIGINS = "*";
+config.ALLOW_METHODS = "GET,POST";
+config.ALLOW_HEADERS = "Content-Type,Authorization";
 
 /**
  * Local configuration.

@@ -76,11 +76,27 @@ app.configure("production", function() {
 });
 
 /**
+ * Allow Cross-Origin requests for GET and POST methods.
+ */
+var allowCrossOrigin = function(request, response, next) {
+    response.header("Access-Control-Allow-Origin", config.ALLOW_ORIGINS);
+    response.header("Access-Control-Allow-Methods", config.ALLOW_METHODS);
+    response.header("Access-Control-Allow-Headers", config.ALLOW_HEADERS);
+    // intercept the OPTIONS method and immediately return HTTP 200.
+    if ("OPTIONS" == request.method) {
+      response.send(200);
+    } else {
+	next();
+    }
+}
+
+/**
  * General application configuration.
  */
 app.configure(function() {
     app.use(express.bodyParser());
     app.use(express.methodOverride());
+    app.use(allowCrossOrigin);
     app.use(app.router);
     app.use(express.compress());
     app.use(express.static(path.join(__dirname, "./public")));
@@ -98,16 +114,6 @@ app.configure(function() {
 /**
  * The API, secured using an access key and signature combination.
  */
-
-// RETRIEVE all Ads within the specified CraftedSpace.
-app.get("/alpha/cspace/:cSpaceID/ad",
-	utils.authenticateAPIRequest(),
-	ads.getAllAdsInCraftedSpace);
-
-// UPDATE the Ad impression and click metrics.
-app.post("/alpha/cspace/:cSpaceID/ad/:adID/metrics",
-	 utils.authenticateAPIRequest(),
-	 ads.updateMetrics);
 
 // RETRIEVE all Assets within the specified CraftedSpace.
 app.get("/alpha/cspace/:cSpaceID/asset",
