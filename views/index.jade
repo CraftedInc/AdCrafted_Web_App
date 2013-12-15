@@ -83,8 +83,11 @@ block content
         div#contact-success.alert.alert-success.hide
           button.close(type='button', data-dismiss='alert', aria-hidden='true') &times;
           strong Your message has been sent.
-        input#contact-email.form-control(placeholder='Your email')
-        input#contact-name.form-control(placeholder='Your name')
+        div.contact-row.row
+          div.contact-col.col-md-6
+            input#contact-email.form-control(placeholder='Your email')
+          div.contact-col.col-md-6
+            input#contact-name.form-control(placeholder='Your name')
         textarea#contact-comment.form-control(rows='5', placeholder="Your message")
         button#contact-send Send
   // Team.

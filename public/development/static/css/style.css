@@ -127,18 +127,21 @@ body {
 }
 #contact-email {
     height: 40px;
-    display: inline;
-    max-width: 248px;
-    margin-right: 4px;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
     border-radius: 0;
+    margin-right: -5px;
 }
 #contact-name {
     height: 40px;
-    display: inline;
-    max-width: 248px;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
     border-radius: 0;
+}
+.contact-col {
+    padding: 0 3px !important;
+}
+.contact-row {
+    margin-left: -3px !important;
+    margin-right: -3px !important;
 }
 #contact-comment {
     margin: 0 0 20px 0;
@@ -162,7 +165,7 @@ body {
     border: 1px solid #3FA9F5;
     font-size: 20px;
     text-align: center;
-    transition: 0.25s;
+    transition: 0.5s;
 }
 #contact-send:hover {
     cursor: pointer;
