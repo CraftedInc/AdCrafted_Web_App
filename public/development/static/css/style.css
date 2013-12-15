@@ -8,7 +8,7 @@
  * @nav-link-hover-bg = transparent;
  */
 body {
-    min-width: 300px;
+    min-width: 320px;
     padding: 0;
     margin: 0;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -117,6 +117,9 @@ body {
     min-height: 300px;
     text-align: center;
 }
+#contact-error, #contact-success {
+    border-radius: 0;
+}
 #contact-form {
     padding-top: 20px;
     max-width: 500px;
@@ -128,15 +131,18 @@ body {
     max-width: 248px;
     margin-right: 4px;
     margin-bottom: 10px;
+    border-radius: 0;
 }
 #contact-name {
     height: 40px;
     display: inline;
     max-width: 248px;
     margin-bottom: 10px;
+    border-radius: 0;
 }
 #contact-comment {
     margin: 0 0 20px 0;
+    border-radius: 0;
 }
 #not-found {
     color: black;
@@ -147,19 +153,24 @@ body {
 #contact-send {
     padding: 0;
     margin: 0 0 0 5px;
-    width: 90px;
-    height: 40px;
+    width: 100px;
+    height: 50px;
     display: inline;
     border: none;
-    border-radius: 5px;
     color: white;
     background-color: #3FA9F5;
-    font-size: 1.2em;
+    border: 1px solid #3FA9F5;
+    font-size: 20px;
     text-align: center;
+    transition: 0.25s;
 }
 #contact-send:hover {
     cursor: pointer;
-    background-color: rgb(116, 189, 241);
+    color: #3FA9F5;
+    background: transparent;
+}
+#contact-send:focus {
+    outline: none;
 }
 .email-sending {
     max-width: 110px !important;
@@ -245,13 +256,20 @@ body {
     transition: 0.5s;
 }
 #logo {
-    background-image: url(/static/img/Appcrafted-Logo.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    width: 225px;
-    height: 45px;
-    margin: 25px 0 0 3px;
-    padding: 0;
+    margin-top: -3px;
+    padding-right: 0;
+    font-family: 'Comfortaa', Helvetica, Arial, sans-serif !important;
+    font-size: 40px;
+    color: #555;
+}
+#logo:hover {
+    color: #555;
+}
+.appcrafted-blue {
+    color: #3FA9F5 !important;
+}
+.appcrafted-blue:hover {
+    color: #3FA9F5 !important;
 }
 #developers {
     color: #3FA9F5;
@@ -262,6 +280,7 @@ body {
     width: 127px;
     border-color: #3FA9F5;
     background: transparent;
+    border-radius: 0;
 }
 #developers:hover {
     color: #777;
