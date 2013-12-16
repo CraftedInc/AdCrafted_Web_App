@@ -21,7 +21,6 @@ exports.createAsset = function(request, response) {
     var db = response.app.get("db");
     var s3 = response.app.get("s3");
     var asset = request.body;
-    var newAssetID = 0;
     var cSpaceID = request.params.cSpaceID;
     // Retrieve the CraftedSpace.
     var params = {
@@ -58,13 +57,20 @@ exports.createAsset = function(request, response) {
 		if (err) {
 		    response.send(500, {message: "An Error Occurred"});
 		} else {
+		    var newAssetID = 0;
+		    var occupied = [];
 		    if (data.Count > 0) {
+			// Find the smallest available AssetID.
 			for (var i = 0; i < data.Count; i++) {
-			    if (data.Items[i].AssetID.N > newAssetID) {
-				newAssetID = data.Items[i].AssetID.N;
+			    occupied[parseInt(data.Items[i].AssetID.N)] = true;
+			}
+			newAssetID = occupied.length;
+			for (var j = 0; j < occupied.length; j++) {
+			    if (!occupied[j]) {
+				newAssetID = j; // Smallest available AssetID.
+				break;
 			    }
 			}
-			newAssetID++;
 		    }
 		    params = {
 			"TableName": response.app.get("AssetTable"),
