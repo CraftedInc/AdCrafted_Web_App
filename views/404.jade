@@ -1,40 +1,54 @@
 doctype 5
 html
   head
-    title= 'AdCrafted | Page Not Found'
-    link(rel='icon', type='image/ico', href='http://www.adcrafted.com/static/img/favicon.ico')
+    title= 'Appcrafted | Page Not Found'
+    link(rel='icon', type='image/ico', href='/static/img/favicon.ico')
+    link(rel='stylesheet', type='text/css', href='http://fonts.googleapis.com/css?family=Comfortaa:700')
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     style.
       #landing-body {
-        background-color: rgb(63, 169, 245);
-        background-image: url('http://www.adcrafted.com/static/img/logo.png');
-        background-repeat: no-repeat;
-        background-position: center 208px;
+        background-color: rgb(30, 30, 30);
+        padding-top: 200px;
         text-align: center;
-        font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
       }
       #not-found {
-        margin: 340px auto 30px auto;
+        margin: 30px auto 40px auto;
         font-size: 30px;
         font-weight: 100;
+        color: #F8F8F8;
+        font-family: 'Comfortaa', Helvetica, Arial, sans-serif !important;
       }
       .btn {
         font-size: 20px;
-        background-color: rgb(230,230,230);
-        padding: 15px;
-        border-radius: 5px;
-        text-decoration: none;
-        color: rgb(70,70,70);
-        box-shadow: 0 0 5px rgb(70,70,70);
+        background-color: #3FA9F5;
+        border: 2px solid #3FA9F5;
+        padding: 15px 20px;
+        color: #F8F8F8;
+        transition: 0.25s;
+        font-family: 'Comfortaa', Helvetica, Arial, sans-serif !important;
       }
       .btn:hover {
         cursor: pointer;
-        color: rgb(63, 169, 245);
+        color: #3FA9F5;
         text-decoration: none;
-        background-color: rgb(220,220,220);
-        box-shadow: 0 0 2px rgb(100,100,100);
+        background: none;
+      }
+      #logo {
+        font-family: 'Comfortaa', Helvetica, Arial, sans-serif !important;
+        font-size: 80px;
+        color: #DDD;
+        text-decoration: none;
+      }
+      #logo:hover {
+        color: #DDD;
+        text-decoration: none;
+      }
+      .appcrafted-blue {
+        color: #3FA9F5;
       }
   body#landing-body
-    h1#not-found Page Not Found
-    a.btn(onclick='window.history.back()') Go Back
+    a#logo(href='/', title="Appcrafted") <span class="appcrafted-blue">App</span>crafted
+    h1#not-found Not Found!
+    a.btn(onclick='window.history.back()')
+      strong Back
