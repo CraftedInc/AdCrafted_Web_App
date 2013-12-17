@@ -1,4 +1,25 @@
 $(document).ready(function() {
+    var latLng = new google.maps.LatLng(47.615561,-122.353688);
+    var mapOptions = {
+	scrollwheel: false,
+        center: latLng,
+        zoom: 12,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        disableDefaultUI: true
+    };
+    var styles = [
+	{
+	    stylers: [
+		{ saturation: -100 }
+	    ]
+	}
+    ];
+    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+    map.setOptions({styles: styles});
+    var marker = new google.maps.Marker({
+	position: latLng,
+	map: map
+    });
     // Regex email validator.
     var isEmail = function(email) {
 	var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
