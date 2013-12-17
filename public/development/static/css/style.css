@@ -356,6 +356,15 @@ pre.code {
 .yellow {
     color: #FFFF1B;
 }
+.grayscale {
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: grayscale(100%);
+    filter: url(grayscale.svg); /* Firefox 4+ */
+    filter: gray; /* IE 6-9 */
+}
 .appcrafted-blue {
     color: #3FA9F5 !important;
 }
@@ -387,4 +396,25 @@ pre.code {
 }
 .navbar-toggle:focus {
     outline: none;
+}
+/**
+ * Breakpoint-related styles.
+ */
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    #easy-to-use {
+	margin-left: 0;
+    }
+}
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+    #easy-to-use {
+	margin-left: -200px;
+    }
+}
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    #easy-to-use {
+	margin-left: -200px;
+    }
 }
