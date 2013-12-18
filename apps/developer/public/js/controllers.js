@@ -210,7 +210,10 @@ function AssetListCtrl($scope, $routeParams, AssetCollection) {
 						     $scope.waiting = false
 						 });
     $scope.orderReverse = false;
-    $scope.orderProp = "date";
+    $scope.orderProp = "AssetID";
+    $scope.clearSearch = function() {
+	$scope.query = "";
+    }
 }
 
 function CreateAssetCtrl($scope, $routeParams, AssetCollection,
