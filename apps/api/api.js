@@ -84,7 +84,7 @@ var allowCrossOrigin = function(request, response, next) {
     response.header("Access-Control-Allow-Headers", config.ALLOW_HEADERS);
     // intercept the OPTIONS method and immediately return HTTP 200.
     if ("OPTIONS" == request.method) {
-      response.send(200);
+	response.send(200);
     } else {
 	next();
     }
