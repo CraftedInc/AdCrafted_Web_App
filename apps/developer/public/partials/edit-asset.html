@@ -34,13 +34,13 @@
       </div>
     </div>
     <div class="col-xs-3">
-      <div on-change="readImageFile()" image-drop="file" ng-class="{'draggable': !hasImage, 'dropzone': !hasImage}">
-	<p ng-show="!hasImage" class="text-muted drag-drop-text">
+      <div on-change="readImageFile()" image-drop="file" ng-class="{'draggable': !asset.image, 'dropzone': !asset.image}">
+	<p ng-show="!asset.image" class="text-muted drag-drop-text">
 	  Drag and drop an image here
 	</p>
-	<img ng-show="hasImage" ng-src="{{imageSrc}}" class="asset-img draggable">
+	<img ng-show="!!asset.image" ng-src="{{imageSrc}}" class="asset-img draggable">
       </div>
-      <p ng-show="hasImage" class="text-muted">
+      <p ng-show="!!asset.image" class="text-muted">
 	Drag and drop an image here
       </p>
     </div>

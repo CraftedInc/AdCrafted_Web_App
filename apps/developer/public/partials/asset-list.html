@@ -57,8 +57,8 @@
 <div class="content-list">
   <div ng-repeat="Asset in AssetCollection.Assets | orderBy:orderProp:orderReverse | filter:query" class="asset-thumbnail row">
     <div class="col-xs-3">
-      <img ng-show="Asset.image != 'null'" ng-src="{{Asset.image}}" class="img-rounded asset-img">
-      <p ng-show="Asset.image == 'null'"><em>No Image</em></p>
+      <img ng-show="!!Asset.image" ng-src="{{Asset.image}}" class="img-rounded asset-img">
+      <p ng-show="!Asset.image"><em>No Image</em></p>
     </div>
     <div class="col-xs-5">
       <div class="cspace-information">

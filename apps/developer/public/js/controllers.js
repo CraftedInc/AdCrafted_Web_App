@@ -247,7 +247,6 @@ function CreateAssetCtrl($scope, $routeParams, AssetCollection,
 
 function EditAssetCtrl($scope, $routeParams, SingleAsset, CustomFileReader) {
     $scope.waiting = true;
-    $scope.hasImage = false;
     $scope.cSpaceID = $routeParams.CSpaceID;
 
     $scope.asset = SingleAsset.get({assetID: $routeParams.AssetID,
@@ -255,8 +254,6 @@ function EditAssetCtrl($scope, $routeParams, SingleAsset, CustomFileReader) {
 				   function() {
 				       $scope.waiting = false;
 				       $scope.imageSrc = $scope.asset.image;
-				       $scope.hasImage = $scope.asset.image !=
-					   "null";
 				   });
 
     $scope.readImageFile = function() {         
@@ -264,7 +261,6 @@ function EditAssetCtrl($scope, $routeParams, SingleAsset, CustomFileReader) {
             .then(function(result) {
                 $scope.asset.image = result;
 		$scope.imageSrc = result;
-		$scope.hasImage = true;
             });
     };
 

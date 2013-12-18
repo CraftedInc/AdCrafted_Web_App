@@ -84,17 +84,8 @@ exports.createAsset = function(request, response) {
 			    "UserID" : {
 				"S": userID
 			    },
-			    "image": {
-				"S": "null"
-			    },
 			    "date": {
 				"S": new Date().toISOString()
-			    },
-			    "impressions": {
-				"N": 0 + ""
-			    },
-			    "clicks": {
-				"N": 0 + ""
 			    }
 			}
 		    };
@@ -285,8 +276,7 @@ exports.updateAsset = function(request, response) {
 	    };
 	    for (var attr in asset) {
 		if (attr == "AssetID" || attr == "CSpaceID" ||
-		    attr == "UserID" ||
-		    attr == "impressions" || attr == "clicks") {
+		    attr == "UserID") {
 		    // These attributes shouldn't be changed here.
 		    continue;
 		} else if (attr == "image") {
