@@ -1,6 +1,21 @@
 html, body {
     height: 100%;
 }
+.home-tile {
+    text-align: center;
+    font-family: 'Comfortaa', Helvetica, Arial, sans-serif !important;
+}
+.home-icon {
+    font-size: 150px;
+}
+.home-link {
+    color: #999;
+    transition: 0.5s;
+}
+.home-link:hover {
+    color: #5cb85c;
+    text-decoration: none;
+}
 #appcrafted-logo {
     font-family: 'Comfortaa', Helvetica, Arial, sans-serif !important;
 }
@@ -211,6 +226,7 @@ body {
     box-shadow: inset 0 0 3px #333;
     font-size: 12px;
     display: inline !important;
+    transition: 0.1s;
 }
 .appcrafted-nav:hover {
     background-color: #333 !important;

@@ -1,4 +1,11 @@
 /**
+ * Home controller.
+ */
+function HomeCtrl($scope) {
+
+}
+
+/**
  * CraftedSpace controllers.
  */
 
