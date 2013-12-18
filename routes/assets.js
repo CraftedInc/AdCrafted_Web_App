@@ -110,9 +110,9 @@ exports.createAsset = function(request, response) {
 					      }
 					  });
 				params.Item["image"] = {
-				    "S": s3.getAssetImageURL(cSpaceID,
-							     newAssetID,
-							     name, file.ext)
+				    "S": s3.getAssetFileURL(cSpaceID,
+							    newAssetID,
+							    name, file.ext)
 				};
 			    }
 			} else if (asset[attr] instanceof Array) {
@@ -293,10 +293,10 @@ exports.updateAsset = function(request, response) {
 				  });
 			params.AttributeUpdates[attr] = {
 			    "Value": {
-				"S": s3.getAssetImageURL(cSpaceID,
-						      assetID,
-						      name,
-						      file.ext)
+				"S": s3.getAssetFileURL(cSpaceID,
+							assetID,
+							name,
+							file.ext)
 			    },
 			    "Action": "PUT"
 			};
@@ -358,12 +358,13 @@ exports.deleteAsset = function(request, response) {
 		if (err) {
 		    response.send(500, {message: "An Error Occurred"});
 		} else {
-		    // Delete any images the asset may reference.
-		    s3.deleteAssetImage(cSpaceID, assetID,
-				     function(err, data) {
-					 response.send(200, {message:
-							     "Asset Deleted"});
-				     });
+		    // Delete any files the asset may reference.
+		    s3.deleteAssetFiles(cSpaceID, assetID,
+					function(err, data) {
+					    response.send(200,
+							  {message:
+							   "Asset Deleted"});
+					});
 		}
 	    });
 	} else {

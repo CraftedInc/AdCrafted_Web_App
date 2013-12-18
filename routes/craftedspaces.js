@@ -44,7 +44,7 @@ exports.createCraftedSpace = function(request, response) {
 		s3.upload(file.body, key, "image/" + file.ext,
 			  function(err, data) {});
 		params.Item[attr] = {
-		    "S": s3.getCraftedSpaceImageURL(cSpaceID, name, file.ext)
+		    "S": s3.getCraftedSpaceFileURL(cSpaceID, name, file.ext)
 		};
 	    }
 	} else if (cSpaceBody[attr] instanceof Array) {
@@ -182,7 +182,7 @@ exports.updateCraftedSpace = function(request, response) {
 			  function(err, data) {});
 		params.AttributeUpdates[attr] = {
 		    "Value": {
-			"S": s3.getCraftedSpaceImageURL(cSpaceID,name,file.ext)
+			"S": s3.getCraftedSpaceFileURL(cSpaceID,name,file.ext)
 		    },
 		    "Action": "PUT"
 		};
@@ -249,7 +249,7 @@ exports.deleteCraftedSpace = function(request, response) {
     // Delete the CraftedSpace from the database.
     db.deleteItem(params).send();
     // Delete the image it may reference.
-    s3.deleteCraftedSpaceImage(cSpaceID, function(err, data) {});
+    s3.deleteCraftedSpaceFiles(cSpaceID, function(err, data) {});
     // Delete the Ads and the Assets in this CraftedSpace.
     _deleteAssets(request, response, cSpaceID, function(err, data) {
 	if (err) {
@@ -294,7 +294,7 @@ function _deleteAssets(request, response, cSpaceID, callback) {
 	    var batch = [];
 	    for (var i = 0; i < data.Count; i++) {
 		// Delete any images the asset may reference.
-		s3.deleteAssetImage(cSpaceID, data.Items[i].AssetID.N,
+		s3.deleteAssetFiles(cSpaceID, data.Items[i].AssetID.N,
 				    function(err, data) {});
 		batch[i] = {
                     "DeleteRequest": {
