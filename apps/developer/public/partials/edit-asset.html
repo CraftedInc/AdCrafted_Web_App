@@ -1,39 +1,38 @@
-<!-- BACK bar -->
-<div class="form-inline row" id="cspace-control-bar">
-  <a href="#/cspaces/{{cSpaceID}}/asset" class="btn btn-default">
-    <strong><span class="glyphicon glyphicon-arrow-left"></span> Back</strong>
-  </a>
-</div>
-
 <!-- Waiting GIF -->
 <div class="waiting" ng-class="{'hide': !waiting}">
   <img src="/img/waiting.gif">
 </div>
 
+<!-- Information Header -->
+<div class="info-header border-bottom" ng-class="{'hide': waiting}">
+  <h1>Edit Asset</h1>
+  <a href="#/cspaces/{{cSpaceID}}/asset" class="left-link"><i class="fa fa-times"></i> Cancel</a>
+</div>
+
 <!-- EDIT form -->
 <form class="form-horizontal row" role="form" id="edit-asset-form" name="AssetForm" ng-class="{'hide': waiting}">
   <div class="row">
-    <div class="col-xs-9">
+    <div class="col-xs-8">
       <div class="form-group">
 	<label for="title" class="col-xs-2 control-label">Title</label>
-	<div class="col-xs-9">
+	<div class="col-xs-10">
 	  <input name="title" type="text" class="form-control" id="title" placeholder="Title" ng-model="asset.title">
 	</div>
       </div>
       <div class="form-group">
 	<label for="text" class="col-xs-2 control-label">Text</label>
-	<div class="col-xs-9">
+	<div class="col-xs-10">
 	  <textarea class="form-control" id="text" placeholder="Text" ng-model="asset.text" rows="4"></textarea>
 	</div>
       </div>
       <div class="form-group">
 	<label for="tags" class="col-xs-2 control-label">Link</label>
-	<div class="col-xs-9">
+	<div class="col-xs-10">
 	  <input type="url" class="form-control" id="tags" placeholder="Valid URL" ng-model="asset.link">
 	</div>
       </div>
     </div>
-    <div class="col-xs-3">
+    <div class="col-xs-4">
       <div on-change="readImageFile()" image-drop="file" ng-class="{'draggable': !asset.image, 'dropzone': !asset.image}">
 	<p ng-show="!asset.image" class="text-muted drag-drop-text">
 	  Drag and drop an image here

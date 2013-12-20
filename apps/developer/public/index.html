@@ -40,17 +40,14 @@
   <body id="demo">
     <div id="wrap">
       <!-- Navbar -->
-      <div class="navbar navbar-inverse">
+      <div class="navbar navbar-inverse" ng-controller="NavigationCtrl">
         <div class="container">
           <ul class="nav navbar-nav">
 	    <li>
-	      <a class="appcrafted-nav" href="#">
-		<i class="fa fa-home"></i> Home
-	      </a>
-	      <a class="appcrafted-nav" href="#/account">
+	      <a class="appcrafted-nav" href="#/account" ng-class="{active: beginsWith('/account')}">
 		Account
 	      </a>
-	      <a class="appcrafted-nav" href="#/documentation">
+	      <a class="appcrafted-nav" href="#/documentation" ng-class="{active: isActive('/documentation')}">
 		Documentation
 	      </a>
 	      <a class="appcrafted-nav" href="/logout">
@@ -60,23 +57,47 @@
           </ul>
           <ul class="nav navbar-nav navbar-appcrafted-home">
 	    <li>
-	      <a id="appcrafted-logo" class="appcrafted-nav" href="http://www.appcrafted.com">
-		Appcrafted
+	      <a id="appcrafted-logo" href="http://www.appcrafted.com">
+		<span class="appcrafted-blue">App</span>crafted
 	      </a>
 	    </li>
 	  </ul>
         </div>
       </div>
       <!-- Page content -->
-      <div class="container">
-	<!-- ANGULAR content -->
-	<div id="cspace-content" ng-view></div>
+      <div class="container" id="main-container">
+	<div class="row">
+	  <div id="top-bar" class="row"></div>
+	  <!-- Sidebar -->
+	  <div class="col-xs-2" ng-controller="NavigationCtrl" id="sidebar">
+	    <a class="sidebar-nav" href="#/" ng-class="{'active': isActive('/')}">
+	      <i class="fa fa-home"></i>
+	      Home
+	    </a>
+	    <a class="sidebar-nav" href="#/assets" ng-class="{'active': beginsWith('/cspaces')}">
+	      <i class="fa fa-suitcase"></i>
+	      Assets
+	    </a>
+	    <p class="inactive-sidebar-nav">
+	      <i class="fa fa-bar-chart-o"></i>
+	      Metrics
+	    </p>
+	    <p class="inactive-sidebar-nav">
+	      <i class="fa fa-camera"></i>
+	      Campaigns
+	    </p>
+	  </div>
+	  <div class="col-xs-10" id="angular-content">
+	    <!-- ANGULAR content -->
+	    <div ng-view></div>
+	  </div>
+	</div>
       </div>
     </div>
     <!-- Sticky footer -->
     <div id="footer">
       <div class="container">
-        <p class="text-muted footer-text pull-right">Crafted, Inc. &copy 2013</p>
+        <p class="text-muted footer-text pull-right">Crafted, Inc. &copy 2014</p>
       </div>
     </div>
   </body>

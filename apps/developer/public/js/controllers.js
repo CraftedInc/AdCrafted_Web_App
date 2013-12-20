@@ -1,9 +1,20 @@
 /**
+ * The navigation controller activates the current navigation element.
+ */
+
+function NavigationCtrl($scope, $location) {
+    $scope.isActive = function(path) { 
+        return path === $location.path();
+    };
+    $scope.beginsWith = function(path) { 
+        return path === $location.path().substr(0, path.length);
+    };
+}
+
+/**
  * Home controller.
  */
-function HomeCtrl($scope) {
-
-}
+function HomeCtrl($scope) {}
 
 /**
  * CraftedSpace controllers.
@@ -102,7 +113,7 @@ function AdListCtrl($scope, $routeParams, AdCollection) {
     $scope.AdCollection = AdCollection.get({cSpaceID: $scope.CSpaceID},
 					   function() {$scope.waiting = false});
     $scope.orderReverse = false;
-    $scope.orderProp = "date";
+    $scope.orderProp = "AssetID";
 }
 
 function CreateAdCtrl($scope, $routeParams, AdCollection, CustomFileReader) {
@@ -333,8 +344,8 @@ function AccountCtrl($scope, $routeParams, Account) {
 }
 
 function EditAccountCtrl($scope, $routeParams, Account) {
-    $scope.waiting = false;
-    $scope.account = Account.get();
+    $scope.waiting = true;
+    $scope.account = Account.get({}, function() {$scope.waiting = false});
 
     $scope.update = function(AccountForm) {
 	if (AccountForm.$valid) {
