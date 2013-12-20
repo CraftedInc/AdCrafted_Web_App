@@ -23,13 +23,13 @@ function S3(s3, bucket, cSpacePrefix, adPrefix, assetPrefix, endpoint) {
     // The S3 bucket name.
     this.bucket = bucket;
 
-    // The folder holding CraftedSpace images.
+    // The folder holding CraftedSpace files.
     this.cSpacePrefix = cSpacePrefix;
 
-    // The folder holding Ad images.
+    // The folder holding Ad files.
     this.adPrefix = adPrefix;
 
-    // The folder holding Asset images.
+    // The folder holding Asset files.
     this.assetPrefix = assetPrefix;
 
     // The URL endpoint for generating asset URLs.
@@ -55,11 +55,11 @@ S3.prototype.upload = function(body, key, contentType, callback) {
 };
 
 /**
- * Deletes the image(s) for an CraftedSpace.
+ * Deletes the files(s) for an CraftedSpace.
  * @param {number} cSpaceID.
  * @param {function(Object, Object)} callback.
  */
-S3.prototype.deleteCraftedSpaceImage = function(cSpaceID, callback) {
+S3.prototype.deleteCraftedSpaceFiles = function(cSpaceID, callback) {
     var prefix = this.cSpacePrefix + "/" + cSpaceID + "/";
     this._deleteFolder(prefix, callback);
 };
@@ -76,24 +76,24 @@ S3.prototype.deleteAdImage = function(cSpaceID, adID, callback) {
 };
 
 /**
- * Deletes the image(s) for an Asset.
+ * Deletes the files(s) for an Asset.
  * @param {number} cSpaceID.
  * @param {number} assetID.
  * @param {function(Object, Object)} callback.
  */
-S3.prototype.deleteAssetImage = function(cSpaceID, assetID, callback) {
+S3.prototype.deleteAssetFiles = function(cSpaceID, assetID, callback) {
     var prefix = this.assetPrefix + "/" + cSpaceID + "/" + assetID + "/";
     this._deleteFolder(prefix, callback);
 };
 
 /**
- * Returns the public URL for an CraftedSpace image.
+ * Returns the public URL for a CraftedSpace file.
  * @param {number} cSpaceID.
  * @param {string} name.
  * @param {string} ext.
  * @return {string} The url.
  */
-S3.prototype.getCraftedSpaceImageURL = function(cSpaceID, name, ext) {
+S3.prototype.getCraftedSpaceFileURL = function(cSpaceID, name, ext) {
     return this.endpoint + this.cSpacePrefix + "/" + cSpaceID + "/" + name +
 	"." + ext;
 };
@@ -112,14 +112,14 @@ S3.prototype.getAdImageURL = function(cSpaceID, adID, name, ext) {
 };
 
 /**
- * Returns the public URL for an Ad image.
+ * Returns the public URL for an Asset file.
  * @param {number} cSpaceID.
  * @param {number} assetID.
  * @param {string} name.
  * @param {string} ext.
  * @return {string} The url.
  */
-S3.prototype.getAssetImageURL = function(cSpaceID, assetID, name, ext) {
+S3.prototype.getAssetFileURL = function(cSpaceID, assetID, name, ext) {
     return this.endpoint + this.assetPrefix + "/" + cSpaceID + "/" + assetID +
 	"/" + name + "." + ext;
 };

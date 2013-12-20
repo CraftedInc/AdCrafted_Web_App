@@ -1,14 +1,7 @@
-<!-- Control bar -->
-<div class="form-inline row" id="account-control-bar">
-  <a href="#/cspaces/" class="btn btn-success"><strong>Home</strong></a>
-  <a href="#/account/edit/" class="btn btn-default"><strong>Edit Your Account</strong></a>
-</div>
-
-<!-- Information Header -->
-<div class="info-header" ng-class="{'hide': waiting}">
-  <h1>
-    Your Account
-  </h1>
+<!-- Header -->
+<div class="info-header border-bottom" ng-class="{'hide': waiting}">
+  <h1>Your Account</h1>
+  <a href="#/account/edit/" class="left-link"><i class="fa fa-edit"></i> Edit</a>
 </div>
 
 <!-- Waiting GIF -->
@@ -19,38 +12,38 @@
 <!-- Account display -->
 <div class="content-list" ng-class="{'hide': waiting}">
   <div class="row account-row">
-    <div class="col-xs-6 align-right">
+    <div class="col-xs-5 align-right">
       <p><strong>Name</strong></p>
     </div>
-    <div class="col-xs-6">
+    <div class="col-xs-7">
       <p>{{account.Name}}</p>
     </div>
   </div>
   <div class="row account-row">
-    <div class="col-xs-6 align-right">
+    <div class="col-xs-5 align-right">
       <p><strong>Email</strong></p>
     </div>
-    <div class="col-xs-6">
+    <div class="col-xs-7">
       <p>{{account.Email}}</p>
     </div>
   </div>
   <div class="row account-row">
-    <div class="row" style="margin: 10px 0 20px 0">
-      <div class="col-xs-6 align-right">
+    <div class="row">
+      <div class="col-xs-5 align-right">
 	<p style="margin-top: 5px"><strong>Appcrafted Credentials</strong></p>
       </div>
-      <div class="col-xs-6">
+      <div class="col-xs-7">
 	<a ng-click="showCredentials = !showCredentials" class="btn" ng-class="{'btn-danger': showCredentials, 'btn-success': !showCredentials}">
 	  <strong>{{showCredentials && 'Hide' || 'Show'}}</strong>
 	</a>
       </div>
     </div>
-    <div ng-class="{'hide': !showCredentials}">
-      <div class="col-xs-6 align-right">
+    <div class="row" style="margin-top: 20px" ng-class="{'hide': !showCredentials}">
+      <div class="col-xs-5 align-right">
 	<p>Access Key</p>
 	<p>Secret Key</p>
       </div>
-      <div class="col-xs-6">
+      <div class="col-xs-7">
 	<p><code>{{account.UserID}}</code></p>
 	<p><code>{{account.SecretKey}}</code></p>
       </div>

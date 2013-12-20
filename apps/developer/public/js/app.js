@@ -4,6 +4,7 @@
 angular.module("appcrafted", ["cSpaceServices", "adServices", "assetServices", "accountServices", "customDirectives", "fileServices", "ui.bootstrap"]).
     config(["$routeProvider",  function($routeProvider) {
 	$routeProvider.
+	    when("/", {templateUrl: "partials/home.html",   controller: HomeCtrl}).
 	    when("/cspaces", {templateUrl: "partials/cspace-list.html",   controller: CSpaceListCtrl}).
 	    when("/cspaces/new", {templateUrl: "partials/create-cspace.html",   controller: CreateCSpaceCtrl}).
 	    when("/cspaces/:CSpaceID/edit", {templateUrl: "partials/edit-cspace.html", controller: EditCSpaceCtrl}).

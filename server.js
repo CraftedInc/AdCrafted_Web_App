@@ -146,14 +146,14 @@ app.configure(function() {
 	var endpoint = null;
     }
     api.app.set("s3", new AWSManager.S3(s3_SDK, api.app.get("S3Bucket"),
-					config.CSPACE_IMG_PREFIX,
-					config.AD_IMG_PREFIX,
-					config.ASSET_IMG_PREFIX, endpoint));
+					config.CSPACE_FILE_PREFIX,
+					config.AD_FILE_PREFIX,
+					config.ASSET_FILE_PREFIX, endpoint));
     developer.app.set(
 	"s3", new AWSManager.S3(s3_SDK, developer.app.get("S3Bucket"),
-				config.CSPACE_IMG_PREFIX,
-				config.AD_IMG_PREFIX,
-				config.ASSET_IMG_PREFIX, endpoint));
+				config.CSPACE_FILE_PREFIX,
+				config.AD_FILE_PREFIX,
+				config.ASSET_FILE_PREFIX, endpoint));
     // Create an SES service interface object.
     var ses = new AWS.SES();
     app.set("ses", ses);

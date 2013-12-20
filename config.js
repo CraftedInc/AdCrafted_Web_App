@@ -7,9 +7,9 @@ var config = {};
  * General configuration
  */
 config.VIEW_ENGINE = "jade";
-config.AD_IMG_PREFIX = "Ad-Images";
-config.ASSET_IMG_PREFIX = "Asset-Images";
-config.CSPACE_IMG_PREFIX = "CraftedSpace-Images";
+config.AD_FILE_PREFIX = "Ad-Files";
+config.ASSET_FILE_PREFIX = "Asset-Files";
+config.CSPACE_FILE_PREFIX = "CraftedSpace-Files";
 config.VIEWS_PATH = "/views";
 config.APPS_VIEWS_PATH = "/../../views";
 config.USER_WHITELIST = ["jbpasko@gmail.com",

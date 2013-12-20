@@ -84,17 +84,8 @@ exports.createAsset = function(request, response) {
 			    "UserID" : {
 				"S": userID
 			    },
-			    "image": {
-				"S": "null"
-			    },
 			    "date": {
 				"S": new Date().toISOString()
-			    },
-			    "impressions": {
-				"N": 0 + ""
-			    },
-			    "clicks": {
-				"N": 0 + ""
 			    }
 			}
 		    };
@@ -119,9 +110,9 @@ exports.createAsset = function(request, response) {
 					      }
 					  });
 				params.Item["image"] = {
-				    "S": s3.getAssetImageURL(cSpaceID,
-							     newAssetID,
-							     name, file.ext)
+				    "S": s3.getAssetFileURL(cSpaceID,
+							    newAssetID,
+							    name, file.ext)
 				};
 			    }
 			} else if (asset[attr] instanceof Array) {
@@ -285,8 +276,7 @@ exports.updateAsset = function(request, response) {
 	    };
 	    for (var attr in asset) {
 		if (attr == "AssetID" || attr == "CSpaceID" ||
-		    attr == "UserID" ||
-		    attr == "impressions" || attr == "clicks") {
+		    attr == "UserID") {
 		    // These attributes shouldn't be changed here.
 		    continue;
 		} else if (attr == "image") {
@@ -303,10 +293,10 @@ exports.updateAsset = function(request, response) {
 				  });
 			params.AttributeUpdates[attr] = {
 			    "Value": {
-				"S": s3.getAssetImageURL(cSpaceID,
-						      assetID,
-						      name,
-						      file.ext)
+				"S": s3.getAssetFileURL(cSpaceID,
+							assetID,
+							name,
+							file.ext)
 			    },
 			    "Action": "PUT"
 			};
@@ -368,12 +358,13 @@ exports.deleteAsset = function(request, response) {
 		if (err) {
 		    response.send(500, {message: "An Error Occurred"});
 		} else {
-		    // Delete any images the asset may reference.
-		    s3.deleteAssetImage(cSpaceID, assetID,
-				     function(err, data) {
-					 response.send(200, {message:
-							     "Asset Deleted"});
-				     });
+		    // Delete any files the asset may reference.
+		    s3.deleteAssetFiles(cSpaceID, assetID,
+					function(err, data) {
+					    response.send(200,
+							  {message:
+							   "Asset Deleted"});
+					});
 		}
 	    });
 	} else {

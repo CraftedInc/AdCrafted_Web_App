@@ -1,4 +1,22 @@
 /**
+ * The navigation controller activates the current navigation element.
+ */
+
+function NavigationCtrl($scope, $location) {
+    $scope.isActive = function(path) { 
+        return path === $location.path();
+    };
+    $scope.beginsWith = function(path) { 
+        return path === $location.path().substr(0, path.length);
+    };
+}
+
+/**
+ * Home controller.
+ */
+function HomeCtrl($scope) {}
+
+/**
  * CraftedSpace controllers.
  */
 
@@ -95,7 +113,7 @@ function AdListCtrl($scope, $routeParams, AdCollection) {
     $scope.AdCollection = AdCollection.get({cSpaceID: $scope.CSpaceID},
 					   function() {$scope.waiting = false});
     $scope.orderReverse = false;
-    $scope.orderProp = "date";
+    $scope.orderProp = "AssetID";
 }
 
 function CreateAdCtrl($scope, $routeParams, AdCollection, CustomFileReader) {
@@ -247,7 +265,6 @@ function CreateAssetCtrl($scope, $routeParams, AssetCollection,
 
 function EditAssetCtrl($scope, $routeParams, SingleAsset, CustomFileReader) {
     $scope.waiting = true;
-    $scope.hasImage = false;
     $scope.cSpaceID = $routeParams.CSpaceID;
 
     $scope.asset = SingleAsset.get({assetID: $routeParams.AssetID,
@@ -255,8 +272,6 @@ function EditAssetCtrl($scope, $routeParams, SingleAsset, CustomFileReader) {
 				   function() {
 				       $scope.waiting = false;
 				       $scope.imageSrc = $scope.asset.image;
-				       $scope.hasImage = $scope.asset.image !=
-					   "null";
 				   });
 
     $scope.readImageFile = function() {         
@@ -264,7 +279,6 @@ function EditAssetCtrl($scope, $routeParams, SingleAsset, CustomFileReader) {
             .then(function(result) {
                 $scope.asset.image = result;
 		$scope.imageSrc = result;
-		$scope.hasImage = true;
             });
     };
 
@@ -330,8 +344,8 @@ function AccountCtrl($scope, $routeParams, Account) {
 }
 
 function EditAccountCtrl($scope, $routeParams, Account) {
-    $scope.waiting = false;
-    $scope.account = Account.get();
+    $scope.waiting = true;
+    $scope.account = Account.get({}, function() {$scope.waiting = false});
 
     $scope.update = function(AccountForm) {
 	if (AccountForm.$valid) {
