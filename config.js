@@ -64,7 +64,7 @@ config.development = {
  * Production configuration.
  */
 config.production = {
-    PROTOCOL: "http://",
+    PROTOCOL: "https://",
     DOMAIN: "appcrafted.com",
     S3_BUCKET: "cdn.appcrafted.com",
     CDN_ENDPOINT: "http://cdn.appcrafted.com/",

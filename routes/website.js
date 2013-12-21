@@ -12,6 +12,7 @@ exports.index = function(request, response) {
     response.render("index",
 		    {
 			title: "Appcrafted | Technology for Mobile Creativity",
+			protocol: request.app.get("PROTOCOL"),
 			domain: request.app.get("DOMAIN"),
 			modal: request.query.signin || false,
 			email: request.query.email

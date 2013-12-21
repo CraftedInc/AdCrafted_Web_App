@@ -81,6 +81,7 @@ app.configure("local", function() {
     app.use(express.static(path.join(__dirname, config.local.STATIC_PATH)));
     // Set the domain.
     app.set("DOMAIN", config.local.DOMAIN);
+    app.set("PROTOCOL", config.local.PROTOCOL);
 });
 app.configure("development", function() {
     console.log("Using development settings.");
@@ -96,6 +97,7 @@ app.configure("development", function() {
 	express.static(path.join(__dirname, config.development.STATIC_PATH)));
     // Set the domain.
     app.set("DOMAIN", config.development.DOMAIN);
+    app.set("PROTOCOL", config.development.PROTOCOL);
 });
 app.configure("production", function() {
     console.log("Using production settings.");
@@ -111,6 +113,7 @@ app.configure("production", function() {
 	express.static(path.join(__dirname, config.production.STATIC_PATH)));
     // Set the domain.
     app.set("DOMAIN", config.production.DOMAIN);
+    app.set("PROTOCOL", config.production.PROTOCOL);
 });
 
 /**

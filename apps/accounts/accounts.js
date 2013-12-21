@@ -185,10 +185,11 @@ app.get("/auth/google/callback",
 	    }
 	    if (authorized) {
 		var subdomain = request.session.subdomain || "www";
-		var url = "http://" + subdomain + "." + request.app.get("DOMAIN");
+		var url = request.app.get("PROTOCOL") + subdomain + "." +
+		    request.app.get("DOMAIN");
 	    } else {
-		var url = "http://www." + request.app.get("DOMAIN") +
-		    "?email=" + request.user.email;
+		var url = request.app.get("PROTOCOL") + "www." +
+		    request.app.get("DOMAIN") + "?email=" + request.user.email;
 		request.logout();
 	    }
 	    response.redirect(url);
