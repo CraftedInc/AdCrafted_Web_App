@@ -271,7 +271,8 @@ function EditAssetCtrl($scope, $routeParams, SingleAsset, CustomFileReader) {
 				    cSpaceID: $routeParams.CSpaceID},
 				   function() {
 				       $scope.waiting = false;
-				       $scope.imageSrc = $scope.asset.image;
+				       $scope.imageSrc =
+					   _rewriteS3URL($scope.asset.image);
 				   });
 
     $scope.readImageFile = function() {         
@@ -368,4 +369,18 @@ function DocsCtrl($scope, $routeParams) {
     $scope.showAPIDocs = false;
     $scope.showUnityPluginDocs = false;
     $scope.showGeneralInformation = false;
+}
+
+/**
+ * Private functions.
+ */
+
+function _rewriteS3URL(url) {
+    var a = document.createElement("a");
+    a.href = url;
+    if (a.host == "cdn.appcrafted.com") {
+	return "https://s3.amazonaws.com/cdn.appcrafted.com" + a.pathname;
+    } else {
+	return url;
+    }
 }
