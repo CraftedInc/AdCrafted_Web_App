@@ -8,7 +8,7 @@
       <span class="input-group-addon">
 	<span class="glyphicon glyphicon-search"></span>
       </span>
-      <input type="text" class="form-control" placeholder="Search" ng-model="query">
+      <input type="text" class="form-control" placeholder="Search Assets" ng-model="query">
       <span ng-show="!!query" ng-click="clearSearch()" class="input-group-addon" id="clear-search">
 	<span class="glyphicon glyphicon-remove"></span>
       </span>
@@ -38,7 +38,7 @@
 <!-- Information Header -->
 <div class="info-header" ng-class="{'hide': waiting}">
   <a href="#/cspaces/{{CSpaceID}}/asset/new" class="btn btn-success right-link" ng-show="!!AssetCollection.Assets.length">
-    <strong>Create an Asset</strong>
+    <strong>New Asset</strong>
   </a>
   <h1 ng-show="!AssetCollection.Assets.length">
     <i class="fa fa-warning"></i>

@@ -115,15 +115,27 @@ app.configure(function() {
  * The API, secured using an access key and signature combination.
  */
 
+// CREATE an asset in the specified CraftedSpace.
+app.post("/alpha/cspace/:cSpaceID/asset",
+	 utils.setUserIDOnRequest(),
+	 assets.createAsset);
+
 // RETRIEVE all Assets within the specified CraftedSpace.
 app.get("/alpha/cspace/:cSpaceID/asset",
-	utils.authenticateAPIRequest(),
+	utils.setUserIDOnRequest(),
 	assets.getAllAssetsInCraftedSpace);
 
-// UPDATE the Asset impression and click metrics.
-app.post("/alpha/cspace/:cSpaceID/asset/:assetID/metrics",
-	 utils.authenticateAPIRequest(),
-	 assets.updateMetrics);
+// UPDATE an asset.
+app.put("/alpha/cspace/:cSpaceID/asset/:assetID",
+	utils.setUserIDOnRequest(),
+	assets.updateAsset);
+
+// DELETE an asset without deleting the CraftedSpace.
+app.del("/alpha/cspace/:cSpaceID/asset/:assetID",
+	utils.setUserIDOnRequest(),
+	assets.deleteAsset);
+
+// EXPERIMENTAL API BELOW
 
 // RETRIEVE all Assets within the specified CraftedSpace (no authentication).
 app.get("/exp/cspace/:cSpaceID/asset",

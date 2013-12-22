@@ -22,6 +22,12 @@ config.ASSET_USER_ID_INDEX = "AssetUserID-INDEX";
 config.ALLOW_ORIGINS = "*";
 config.ALLOW_METHODS = "GET,POST";
 config.ALLOW_HEADERS = "Content-Type,Authorization";
+config.STRING_PREFIX = "STRING";
+config.URL_PREFIX = "URL";
+config.IMAGE_PREFIX = "IMAGE";
+config.FILE_PREFIX = "FILE";
+config.ARRAY_PREFIX = "ARRAY";
+config.NUMBER_PREFIX = "NUMBER";
 
 /**
  * Local configuration.

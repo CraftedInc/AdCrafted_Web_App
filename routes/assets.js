@@ -90,35 +90,66 @@ exports.createAsset = function(request, response) {
 			}
 		    };
 		    for (var attr in asset) {
-			// Skip over items containing an empty string.
-			if (asset[attr] == "") {
-			    continue;
+			// Reject these attributes, as they've already been set.
+			if (attr == "AssetID" || attr == "CSpaceID" ||
+			    attr == "UserID" || attr == "date") {
+			    response.send(500, {
+				message: "Prohibited attribute name"
+			    });
+			    return;
 			}
-			// The image attribute is a Base64 encoded file and must
+			// Check the attribute type.
+			var type = null;
+			for (var type in asset[attr]) {
+			    if (type == config.STRING_PREFIX ||
+				type == config.URL_PREFIX ||
+				type == config.ARRAY_PREFIX ||
+				type == config.NUMBER_PREFIX ||
+				type == config.IMAGE_PREFIX ||
+				type == config.FILE_PREFIX) {
+				break;
+			    }
+			}
+			// File and image attributes are Base64 encoded and must
 			// be processed separately.
-			if (attr == "image" && !!asset["image"]) {
-			    var file = utils.parseBase64Data(asset[attr]);
+			if ((type == config.IMAGE_PREFIX ||
+			     type == config.FILE_PREFIX) &&
+			    !!asset[attr][type]) {
+			    var file = utils.parseBase64Data(asset[attr][type]);
 			    if (file.isBase64) {
+				var mime = type === config.IMAGE_PREFIX ?
+				    "image/" : "application/";
 				var name = utils.generateKey(8);
 				var key = s3.generateAssetKey(cSpaceID,
 							      newAssetID,
 							      name, file.ext);
-				s3.upload(file.body, key, "image/" + file.ext,
+				s3.upload(file.body, key, mime + file.ext,
 					  function(err, data) {
 					      if (err) {
 						  console.log(err);
 					      }
 					  });
-				params.Item["image"] = {
-				    "S": s3.getAssetFileURL(cSpaceID,
-							    newAssetID,
-							    name, file.ext)
+				params.Item[attr] = {
+				    "S": "{" + type + ": " +
+					s3.getAssetFileURL(cSpaceID,
+							   newAssetID,
+							   name, file.ext) + "}"
 				};
+			    } else {
+				response.send(500, {
+				    message: "File or image not Base64-encoded"
+				});
+				return;
 			    }
-			} else if (asset[attr] instanceof Array) {
-			    params.Item[attr] = {"SS": asset[attr]};
+			} else if (!!type && !!asset[attr][type]) {
+			    params.Item[attr] = {
+				"S": "{" + type + ": " + asset[attr][type] + "}"
+			    };
 			} else {
-			    params.Item[attr] = {"S": asset[attr]};
+			    response.send(500, {
+				message: "Missing or incorrect parameter"
+			    });
+			    return;
 			}
 		    }
 		    // Finally, put the new asset.
@@ -275,10 +306,13 @@ exports.updateAsset = function(request, response) {
 		"AttributeUpdates": {}
 	    };
 	    for (var attr in asset) {
+		// These attributes shouldn't be changed.
 		if (attr == "AssetID" || attr == "CSpaceID" ||
-		    attr == "UserID") {
-		    // These attributes shouldn't be changed here.
-		    continue;
+		    attr == "UserID" || attr == "date") {
+		    response.send(500, {
+			message: "Prohibited attribute name"
+		    });
+		    return;
 		} else if (attr == "image") {
 		    var file = utils.parseBase64Data(asset[attr]);
 		    if (file.isBase64) {
