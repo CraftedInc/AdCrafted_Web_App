@@ -20,14 +20,19 @@ config.NOTIFICATIONS_EMAIL = "AppCrafted Notifications <notifications@appcrafted
 config.CSPACE_USER_ID_INDEX = "CSpaceUserID-INDEX";
 config.ASSET_USER_ID_INDEX = "AssetUserID-INDEX";
 config.ALLOW_ORIGINS = "*";
-config.ALLOW_METHODS = "GET,POST";
+config.ALLOW_METHODS = "GET,POST,PUT,DELETE";
 config.ALLOW_HEADERS = "Content-Type,Authorization";
-config.STRING_PREFIX = "STRING";
-config.URL_PREFIX = "URL";
-config.IMAGE_PREFIX = "IMAGE";
-config.FILE_PREFIX = "FILE";
-config.ARRAY_PREFIX = "ARRAY";
-config.NUMBER_PREFIX = "NUMBER";
+config.ATTRIBUTE_TYPE_KEY = "Type";
+config.ATTRIBUTE_VALUE_KEY = "Value";
+config.ATTRIBUTE_ACTION_KEY = "Action";
+config.STRING_TYPE = "STRING";
+config.URL_TYPE = "URL";
+config.IMAGE_TYPE = "IMAGE";
+config.FILE_TYPE = "FILE";
+config.ARRAY_TYPE = "ARRAY";
+config.NUMBER_TYPE = "NUMBER";
+config.DELETE_ATTRIBUTE_ACTION = "DELETE";
+config.UPDATE_ATTRIBUTE_ACTION = "UPDATE";
 
 /**
  * Local configuration.

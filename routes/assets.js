@@ -84,7 +84,7 @@ exports.createAsset = function(request, response) {
 			    "UserID" : {
 				"S": userID
 			    },
-			    "date": {
+			    "AssetCreatedDate": {
 				"S": new Date().toISOString()
 			    }
 			}
@@ -92,32 +92,37 @@ exports.createAsset = function(request, response) {
 		    for (var attr in asset) {
 			// Reject these attributes, as they've already been set.
 			if (attr == "AssetID" || attr == "CSpaceID" ||
-			    attr == "UserID" || attr == "date") {
+			    attr == "UserID" || attr == "AssetCreatedDate") {
 			    response.send(500, {
-				message: "Prohibited attribute name"
+				message: "Prohibited Attribute Name"
 			    });
 			    return;
 			}
-			// Check the attribute type.
-			var type = null;
-			for (var type in asset[attr]) {
-			    if (type == config.STRING_PREFIX ||
-				type == config.URL_PREFIX ||
-				type == config.ARRAY_PREFIX ||
-				type == config.NUMBER_PREFIX ||
-				type == config.IMAGE_PREFIX ||
-				type == config.FILE_PREFIX) {
-				break;
-			    }
+			// Get the attribute type and value.
+			var type = !!asset[attr][config.ATTRIBUTE_TYPE_KEY] ?
+			    asset[attr][config.ATTRIBUTE_TYPE_KEY] : null;
+			// Check that the type is supported.
+			if (!type || (type != config.STRING_TYPE &&
+				      type != config.URL_TYPE &&
+				      type != config.IMAGE_TYPE &&
+				      type != config.FILE_TYPE &&
+				      type != config.ARRAY_TYPE &&
+				      type != config.NUMBER_TYPE)) {
+			    // If the type is not supported, send an error.
+			    response.send(500, {
+				message: "Data Type Not Supported"
+			    });
+			    return;
 			}
+			var value = !!asset[attr][config.ATTRIBUTE_VALUE_KEY] ?
+			    asset[attr][config.ATTRIBUTE_VALUE_KEY] : null;
 			// File and image attributes are Base64 encoded and must
 			// be processed separately.
-			if ((type == config.IMAGE_PREFIX ||
-			     type == config.FILE_PREFIX) &&
-			    !!asset[attr][type]) {
-			    var file = utils.parseBase64Data(asset[attr][type]);
+			if ((type == config.IMAGE_TYPE ||
+			     type == config.FILE_TYPE) && !!value) {
+			    var file = utils.parseBase64Data(value);
 			    if (file.isBase64) {
-				var mime = type === config.IMAGE_PREFIX ?
+				var mime = type === config.IMAGE_TYPE ?
 				    "image/" : "application/";
 				var name = utils.generateKey(8);
 				var key = s3.generateAssetKey(cSpaceID,
@@ -130,24 +135,30 @@ exports.createAsset = function(request, response) {
 					      }
 					  });
 				params.Item[attr] = {
-				    "S": "{" + type + ": " +
+				    "S": '{"' + config.ATTRIBUTE_TYPE_KEY +
+					'":"' + type + '","' +
+					config.ATTRIBUTE_VALUE_KEY + '":"' +
 					s3.getAssetFileURL(cSpaceID,
 							   newAssetID,
-							   name, file.ext) + "}"
+							   name, file.ext) +
+					'"}'
 				};
 			    } else {
 				response.send(500, {
-				    message: "File or image not Base64-encoded"
+				    message: "File Not Base64-Encoded"
 				});
 				return;
 			    }
-			} else if (!!type && !!asset[attr][type]) {
+			} else if (!!type && !!value) {
 			    params.Item[attr] = {
-				"S": "{" + type + ": " + asset[attr][type] + "}"
+				"S": '{"' + config.ATTRIBUTE_TYPE_KEY + '":"' +
+				    type + '","' +
+				    config.ATTRIBUTE_VALUE_KEY + '":"' +
+				    value + '"}'
 			    };
 			} else {
 			    response.send(500, {
-				message: "Missing or incorrect parameter"
+				message: "Missing or Incorrect Parameter"
 			    });
 			    return;
 			}
@@ -306,20 +317,41 @@ exports.updateAsset = function(request, response) {
 		"AttributeUpdates": {}
 	    };
 	    for (var attr in asset) {
-		// These attributes shouldn't be changed.
+		// Reject these attributes, as they shouldn't be changed.
 		if (attr == "AssetID" || attr == "CSpaceID" ||
-		    attr == "UserID" || attr == "date") {
+		    attr == "UserID" || attr == "AssetCreatedDate") {
 		    response.send(500, {
-			message: "Prohibited attribute name"
+			message: "Prohibited Attribute Name"
 		    });
 		    return;
-		} else if (attr == "image") {
-		    var file = utils.parseBase64Data(asset[attr]);
+		}
+		// Get the attribute type, value, and action.
+		var type = !!asset[attr][config.ATTRIBUTE_TYPE_KEY] ?
+		    asset[attr][config.ATTRIBUTE_TYPE_KEY] : null;
+		// Check that the type is supported.
+		if (!!type &&
+		    type != config.STRING_TYPE && type != config.URL_TYPE &&
+		    type != config.IMAGE_TYPE && type != config.FILE_TYPE &&
+		    type != config.ARRAY_TYPE && type != config.NUMBER_TYPE) {
+		    // If the type is not supported, set it to null.
+		    type = null;
+		}
+		var value = !!asset[attr][config.ATTRIBUTE_VALUE_KEY] ?
+		    asset[attr][config.ATTRIBUTE_VALUE_KEY] : null;
+		var action = !!asset[attr][config.ATTRIBUTE_ACTION_KEY] ?
+		    asset[attr][config.ATTRIBUTE_ACTION_KEY] : null;
+		// File and image attributes are Base64 encoded and must
+		// be processed separately.
+		if ((type == config.IMAGE_TYPE || type == config.FILE_TYPE)
+		    && !!value && action == config.UPDATE_ATTRIBUTE_ACTION) {
+		    var file = utils.parseBase64Data(value);
 		    if (file.isBase64) {
+			var mime = type === config.IMAGE_TYPE ?
+			    "image/" : "application/";
 			var name = utils.generateKey(8);
 			var key = s3.generateAssetKey(cSpaceID, assetID,
 						      name, file.ext);
-			s3.upload(file.body, key, "image/" + file.ext,
+			s3.upload(file.body, key, mime + file.ext,
 				  function(err, data) {
 				      if (err) {
 					  console.log(err);
@@ -327,27 +359,36 @@ exports.updateAsset = function(request, response) {
 				  });
 			params.AttributeUpdates[attr] = {
 			    "Value": {
-				"S": s3.getAssetFileURL(cSpaceID,
-							assetID,
-							name,
-							file.ext)
+				"S": '{"' + config.ATTRIBUTE_TYPE_KEY +
+				    '":"' + type + '","' +
+				    config.ATTRIBUTE_VALUE_KEY + '":"' +
+				    s3.getAssetFileURL(cSpaceID,
+						       assetID,
+						       name, file.ext) + '"}'
 			    },
 			    "Action": "PUT"
 			};
 		    }
+		} else if (action == config.DELETE_ATTRIBUTE_ACTION) {
+		    params.AttributeUpdates[attr] = {
+			"Action": "DELETE"
+		    };
+		} else if (!!type && !!value &&
+			   action == config.UPDATE_ATTRIBUTE_ACTION) {
+		    params.AttributeUpdates[attr] = {
+			"Value": {
+			    "S": '{"' + config.ATTRIBUTE_TYPE_KEY + '":"' +
+				type + '","' +
+				config.ATTRIBUTE_VALUE_KEY + '":"' +
+				value + '"}'
+			},
+			"Action": "PUT"
+		    };
 		} else {
-		    if (!!asset[attr]) {
-			params.AttributeUpdates[attr] = {
-			    "Value": {
-				"S": asset[attr]
-			    },
-			    "Action": "PUT"
-			};
-		    } else {
-			params.AttributeUpdates[attr] = {
-			    "Action": "DELETE"
-			};
-		    }
+		    response.send(500, {
+			message: "Missing or Incorrect Parameter"
+		    });
+		    return;
 		}
 	    }
 	    db.updateItem(params, function(err, data) {
