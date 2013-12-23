@@ -302,7 +302,16 @@ exports.updateAsset = function(request, response) {
     db.getItem(params, function(err, data) {
 	if (err) {
 	    response.send(500, {message: "An Error Occurred"});
-	} else if (!!data.Item.UserID && data.Item.UserID.S == userID) {
+	    return;
+	}
+	// If the item doesn't exist, then ensure that the AssetCreatedDate
+	// and UserID attributes are set.
+	if (utils.isEmpty(data)) {
+	    // Check the CraftedSpace to see if the userID matches.
+	    response.send(500, {message: "Asset Does Not Exist"});
+	    return;
+	}
+	if (!!data.Item.UserID && data.Item.UserID.S == userID) {
 	    // The user must own this Asset in order to update it.
 	    params = {
 		"TableName": response.app.get("AssetTable"),
