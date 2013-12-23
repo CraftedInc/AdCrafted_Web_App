@@ -19,7 +19,6 @@ body {
     background-image: url(/static/img/drops_900_blur.jpg);
     background-size: cover;
     background-repeat: no-repeat;
-    background-attachment: fixed;
 }
 #dark-overlay {
     background-color: rgba(0,0,0,0.4);
@@ -286,19 +285,21 @@ pre.code {
 }
 #signin-modal-close {
     position: absolute;
-    top: -14px;
-    right: -14px;
+    top: 0;
+    right: 0;
     color: rgb(50,50,50);
-    background: white;
-    font-size: 35px;
-    height: 34px;
-    width: 34px;
-    border-radius: 16px;
-    box-shadow: 0 0 7px #FFF;
+    font-size: 22px;
+    border-radius: 0 5px 0 0;
+    box-shadow: -2px 2px 2px #CCC;
+    padding: 3px;
+    height: 28px;
+    width: 28px;
+    transition: 0.25s;
 }
 #signin-modal-close:hover {
     cursor: pointer;
-    color: rgb(209,15,15);
+    color: rgb(15,15,15);
+    box-shadow: -2px 2px 2px #999;
 }
 .modal-footer p, #signin-body p {
     text-align: center;

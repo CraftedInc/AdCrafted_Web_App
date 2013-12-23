@@ -37,21 +37,15 @@
 
 <!-- Information Header -->
 <div class="info-header" ng-class="{'hide': waiting}">
-  <a href="#/cspaces/{{CSpaceID}}/asset/new" class="btn btn-success right-link" ng-show="!!AssetCollection.Assets.length">
+  <a href="#/cspaces/{{CSpaceID}}/asset/new" class="btn btn-success right-link">
     <strong>Create an Asset</strong>
   </a>
   <h1 ng-show="!AssetCollection.Assets.length">
     <i class="fa fa-warning"></i>
-    This Container is empty
+    This Container Is Empty
   </h1>
-  <p ng-show="!AssetCollection.Assets.length">
-    <em>Assets will be displayed here when they are created</em>
-  </p>
-  <a ng-show="!AssetCollection.Assets.length" href="#/cspaces/{{CSpaceID}}/asset/new" class="btn btn-success">
-    <strong>Create an Asset</strong>
-  </a>
   <h1 ng-show="!!AssetCollection.Assets.length">Assets</h1>
-  <p ng-show="!!AssetCollection.Assets.length">Container ID: <code>{{CSpaceID}}</code></p>
+  <p>Container ID: <code>{{CSpaceID}}</code></p>
 </div>
 
 <!-- ASSET list -->
