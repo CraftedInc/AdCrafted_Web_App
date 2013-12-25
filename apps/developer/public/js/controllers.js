@@ -40,6 +40,7 @@ function CreateCSpaceCtrl($scope, CSpaceCollection, CustomFileReader) {
     $scope.waiting = false;
     $scope.cSpace = {};
     $scope.hasImage = false;
+    $scope.submitted = false;
 
     // Read the file from the drop event on the tag with imageDrop directive.
     // The tag with the directive must also specify an on-change attribute,
@@ -57,6 +58,7 @@ function CreateCSpaceCtrl($scope, CSpaceCollection, CustomFileReader) {
     // Call the create service which wraps a call to the REST API, thus creating
     // the new CSpace.
     $scope.create = function(newCSpaceForm) {
+	$scope.submitted = true;
 	if (newCSpaceForm.$valid) {
 	    $scope.waiting = true;
 	    CSpaceCollection.create($scope.cSpace, function() {
@@ -69,6 +71,7 @@ function CreateCSpaceCtrl($scope, CSpaceCollection, CustomFileReader) {
 function EditCSpaceCtrl($scope, $routeParams, SingleCSpace, CustomFileReader) {
     $scope.waiting = true;
     $scope.hasImage = false;
+    $scope.submitted = false;
     $scope.cSpace =
 	SingleCSpace.get({cSpaceID: $routeParams.CSpaceID}, function() {
 	    $scope.waiting = false;
@@ -86,8 +89,9 @@ function EditCSpaceCtrl($scope, $routeParams, SingleCSpace, CustomFileReader) {
     };
 
     $scope.update = function(CSpaceForm) {
-	$scope.waiting = true;
+	$scope.submitted = true;
 	if (CSpaceForm.$valid) {
+	    $scope.waiting = true;
 	    SingleCSpace.update({cSpaceID: $routeParams.CSpaceID},
 				 $scope.cSpace, function() {
 				     window.location = "#/cspaces/";
@@ -238,21 +242,37 @@ function CreateAssetCtrl($scope, $routeParams, AssetCollection,
 			 CustomFileReader) {
     $scope.waiting = false;
     $scope.cSpaceID = $routeParams.CSpaceID;
-    $scope.hasImage = false;
+    $scope.submitted = false;
 
+    $scope.attributes = [{"Type": "STRING"}];
     $scope.asset = {};
 
-    $scope.readImageFile = function() {         
-        CustomFileReader.readAsDataUrl($scope.file, $scope)
+    $scope.addAttribute = function() {
+	$scope.attributes.push({"Type": "STRING"});
+    };
+
+    $scope.removeAttribute = function(index) {
+	if (index > -1) {
+	    $scope.attributes.splice(index, 1);
+	}
+    };
+
+    $scope.readFile = function(index) {
+        CustomFileReader.readAsDataUrl(this.file, $scope)
             .then(function(result) {
-                $scope.asset.image = result;
-		$scope.imageSrc = result;
-		$scope.hasImage = true;
+		$scope.attributes[index]["Value"] = result;
             });
     };
 
     $scope.create = function(newAssetForm) {
+	$scope.submitted = true;
 	if (newAssetForm.$valid) {
+	    $scope.attributes.forEach(function(attribute) {
+		$scope.asset[attribute["Name"]]= {
+		    "Type": attribute["Type"],
+		    "Value": attribute["Value"]
+		};
+	    });
 	    $scope.waiting = true;
 	    AssetCollection.create({cSpaceID: $routeParams.CSpaceID},
 				   $scope.asset, function() {

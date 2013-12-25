@@ -10,13 +10,14 @@
 </div>
 
 <!-- EDIT form -->
-<form class="form-horizontal row" role="form" id="edit-cspace-form" name="CSpaceForm" ng-class="{'hide': waiting}">
+<form class="form-horizontal row" role="form" id="edit-cspace-form" name="CSpaceForm" ng-class="{'hide': waiting}" novalidate>
   <div class="row">
     <div class="form-group">
       <label for="title" class="col-xs-4 control-label">Name</label>
       <div class="col-xs-5">
-	<input name="title" type="text" class="form-control" id="title" placeholder="Name (required)" ng-model="cSpace.title">
+	<input name="title" type="text" class="form-control" id="title" placeholder="Name (required)" ng-model="cSpace.title" required>
       </div>
+      <p ng-show="submitted" class="error-message"><i class="fa fa-warning"></i> required</p>
     </div>
     <div class="form-group">
       <label for="tags" class="col-xs-4 control-label">Tags</label>

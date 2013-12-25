@@ -3,7 +3,6 @@ var customDirectives = angular.module("customDirectives", []);
 customDirectives.directive("fileInput", function($parse) {
     return {
         restrict: "A",
-        template: "<input type='file' />",
         replace: true,
         link: function (scope, element, attrs) {
             var modelGet = $parse(attrs.fileInput);
@@ -43,7 +42,7 @@ customDirectives.directive("imageDrop", function ($parse) {
                 scope.$apply(function () {
                     accessor.assign(scope, file);
                     onChange(scope);
-                });                    
+                });
             };
 
             element.bind("dragover", onDragOver)
