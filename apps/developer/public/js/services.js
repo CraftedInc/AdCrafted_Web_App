@@ -112,12 +112,12 @@ fileServices.factory("CustomFileReader", function($q, $log) {
         return reader;
     };
 
-    var readAsDataURL = function (file, scope) {
+    var readAsDataURL = function(file, scope) {
         var deferred = $q.defer();
         
         var reader = getReader(deferred, scope);         
         reader.readAsDataURL(file);
-        
+
         return deferred.promise;
     };
 

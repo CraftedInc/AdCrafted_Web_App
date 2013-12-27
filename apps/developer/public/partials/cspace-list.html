@@ -8,7 +8,7 @@
       <span class="input-group-addon">
 	<span class="glyphicon glyphicon-search"></span>
       </span>
-      <input type="text" class="form-control" placeholder="Search" ng-model="query">
+      <input type="text" class="form-control" placeholder="Search Containers" ng-model="query">
       <span ng-show="!!query" ng-click="clearSearch()" class="input-group-addon" id="clear-search">
 	<span class="glyphicon glyphicon-remove"></span>
       </span>
@@ -63,7 +63,7 @@
     </a>
     <p>
       <span ng-show="!!CSpace.title">{{CSpace.title}}</span>
-      <span ng-show="!CSpace.title"><em>No Title</em></span>
+      <span ng-show="!CSpace.title"><em>no name</em></span>
     </p>
     <p><em>created:</em> {{CSpace.date | date:'shortDate'}}</p>
     <p style="overflow: hidden">

@@ -4,6 +4,7 @@
  * Author: James Pasko (james@adcrafted.com).
  */
 
+var config = require("./../config");
 
 /**
  * Tests whether an object is empty (contains no attributes of its own).
@@ -65,6 +66,32 @@ exports.parseItem = function(item) {
 	    attribute["S"] : attribute["SS"] ?
 	    attribute["SS"] : null;
 	result[attr] = value;
+    }
+    return result;
+};
+
+/**
+ * Parses an Asset.
+ */
+exports.parseAsset = function(item) {
+    var result = {};
+    for (var attr in item) {
+	var attribute = item[attr];
+	var value = attribute["N"] ?
+	    attribute["N"] : attribute["S"] ?
+	    attribute["S"] : attribute["SS"] ?
+	    attribute["SS"] : null;
+	try {
+	    // Valid JSON string.
+	    result[attr] = JSON.parse(value);
+	    if (result[attr][config.ATTRIBUTE_TYPE_KEY] == config.NUMBER_TYPE) {
+		result[attr][config.ATTRIBUTE_VALUE_KEY] =
+		    parseInt(result[attr][config.ATTRIBUTE_VALUE_KEY]);
+	    }
+	} catch (e) {
+	    // Not JSON, so don't parse it.
+	    result[attr] = value;
+	}
     }
     return result;
 };

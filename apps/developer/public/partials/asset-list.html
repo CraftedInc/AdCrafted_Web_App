@@ -8,7 +8,7 @@
       <span class="input-group-addon">
 	<span class="glyphicon glyphicon-search"></span>
       </span>
-      <input type="text" class="form-control" placeholder="Search" ng-model="query">
+      <input type="text" class="form-control" placeholder="Search Assets" ng-model="query">
       <span ng-show="!!query" ng-click="clearSearch()" class="input-group-addon" id="clear-search">
 	<span class="glyphicon glyphicon-remove"></span>
       </span>
@@ -57,11 +57,13 @@
     <a href="#/cspaces/{{CSpaceID}}/asset/{{Asset.AssetID}}/edit" class="home-link">
       <i class="fa fa-file-o"></i>
     </a>
+    <!--
     <p>
       <span ng-show="!!Asset.title">{{Asset.title}}</span>
       <span ng-show="!Asset.title"><em>No Title</em></span>
     </p>
-    <p><em>created:</em> {{Asset.date | date:'shortDate'}}</p>
+    -->
+    <p><em>created:</em> {{Asset.AssetCreatedDate | date:'shortDate'}}</p>
     <p><em>ID:</em> <code>{{Asset.AssetID}}</code></p>
   </div>
 </div>

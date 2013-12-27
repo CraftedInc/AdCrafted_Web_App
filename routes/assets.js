@@ -84,41 +84,83 @@ exports.createAsset = function(request, response) {
 			    "UserID" : {
 				"S": userID
 			    },
-			    "date": {
+			    "AssetCreatedDate": {
 				"S": new Date().toISOString()
 			    }
 			}
 		    };
 		    for (var attr in asset) {
-			// Skip over items containing an empty string.
-			if (asset[attr] == "") {
-			    continue;
+			// Reject these attributes, as they've already been set.
+			if (attr == "AssetID" || attr == "CSpaceID" ||
+			    attr == "UserID" || attr == "AssetCreatedDate") {
+			    response.send(500, {
+				message: "Prohibited Attribute Name"
+			    });
+			    return;
 			}
-			// The image attribute is a Base64 encoded file and must
+			// Get the attribute type and value.
+			var type = !!asset[attr][config.ATTRIBUTE_TYPE_KEY] ?
+			    asset[attr][config.ATTRIBUTE_TYPE_KEY] : null;
+			// Check that the type is supported.
+			if (!type || (type != config.STRING_TYPE &&
+				      type != config.URL_TYPE &&
+				      type != config.IMAGE_TYPE &&
+				      type != config.FILE_TYPE &&
+				      type != config.ARRAY_TYPE &&
+				      type != config.NUMBER_TYPE)) {
+			    // If the type is not supported, send an error.
+			    response.send(500, {
+				message: "Data Type Not Supported"
+			    });
+			    return;
+			}
+			var value = !!asset[attr][config.ATTRIBUTE_VALUE_KEY] ?
+			    asset[attr][config.ATTRIBUTE_VALUE_KEY] : null;
+			// File and image attributes are Base64 encoded and must
 			// be processed separately.
-			if (attr == "image" && !!asset["image"]) {
-			    var file = utils.parseBase64Data(asset[attr]);
+			if ((type == config.IMAGE_TYPE ||
+			     type == config.FILE_TYPE) && !!value) {
+			    var file = utils.parseBase64Data(value);
 			    if (file.isBase64) {
+				var mime = type === config.IMAGE_TYPE ?
+				    "image/" : "application/";
 				var name = utils.generateKey(8);
 				var key = s3.generateAssetKey(cSpaceID,
 							      newAssetID,
 							      name, file.ext);
-				s3.upload(file.body, key, "image/" + file.ext,
+				s3.upload(file.body, key, mime + file.ext,
 					  function(err, data) {
 					      if (err) {
 						  console.log(err);
 					      }
 					  });
-				params.Item["image"] = {
-				    "S": s3.getAssetFileURL(cSpaceID,
-							    newAssetID,
-							    name, file.ext)
+				params.Item[attr] = {
+				    "S": '{"' + config.ATTRIBUTE_TYPE_KEY +
+					'":"' + type + '","' +
+					config.ATTRIBUTE_VALUE_KEY + '":"' +
+					s3.getAssetFileURL(cSpaceID,
+							   newAssetID,
+							   name, file.ext) +
+					'"}'
 				};
+			    } else {
+				response.send(500, {
+				    message: "File Not Base64-Encoded"
+				});
+				return;
 			    }
-			} else if (asset[attr] instanceof Array) {
-			    params.Item[attr] = {"SS": asset[attr]};
+			} else if (!!type && !!value) {
+			    params.Item[attr] = {
+				"S": '{"' + config.ATTRIBUTE_TYPE_KEY + '":"' +
+				    type + '","' +
+				    config.ATTRIBUTE_VALUE_KEY + '":"' +
+				    value + '"}'
+			    };
 			} else {
-			    params.Item[attr] = {"S": asset[attr]};
+			    response.send(500, {
+				message: "Missing or Incorrect Parameter"
+			    });
+			    return;
 			}
 		    }
 		    // Finally, put the new asset.
@@ -160,7 +202,7 @@ exports.getAsset = function(request, response) {
 	} else if (!utils.isEmpty(data)) {
 	    if (!!data.Item.UserID && data.Item.UserID.S == userID) {
 		// The user must own either this Asset or its CraftedSpace.
-		response.send(200, utils.parseItem(data.Item));
+		response.send(200, utils.parseAsset(data.Item));
 	    } else {
 		response.send(403, {message: "Not Authorized"});
 	    }
@@ -188,7 +230,7 @@ exports.getAllUserAssets = function(request, response) {
 			  Assets: []};
 	    for (var i = 0; i < data.Count; i++) {
 		if (!!data.Item.UserID && data.Item.UserID.S == userID) {
-		    result.Assets[count++] = utils.parseItem(data.Items[i]);
+		    result.Assets[count++] = utils.parseAsset(data.Items[i]);
 		}
 	    }
 	    result.Count = count;
@@ -229,7 +271,7 @@ exports.getAllAssetsInCraftedSpace = function(request, response) {
 			  Count: data.Count,
 			  Assets: []};
 	    for (var i = 0; i < data.Count; i++) {
-		result.Assets[i] = utils.parseItem(data.Items[i]);
+		result.Assets[i] = utils.parseAsset(data.Items[i]);
 	    }
 	    response.send(result);
 	}
@@ -260,7 +302,16 @@ exports.updateAsset = function(request, response) {
     db.getItem(params, function(err, data) {
 	if (err) {
 	    response.send(500, {message: "An Error Occurred"});
-	} else if (!!data.Item.UserID && data.Item.UserID.S == userID) {
+	    return;
+	}
+	// If the item doesn't exist, then ensure that the AssetCreatedDate
+	// and UserID attributes are set.
+	if (utils.isEmpty(data)) {
+	    // Check the CraftedSpace to see if the userID matches.
+	    response.send(500, {message: "Asset Does Not Exist"});
+	    return;
+	}
+	if (!!data.Item.UserID && data.Item.UserID.S == userID) {
 	    // The user must own this Asset in order to update it.
 	    params = {
 		"TableName": response.app.get("AssetTable"),
@@ -275,17 +326,41 @@ exports.updateAsset = function(request, response) {
 		"AttributeUpdates": {}
 	    };
 	    for (var attr in asset) {
+		// Reject these attributes, as they shouldn't be changed.
 		if (attr == "AssetID" || attr == "CSpaceID" ||
-		    attr == "UserID") {
-		    // These attributes shouldn't be changed here.
-		    continue;
-		} else if (attr == "image") {
-		    var file = utils.parseBase64Data(asset[attr]);
+		    attr == "UserID" || attr == "AssetCreatedDate") {
+		    response.send(500, {
+			message: "Prohibited Attribute Name"
+		    });
+		    return;
+		}
+		// Get the attribute type, value, and action.
+		var type = !!asset[attr][config.ATTRIBUTE_TYPE_KEY] ?
+		    asset[attr][config.ATTRIBUTE_TYPE_KEY] : null;
+		// Check that the type is supported.
+		if (!!type &&
+		    type != config.STRING_TYPE && type != config.URL_TYPE &&
+		    type != config.IMAGE_TYPE && type != config.FILE_TYPE &&
+		    type != config.ARRAY_TYPE && type != config.NUMBER_TYPE) {
+		    // If the type is not supported, set it to null.
+		    type = null;
+		}
+		var value = !!asset[attr][config.ATTRIBUTE_VALUE_KEY] ?
+		    asset[attr][config.ATTRIBUTE_VALUE_KEY] : null;
+		var action = !!asset[attr][config.ATTRIBUTE_ACTION_KEY] ?
+		    asset[attr][config.ATTRIBUTE_ACTION_KEY] : null;
+		// File and image attributes are Base64 encoded and must
+		// be processed separately.
+		if ((type == config.IMAGE_TYPE || type == config.FILE_TYPE)
+		    && !!value && action == config.UPDATE_ATTRIBUTE_ACTION) {
+		    var file = utils.parseBase64Data(value);
 		    if (file.isBase64) {
+			var mime = type === config.IMAGE_TYPE ?
+			    "image/" : "application/";
 			var name = utils.generateKey(8);
 			var key = s3.generateAssetKey(cSpaceID, assetID,
 						      name, file.ext);
-			s3.upload(file.body, key, "image/" + file.ext,
+			s3.upload(file.body, key, mime + file.ext,
 				  function(err, data) {
 				      if (err) {
 					  console.log(err);
@@ -293,27 +368,36 @@ exports.updateAsset = function(request, response) {
 				  });
 			params.AttributeUpdates[attr] = {
 			    "Value": {
-				"S": s3.getAssetFileURL(cSpaceID,
-							assetID,
-							name,
-							file.ext)
+				"S": '{"' + config.ATTRIBUTE_TYPE_KEY +
+				    '":"' + type + '","' +
+				    config.ATTRIBUTE_VALUE_KEY + '":"' +
+				    s3.getAssetFileURL(cSpaceID,
+						       assetID,
+						       name, file.ext) + '"}'
 			    },
 			    "Action": "PUT"
 			};
 		    }
+		} else if (action == config.DELETE_ATTRIBUTE_ACTION) {
+		    params.AttributeUpdates[attr] = {
+			"Action": "DELETE"
+		    };
+		} else if (!!type && !!value &&
+			   action == config.UPDATE_ATTRIBUTE_ACTION) {
+		    params.AttributeUpdates[attr] = {
+			"Value": {
+			    "S": '{"' + config.ATTRIBUTE_TYPE_KEY + '":"' +
+				type + '","' +
+				config.ATTRIBUTE_VALUE_KEY + '":"' +
+				value + '"}'
+			},
+			"Action": "PUT"
+		    };
 		} else {
-		    if (!!asset[attr]) {
-			params.AttributeUpdates[attr] = {
-			    "Value": {
-				"S": asset[attr]
-			    },
-			    "Action": "PUT"
-			};
-		    } else {
-			params.AttributeUpdates[attr] = {
-			    "Action": "DELETE"
-			};
-		    }
+		    response.send(500, {
+			message: "Missing or Incorrect Parameter"
+		    });
+		    return;
 		}
 	    }
 	    db.updateItem(params, function(err, data) {

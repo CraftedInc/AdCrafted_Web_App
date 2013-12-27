@@ -5,18 +5,19 @@
 
 <!-- Information Header -->
 <div class="info-header border-bottom" ng-class="{'hide': waiting}">
-  <h1>Create a New Container</h1>
+  <h1>Create a Container</h1>
   <a href="#/cspaces/" class="left-link"><i class="fa fa-times"></i> Cancel</a>
 </div>
 
 <!-- CREATION form -->
-<form class="form-horizontal row" role="form" id="create-cspace-form" name="newCSpaceForm" ng-class="{'hide': waiting}">
+<form class="form-horizontal row" role="form" id="create-cspace-form" name="newCSpaceForm" ng-class="{'hide': waiting}" novalidate>
   <div class="row">
     <div class="form-group">
-      <label for="title" class="col-xs-4 control-label">Title</label>
+      <label for="title" class="col-xs-4 control-label">Name</label>
       <div class="col-xs-5">
-	<input name="title" type="text" class="form-control" id="title" placeholder="Title (required)" ng-model="cSpace.title" required>
+	<input name="title" type="text" class="form-control" id="title" placeholder="Name (required)" ng-model="cSpace.title" required>
       </div>
+      <p ng-show="submitted" class="error-message"><i class="fa fa-warning"></i> required</p>
     </div>
     <div class="form-group">
       <label for="tags" class="col-xs-4 control-label">Tags</label>
