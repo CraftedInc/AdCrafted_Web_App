@@ -70,6 +70,31 @@ exports.parseItem = function(item) {
 };
 
 /**
+ * Parses an Asset.
+ */
+exports.parseAsset = function(item) {
+    var result = {};
+    for (var attr in item) {
+	var attribute = item[attr];
+	var value = attribute["N"] ?
+	    attribute["N"] : attribute["S"] ?
+	    attribute["S"] : attribute["SS"] ?
+	    attribute["SS"] : null;
+	try {
+	    // Valid JSON string.
+	    result[attr] = JSON.parse(value);
+	    if (result[attr]["Type"] == "NUMBER") {
+		result[attr]["Value"] = parseInt(result[attr]["Value"]);
+	    }
+	} catch (e) {
+	    // Not JSON, so don't parse it.
+	    result[attr] = value;
+	}
+    }
+    return result;
+};
+
+/**
  * Ensures that the request is authenticated before proceeding, otherwise
  * returns a 403.
  */

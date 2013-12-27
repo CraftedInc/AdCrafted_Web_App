@@ -133,6 +133,10 @@ html, body {
     padding: 0;
     margin: 0;
 }
+.attribute-row {
+    min-height: 60px;
+    margin: 10px 0;
+}
 .content-row {
     border-bottom: 1px solid #333;
     padding: 20px 0;
@@ -329,10 +333,14 @@ body {
  * Error styles.
  */
 input.error-background, textarea.error-background, div.error-background {
-    background-color: #d9534f;
+    background-color: #AC2D29;
+    transition: 0.25s;
+}
+input:focus.error-background, textarea:focus.error-background {
+    background: #FFF;
 }
 .error-message {
-    color: #d9534f;
+    color: #AC2D29;
     font-weight: bold;
     margin: 8px 0 0 0;
 }

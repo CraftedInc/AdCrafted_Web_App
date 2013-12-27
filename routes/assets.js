@@ -202,7 +202,7 @@ exports.getAsset = function(request, response) {
 	} else if (!utils.isEmpty(data)) {
 	    if (!!data.Item.UserID && data.Item.UserID.S == userID) {
 		// The user must own either this Asset or its CraftedSpace.
-		response.send(200, utils.parseItem(data.Item));
+		response.send(200, utils.parseAsset(data.Item));
 	    } else {
 		response.send(403, {message: "Not Authorized"});
 	    }
@@ -230,7 +230,7 @@ exports.getAllUserAssets = function(request, response) {
 			  Assets: []};
 	    for (var i = 0; i < data.Count; i++) {
 		if (!!data.Item.UserID && data.Item.UserID.S == userID) {
-		    result.Assets[count++] = utils.parseItem(data.Items[i]);
+		    result.Assets[count++] = utils.parseAsset(data.Items[i]);
 		}
 	    }
 	    result.Count = count;
@@ -271,7 +271,7 @@ exports.getAllAssetsInCraftedSpace = function(request, response) {
 			  Count: data.Count,
 			  Assets: []};
 	    for (var i = 0; i < data.Count; i++) {
-		result.Assets[i] = utils.parseItem(data.Items[i]);
+		result.Assets[i] = utils.parseAsset(data.Items[i]);
 	    }
 	    response.send(result);
 	}
