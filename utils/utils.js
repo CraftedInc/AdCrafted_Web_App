@@ -4,6 +4,7 @@
  * Author: James Pasko (james@adcrafted.com).
  */
 
+var config = require("./../config");
 
 /**
  * Tests whether an object is empty (contains no attributes of its own).
@@ -83,8 +84,9 @@ exports.parseAsset = function(item) {
 	try {
 	    // Valid JSON string.
 	    result[attr] = JSON.parse(value);
-	    if (result[attr]["Type"] == "NUMBER") {
-		result[attr]["Value"] = parseInt(result[attr]["Value"]);
+	    if (result[attr][config.ATTRIBUTE_TYPE_KEY] == config.NUMBER_TYPE) {
+		result[attr][config.ATTRIBUTE_VALUE_KEY] =
+		    parseInt(result[attr][config.ATTRIBUTE_VALUE_KEY]);
 	    }
 	} catch (e) {
 	    // Not JSON, so don't parse it.
