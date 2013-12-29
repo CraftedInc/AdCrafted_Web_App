@@ -65,10 +65,10 @@
       <span ng-show="!!CSpace.title">{{CSpace.title}}</span>
       <span ng-show="!CSpace.title"><em>no name</em></span>
     </p>
+    <p><em>ID:</em> <code>{{CSpace.CSpaceID}}</code></p>
     <p><em>created:</em> {{CSpace.date | date:'shortDate'}}</p>
-    <p style="overflow: hidden">
-      <em ng-show="!CSpace.tags.length">no tags</em>
+    <div style="overflow: hidden; height: 25px">
       <a class="label label-success tag" ng-repeat="tag in CSpace.tags" ng-click="populateSearch(tag)">{{tag}}</a>
-    </p>
+    </div>
   </div>
 </div>

@@ -57,13 +57,7 @@
     <a href="#/cspaces/{{CSpaceID}}/asset/{{Asset.AssetID}}/edit" class="home-link">
       <i class="fa fa-file-o"></i>
     </a>
-    <!--
-    <p>
-      <span ng-show="!!Asset.title">{{Asset.title}}</span>
-      <span ng-show="!Asset.title"><em>No Title</em></span>
-    </p>
-    -->
-    <p><em>created:</em> {{Asset.AssetCreatedDate | date:'shortDate'}}</p>
     <p><em>ID:</em> <code>{{Asset.AssetID}}</code></p>
+    <p><em>created:</em> {{Asset.AssetCreatedDate | date:'shortDate'}}</p>
   </div>
 </div>
