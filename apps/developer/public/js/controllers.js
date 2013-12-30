@@ -114,9 +114,27 @@ function EditCSpaceCtrl($scope, $routeParams, SingleCSpace, CustomFileReader) {
 function AssetListCtrl($scope, $routeParams, AssetCollection) {
     $scope.waiting = true;
     $scope.CSpaceID = $routeParams.CSpaceID;
+    $scope.attributesToShow = [];
     $scope.AssetCollection = AssetCollection.get({cSpaceID: $scope.CSpaceID},
 						 function() {
-						     $scope.waiting = false
+						     $scope.waiting = false;
+						     var assets = $scope.AssetCollection.Assets;
+						     for (var i = 0; i < assets.length; i++) {
+							 for (var attr in assets[i]) {
+							     if (attr != "UserID" &&
+								 attr != "AssetID" &&
+								 attr != "CSpaceID" &&
+								 attr != "AssetCreatedDate") {
+								 if (!contains($scope.attributesToShow, attr)) {
+								     $scope.attributesToShow.push(attr);
+								 }
+							     }
+							 }
+						     }
+						     for (var i = 0; i < 4; i++) {
+							 // Ensure that attributesToShow.length >= 4.
+							 $scope.attributesToShow.push(undefined);
+						     }
 						 });
     $scope.orderReverse = false;
     $scope.orderProp = "AssetID";
@@ -340,4 +358,14 @@ function _rewriteS3URL(url) {
     } else {
 	return url;
     }
+}
+
+function contains(a, obj) {
+    var i = a.length;
+    while (i--) {
+	if (a[i] === obj) {
+            return true;
+	}
+    }
+    return false;
 }

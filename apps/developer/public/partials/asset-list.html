@@ -25,7 +25,6 @@
     <select class="btn btn-default" id="select-sort-by" ng-model="orderProp">
       <option value="AssetID">ID</option>
       <option value="date">Date</option>
-      <option value="title">Title</option>
     </select>
   </div>
 </div>
@@ -45,10 +44,11 @@
     This Container Is Empty
   </h1>
   <h1 ng-show="!!AssetCollection.Assets.length">Assets</h1>
-  <p>Container ID: <code>{{CSpaceID}}</code></p>
+  <p><em>Container ID:</em> <code>{{CSpaceID}}</code></p>
 </div>
 
 <!-- ASSET list -->
+<!--
 <div class="content-list" ng-class="{'hide': waiting}">
   <div ng-repeat="Asset in AssetCollection.Assets | orderBy:orderProp:orderReverse | filter:query" class="asset-thumbnail">
     <a class="home-link right-link" href="#/cspaces/{{CSpaceID}}/asset/{{Asset.AssetID}}/edit">
@@ -59,5 +59,60 @@
     </a>
     <p><em>ID:</em> <code>{{Asset.AssetID}}</code></p>
     <p><em>created:</em> {{Asset.AssetCreatedDate | date:'shortDate'}}</p>
+  </div>
+</div>
+-->
+<div class="row content-list asset-attribute-row" ng-class="{'hide': waiting || !AssetCollection.Assets.length}">
+  <div class="col-xs-2">
+    <p><em>Asset ID</em></p>
+  </div>
+  <div class="col-xs-2">
+    <p><em>{{attributesToShow[0]}}</em></p>
+  </div>
+  <div class="col-xs-2">
+    <p><em>{{attributesToShow[1]}}</em></p>
+  </div>
+  <div class="col-xs-2">
+    <p><em>{{attributesToShow[2]}}</em></p>
+  </div>
+  <div class="col-xs-2">
+    <p><em>{{attributesToShow[3]}}</em></p>
+  </div>
+  <div class="col-xs-1">
+    <p><em>Date</em></p>
+  </div>
+  <div class="col-xs-1 align-right">
+    <p><em>Edit</em></p>
+  </div>
+</div>
+<div class="content-list asset-table" ng-class="{'hide': waiting}">
+  <div ng-repeat="Asset in AssetCollection.Assets | orderBy:orderProp:orderReverse | filter:query" class="asset-row row" ng-class-odd="'asset-row-light'">
+    <div class="col-xs-2">
+      <p><code>{{Asset.AssetID}}</code></p>
+    </div>
+    <div ng-repeat="attr in attributesToShow | limitTo:4" class="col-xs-2 no-wrap">
+      <div ng-switch on="Asset[attr]['Type']">
+	<div ng-switch-when="FILE">
+	  <a class="home-link" href="{{Asset[attr]['Value']}}"><i class="fa fa-download"></i> Download</a>
+	</div>
+	<div ng-switch-when="IMAGE">
+	  <a class="home-link" href="{{Asset[attr]['Value']}}" target="_blank"><i class="fa fa-picture-o"></i> View</a>
+	</div>
+	<div ng-switch-when="URL">
+	  <a class="home-link" href="{{Asset[attr]['Value']}}" target="_blank"><i class="fa fa-external-link"></i> Visit</a>
+	</div>
+	<div ng-switch-default>
+	  <p>{{Asset[attr]["Value"]}}</p>
+	</div>
+      </div>
+    </div>
+    <div class="col-xs-1">
+      <p>{{Asset.AssetCreatedDate | date:'shortDate'}}</p>
+    </div>
+    <div class="col-xs-1 align-right">
+      <a class="home-link" href="#/cspaces/{{CSpaceID}}/asset/{{Asset.AssetID}}/edit">
+	<i style="font-size: 1.9em" class="fa fa-edit"></i>
+      </a>
+    </div>
   </div>
 </div>
