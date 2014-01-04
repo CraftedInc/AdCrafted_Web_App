@@ -61,7 +61,7 @@ body {
     background-color: #3FA9F5;
     padding: 20px;
     transition: 0.25s;
-    border: 3px solid #3FA9F5;
+    border: 2px solid #3FA9F5;
 }
 .big-blue-btn:hover {
     background: transparent;

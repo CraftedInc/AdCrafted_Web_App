@@ -46,7 +46,7 @@ html, body {
     transition: 0.25s;
     position: absolute;
     right: 20px;
-    top: 20px;
+    top: 21px;
     color: #999;
 }
 .right-link:hover {
@@ -57,7 +57,7 @@ html, body {
     transition: 0.25s;
     position: absolute;
     left: 20px;
-    top: 20px;
+    top: 21px;
     color: #999;
 }
 .left-link:hover {
@@ -423,6 +423,7 @@ input:focus.error-background, textarea:focus.error-background {
     font-size: 16px;
 }
 code {
+    color: #333 !important;
     padding: 4px 4px 2px 4px !important;
     background-color: #CECECE !important;
 }
@@ -430,7 +431,6 @@ code {
     background-color: #EEE !important;
 }
 .docs-section code {
-    color: #333 !important;
     background-color: #CECECE !important;
 }
 pre {

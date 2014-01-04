@@ -12,38 +12,38 @@
 <!-- Account display -->
 <div class="content-list" ng-class="{'hide': waiting}">
   <div class="row account-row">
-    <div class="col-xs-5 align-right">
+    <div class="col-xs-6 align-right">
       <p><strong>Name</strong></p>
     </div>
-    <div class="col-xs-7">
+    <div class="col-xs-6">
       <p>{{account.Name}}</p>
     </div>
   </div>
   <div class="row account-row">
-    <div class="col-xs-5 align-right">
+    <div class="col-xs-6 align-right">
       <p><strong>Email</strong></p>
     </div>
-    <div class="col-xs-7">
+    <div class="col-xs-6">
       <p>{{account.Email}}</p>
     </div>
   </div>
   <div class="row account-row">
     <div class="row">
-      <div class="col-xs-5 align-right">
+      <div class="col-xs-6 align-right">
 	<p style="margin-top: 5px"><strong>Appcrafted Credentials</strong></p>
       </div>
-      <div class="col-xs-7">
+      <div class="col-xs-6">
 	<a ng-click="showCredentials = !showCredentials" class="btn" ng-class="{'btn-danger': showCredentials, 'btn-success': !showCredentials}">
 	  <strong>{{showCredentials && 'Hide' || 'Show'}}</strong>
 	</a>
       </div>
     </div>
     <div class="row" style="margin-top: 20px" ng-class="{'hide': !showCredentials}">
-      <div class="col-xs-5 align-right">
+      <div class="col-xs-6 align-right">
 	<p>Access Key</p>
 	<p>Secret Key</p>
       </div>
-      <div class="col-xs-7">
+      <div class="col-xs-6">
 	<p><code>{{account.UserID}}</code></p>
 	<p><code>{{account.SecretKey}}</code></p>
       </div>
