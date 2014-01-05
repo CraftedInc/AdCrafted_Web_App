@@ -57,21 +57,47 @@ exports.createAsset = function(request, response) {
 		if (err) {
 		    response.send(500, {message: "An Error Occurred"});
 		} else {
-		    var newAssetID = 0;
-		    var occupied = [];
-		    if (data.Count > 0) {
-			// Find the smallest available AssetID.
-			for (var i = 0; i < data.Count; i++) {
-			    occupied[parseInt(data.Items[i].AssetID.N)] = true;
-			}
-			newAssetID = occupied.length;
-			for (var j = 0; j < occupied.length; j++) {
-			    if (!occupied[j]) {
-				newAssetID = j; // Smallest available AssetID.
-				break;
+		    // Determine which AssetID to use.
+		    if (!request.body.assetID) {
+			var newAssetID = 0;
+			var occupied = [];
+			if (data.Count > 0) {
+			    // Find the smallest available AssetID.
+			    for (var i = 0; i < data.Count; i++) {
+				var id = data.Items[i].AssetID.S;
+				if (utils.isPositiveInteger(id)) {
+				    occupied[parseInt(id)] = true;
+				}
+			    }
+			    newAssetID = occupied.length;
+			    for (var j = 0; j < occupied.length; j++) {
+				if (!occupied[j]) {
+				    newAssetID = j;
+				    break;
+				}
 			    }
 			}
+		    } else if (utils.isAlphanumeric(request.body.assetID)) {
+			var newAssetID = request.body.assetID;
+			// Check that the AssetID is unique.
+			if (data.Count > 0) {
+			    for (var i = 0; i < data.Count; i++) {
+				var id = data.Items[i].AssetID.S;
+				if (id === newAssetID) {
+				    response.send(500, {
+					message: "AssetID Not Unique"
+				    });
+				    return;
+				}
+			    }
+			}
+		    } else {
+			response.send(500, {
+			    message: "AssetID Must Be Alphanumeric"
+			});
+			return;
 		    }
+		    delete request.body.assetID;
 		    params = {
 			"TableName": response.app.get("AssetTable"),
 			"Item": {
@@ -79,7 +105,7 @@ exports.createAsset = function(request, response) {
 				"S": cSpaceID
 			    },
 			    "AssetID": {
-				"N": newAssetID + ""
+				"S": newAssetID + ""
 			    },
 			    "UserID" : {
 				"S": userID
@@ -169,7 +195,7 @@ exports.createAsset = function(request, response) {
 			    response.send(500, {message: "An Error Occurred"});
 			} else {
 			    response.send(201, {message: "New Asset Created",
-						CSpaceID: cSpaceID,
+						ContainerID: cSpaceID,
 						AssetID: newAssetID});
 			}
 		    });
@@ -192,7 +218,7 @@ exports.getAsset = function(request, response) {
 		"S": request.params.cSpaceID
 	    },
 	    "AssetID" : {
-		"N": request.params.assetID + ""
+		"S": request.params.assetID + ""
 	    }
 	}
     };
@@ -295,7 +321,7 @@ exports.updateAsset = function(request, response) {
 		"S": cSpaceID
 	    },
 	    "AssetID" : {
-		"N": assetID + ""
+		"S": assetID + ""
 	    }
 	}
     };
@@ -320,7 +346,7 @@ exports.updateAsset = function(request, response) {
 			"S": cSpaceID
 		    },
 		    "AssetID": {
-			"N": assetID + ""
+			"S": assetID + ""
 		    }
 		},
 		"AttributeUpdates": {}
@@ -429,7 +455,7 @@ exports.deleteAsset = function(request, response) {
 		"S": cSpaceID
 	    },
 	    "AssetID" : {
-		"N": assetID + ""
+		"S": assetID + ""
 	    }
 	}
     };

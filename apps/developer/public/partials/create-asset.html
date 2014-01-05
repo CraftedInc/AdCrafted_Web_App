@@ -13,6 +13,22 @@
 <form class="form-horizontal" role="form" id="create-asset-form" name="newAssetForm" ng-class="{'hide': waiting}" novalidate>
   <div class="row">
     <div class="col-xs-3">
+      <p><em>Asset ID (optional)</em></p>
+    </div>
+  </div>
+  <div class="row attribute-row">
+    <div class="form-group">
+      <div class="col-xs-3">
+	<input name="assetID" type="text" class="form-control" id="assetID" ng-model="asset.assetID" placeholder="Enter an Asset ID..." ng-pattern="/^[a-zA-Z0-9]+$/" ng-class="{'error-background': (newAssetForm.assetID.$error.pattern || assetIDNotUnique) && submitted}">
+      </div>
+      <div class="col-xs-9">
+	<p ng-show="newAssetForm.assetID.$error.pattern && submitted" class="error-message"><i class="fa fa-warning"></i> Asset ID must be alphanumeric without spaces</p>
+	<p ng-show="assetIDNotUnique" class="error-message"><i class="fa fa-warning"></i> This Asset ID already exists</p>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-3">
       <p><em>Attribute Name</em></p>
     </div>
     <div class="col-xs-2">
@@ -94,6 +110,6 @@
 	<strong>Create Asset</strong>
       </button>
     </div>
-    <p ng-show="(newAssetForm.$error.required || newAssetForm.$error.url) && submitted" class="error-message center"><i class="fa fa-warning"></i> required fields are missing or invalid</p>
+    <p ng-show="(newAssetForm.$error.required || newAssetForm.$error.url) && submitted" class="error-message center"><i class="fa fa-warning"></i> Required fields are missing or invalid</p>
   </div>
 </form>

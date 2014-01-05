@@ -294,7 +294,7 @@ function _deleteAssets(request, response, cSpaceID, callback) {
 	    var batch = [];
 	    for (var i = 0; i < data.Count; i++) {
 		// Delete any images the asset may reference.
-		s3.deleteAssetFiles(cSpaceID, data.Items[i].AssetID.N,
+		s3.deleteAssetFiles(cSpaceID, data.Items[i].AssetID.S,
 				    function(err, data) {});
 		batch[i] = {
                     "DeleteRequest": {
@@ -303,7 +303,7 @@ function _deleteAssets(request, response, cSpaceID, callback) {
 				"S": cSpaceID
 			    },
 			    "AssetID": {
-				"N": data.Items[i].AssetID.N
+				"S": data.Items[i].AssetID.S
 			    }
 			}
 		    }

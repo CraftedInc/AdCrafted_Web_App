@@ -13,6 +13,22 @@
 <form class="form-horizontal" role="form" id="create-asset-form" name="EditAssetForm" ng-class="{'hide': waiting}" novalidate>
   <div class="row">
     <div class="col-xs-3">
+      <p><em>Asset ID</em></p>
+    </div>
+    <div class="col-xs-3">
+      <p><em>Container ID</em></p>
+    </div>
+  </div>
+  <div class="row attribute-row">
+    <div class="col-xs-3">
+      <p><code>{{oldAsset.AssetID}}</code></p>
+    </div>
+    <div class="col-xs-3">
+      <p><code>{{cSpaceID}}</code></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-3">
       <p><em>Attribute Name</em></p>
     </div>
     <div class="col-xs-2">
@@ -95,6 +111,6 @@
 	<strong>Delete</strong>
       </button>
     </div>
-    <p ng-show="(EditAssetForm.$error.required || EditAssetForm.$error.url) && submitted" class="error-message center"><i class="fa fa-warning"></i> required fields are missing or invalid</p>
+    <p ng-show="(EditAssetForm.$error.required || EditAssetForm.$error.url) && submitted" class="error-message center"><i class="fa fa-warning"></i> Required fields are missing or invalid</p>
   </div>
 </form>

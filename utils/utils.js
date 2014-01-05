@@ -19,7 +19,22 @@ exports.isEmpty = function(obj) {
  * Checks if the value is an integer.
  */
 exports.isInt = function(n) {
-   return typeof n === 'number' && n % 1 == 0;
+   return typeof n === "number" && n % 1 == 0;
+};
+
+/**
+ * Checks if the string is a nonnegative integer.
+ */
+exports.isPositiveInteger = function(str) {
+    return str >>> 0 === parseFloat(str);
+};
+
+/**
+ * Checks if the string contains only alphanumeric characters.
+ */
+exports.isAlphanumeric = function(str) {
+    var regex = /^[a-z0-9]+$/i;
+    return regex.test(str);
 };
 
 /**

@@ -111,13 +111,20 @@ function EditCSpaceCtrl($scope, $routeParams, SingleCSpace, CustomFileReader) {
  * Asset controllers.
  */
 
-function AssetListCtrl($scope, $routeParams, AssetCollection) {
-    $scope.waiting = true;
+function AssetListCtrl($scope, $routeParams, AssetCollection, SingleCSpace) {
+    $scope.waitingCSpace = true;
+    $scope.waitingAsset = true;
     $scope.CSpaceID = $routeParams.CSpaceID;
     $scope.attributesToShow = [];
+    $scope.cSpace =
+	SingleCSpace.get({cSpaceID: $routeParams.CSpaceID}, function() {
+	    $scope.waitingCSpace = false;
+	    $scope.imageSrc = $scope.cSpace.image;
+	    $scope.hasImage = $scope.cSpace.image != "null";
+	});
     $scope.AssetCollection = AssetCollection.get({cSpaceID: $scope.CSpaceID},
 						 function() {
-						     $scope.waiting = false;
+						     $scope.waitingAsset = false;
 						     var assets = $scope.AssetCollection.Assets;
 						     for (var i = 0; i < assets.length; i++) {
 							 for (var attr in assets[i]) {
@@ -148,6 +155,7 @@ function CreateAssetCtrl($scope, $routeParams, AssetCollection,
     $scope.waiting = false;
     $scope.cSpaceID = $routeParams.CSpaceID;
     $scope.submitted = false;
+    $scope.assetIDNotUnique = false;
 
     $scope.attributes = [{"Type": "STRING"}];
     $scope.asset = {};
@@ -180,9 +188,15 @@ function CreateAssetCtrl($scope, $routeParams, AssetCollection,
 	    });
 	    $scope.waiting = true;
 	    AssetCollection.create({cSpaceID: $routeParams.CSpaceID},
-				   $scope.asset, function() {
+				   $scope.asset, function(response) {
 				       window.location = "#/cspaces/" +
 					   $routeParams.CSpaceID + "/asset";
+				   }, function(error) {
+				       if (!!error.data && error.data.message ==
+					   "AssetID Not Unique") {
+					   $scope.assetIDNotUnique = true;
+				       }
+				       $scope.waiting = false;
 				   });
 	}
     }

@@ -1,5 +1,5 @@
 <!-- CSPACE control bar -->
-<div class="form-inline row" id="control-bar" ng-class="{'hide': waiting}">
+<div class="form-inline row" id="control-bar" ng-class="{'hide': waitingAsset || waitingCSpace}">
   <a href="#/cspaces/" class="left-link">
     <i class="fa fa-suitcase"></i> Containers
   </a>
@@ -30,39 +30,24 @@
 </div>
 
 <!-- Waiting GIF -->
-<div class="waiting" ng-class="{'hide': !waiting}">
+<div class="waiting" ng-class="{'hide': !(waitingAsset || waitingCSpace)}">
   <img src="/img/waiting.gif">
 </div>
 
 <!-- Information Header -->
-<div class="info-header" ng-class="{'hide': waiting}">
+<div class="info-header" ng-class="{'hide': waitingAsset || waitingCSpace}">
   <a href="#/cspaces/{{CSpaceID}}/asset/new" class="btn btn-success right-link">
     <strong>Create an Asset</strong>
   </a>
-  <h1 ng-show="!AssetCollection.Assets.length">
-    <i class="fa fa-warning"></i>
-    This Container Is Empty
-  </h1>
-  <h1 ng-show="!!AssetCollection.Assets.length">Assets</h1>
-  <p><em>Container ID:</em> <code>{{CSpaceID}}</code></p>
+  <p style="margin: 12px 0"><em>Container ID:</em> <code>{{CSpaceID}}</code> <em>&nbsp;Name:</em> <strong>{{cSpace.title}}</strong></p>
 </div>
 
+<h1 class="center" ng-show="!AssetCollection.Assets.length" ng-class="{'hide': waitingAsset || waitingCSpace}">
+  <i class="fa fa-warning"></i> This Container Is Empty
+</h1>
+
 <!-- ASSET list -->
-<!--
-<div class="content-list" ng-class="{'hide': waiting}">
-  <div ng-repeat="Asset in AssetCollection.Assets | orderBy:orderProp:orderReverse | filter:query" class="asset-thumbnail">
-    <a class="home-link right-link" href="#/cspaces/{{CSpaceID}}/asset/{{Asset.AssetID}}/edit">
-      <i style="font-size: 1em" class="fa fa-edit"></i> edit
-    </a>
-    <a href="#/cspaces/{{CSpaceID}}/asset/{{Asset.AssetID}}/edit" class="home-link">
-      <i class="fa fa-file-o"></i>
-    </a>
-    <p><em>ID:</em> <code>{{Asset.AssetID}}</code></p>
-    <p><em>created:</em> {{Asset.AssetCreatedDate | date:'shortDate'}}</p>
-  </div>
-</div>
--->
-<div class="row content-list asset-attribute-row" ng-class="{'hide': waiting || !AssetCollection.Assets.length}">
+<div class="row content-list asset-attribute-row" ng-class="{'hide': waitingAsset || waitingCSpace || !AssetCollection.Assets.length}">
   <div class="col-xs-2">
     <p><em>Asset ID</em></p>
   </div>
@@ -85,7 +70,7 @@
     <p><em>Edit</em></p>
   </div>
 </div>
-<div class="content-list asset-table" ng-class="{'hide': waiting}">
+<div class="content-list asset-table" ng-class="{'hide': waitingAsset || waitingCSpace}">
   <div ng-repeat="Asset in AssetCollection.Assets | orderBy:orderProp:orderReverse | filter:query" class="asset-row row" ng-class-odd="'asset-row-light'">
     <div class="col-xs-2">
       <p><code>{{Asset.AssetID}}</code></p>
