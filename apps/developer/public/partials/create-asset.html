@@ -19,7 +19,7 @@
   <div class="row attribute-row">
     <div class="form-group">
       <div class="col-xs-3">
-	<input name="assetID" type="text" class="form-control" id="assetID" ng-model="asset.assetID" placeholder="Enter an Asset ID..." ng-pattern="/^[a-zA-Z0-9]+$/" ng-class="{'error-background': (newAssetForm.assetID.$error.pattern || assetIDNotUnique) && submitted}">
+	<input name="assetID" type="text" class="form-control" id="assetID" ng-model="asset.assetID" placeholder="Enter an Asset ID..." ng-pattern="/^[a-zA-Z0-9-_]+$/" ng-class="{'error-background': (newAssetForm.assetID.$error.pattern || assetIDNotUnique) && submitted}">
       </div>
       <div class="col-xs-9">
 	<p ng-show="newAssetForm.assetID.$error.pattern && submitted" class="error-message"><i class="fa fa-warning"></i> Asset ID must be alphanumeric without spaces</p>

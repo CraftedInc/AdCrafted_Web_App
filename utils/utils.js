@@ -30,10 +30,10 @@ exports.isPositiveInteger = function(str) {
 };
 
 /**
- * Checks if the string contains only alphanumeric characters.
+ * Checks if the string contains only alphanumeric characters ('-' and '_' included).
  */
 exports.isAlphanumeric = function(str) {
-    var regex = /^[a-z0-9]+$/i;
+    var regex = /^[a-zA-Z0-9-_]+$/;
     return regex.test(str);
 };
 
