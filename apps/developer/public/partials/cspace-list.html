@@ -36,7 +36,7 @@
 
 <!-- Information Header -->
 <div class="info-header" ng-class="{'hide': waiting}">
-  <a href="#/cspaces/new" class="btn btn-success right-link" ng-show="!!CSpaces.length">
+  <a href="#/assets/new" class="btn btn-success right-link" ng-show="!!CSpaces.length">
      <strong>New Container</strong>
   </a>
   <h1 ng-show="!CSpaces.length">
@@ -47,7 +47,7 @@
     <em>Create a Container to store your Assets</em>
   </p>
   <p ng-show="!CSpaces.length">
-    <a href="#/cspaces/new" class="btn btn-success"><strong>Create a Container</strong></a>
+    <a href="#/assets/new" class="btn btn-success"><strong>Create a Container</strong></a>
   </p>
   <h1 ng-show="!!CSpaces.length">All Containers</h1>
 </div>
@@ -55,10 +55,10 @@
 <!-- CSPACE list -->
 <div class="content-list" ng-class="{'hide': waiting}">
   <div ng-repeat="CSpace in CSpaces | orderBy:orderProp:orderReverse | filter:query" class="asset-container-thumbnail">
-    <a class="home-link right-link" href="#/cspaces/{{CSpace.CSpaceID}}/edit">
+    <a class="home-link right-link" href="#/assets/{{CSpace.CSpaceID}}/edit">
       <i style="font-size: 1em" class="fa fa-edit"></i> edit
     </a>
-    <a class="home-link" href="#/cspaces/{{CSpace.CSpaceID}}/asset">
+    <a class="home-link" href="#/assets/{{CSpace.CSpaceID}}">
       <i class="fa fa-suitcase"></i>
     </a>
     <p>

@@ -1,6 +1,6 @@
 <!-- CSPACE control bar -->
 <div class="form-inline row" id="control-bar" ng-class="{'hide': waitingAsset || waitingCSpace}">
-  <a href="#/cspaces/" class="left-link">
+  <a href="#/assets" class="left-link">
     <i class="fa fa-suitcase"></i> Containers
   </a>
   <div class="form-group pull-right">
@@ -36,7 +36,7 @@
 
 <!-- Information Header -->
 <div class="info-header" ng-class="{'hide': waitingAsset || waitingCSpace}">
-  <a href="#/cspaces/{{CSpaceID}}/asset/new" class="btn btn-success right-link">
+  <a href="#/assets/{{CSpaceID}}/new" class="btn btn-success right-link">
     <strong>Create an Asset</strong>
   </a>
   <p style="margin: 12px 0"><em>Container ID:</em> <code>{{CSpaceID}}</code> <em>&nbsp;Name:</em> <strong>{{cSpace.title}}</strong></p>
@@ -95,7 +95,7 @@
       <p>{{Asset.AssetCreatedDate | date:'shortDate'}}</p>
     </div>
     <div class="col-xs-1 align-right">
-      <a class="home-link" href="#/cspaces/{{CSpaceID}}/asset/{{Asset.AssetID}}/edit">
+      <a class="home-link" href="#/assets/{{CSpaceID}}/{{Asset.AssetID}}/edit">
 	<i style="font-size: 1.9em" class="fa fa-edit"></i>
       </a>
     </div>

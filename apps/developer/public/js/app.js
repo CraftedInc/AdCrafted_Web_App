@@ -5,15 +5,14 @@ angular.module("appcrafted", ["cSpaceServices", "assetServices", "accountService
     config(["$routeProvider",  function($routeProvider) {
 	$routeProvider.
 	    when("/", {templateUrl: "partials/home.html",   controller: HomeCtrl}).
-	    when("/cspaces", {templateUrl: "partials/cspace-list.html",   controller: CSpaceListCtrl}).
-	    when("/cspaces/new", {templateUrl: "partials/create-cspace.html",   controller: CreateCSpaceCtrl}).
-	    when("/cspaces/:CSpaceID/edit", {templateUrl: "partials/edit-cspace.html", controller: EditCSpaceCtrl}).
-	    when("/cspaces/:CSpaceID/asset", {templateUrl: "partials/asset-list.html", controller: AssetListCtrl}).
-	    when("/cspaces/:CSpaceID/asset/new", {templateUrl: "partials/create-asset.html", controller: CreateAssetCtrl}).
-	    when("/cspaces/:CSpaceID/asset/:AssetID/edit", {templateUrl: "partials/edit-asset.html", controller: EditAssetCtrl}).
-	    when("/cspaces/:CSpaceID/asset/:AssetID/metrics", {templateUrl: "partials/asset-metrics.html", controller: AssetMetricsCtrl}).
+	    when("/assets", {templateUrl: "partials/cspace-list.html",   controller: CSpaceListCtrl}).
+	    when("/assets/new", {templateUrl: "partials/create-cspace.html",   controller: CreateCSpaceCtrl}).
+	    when("/assets/:CSpaceID/edit", {templateUrl: "partials/edit-cspace.html", controller: EditCSpaceCtrl}).
+	    when("/assets/:CSpaceID", {templateUrl: "partials/asset-list.html", controller: AssetListCtrl}).
+	    when("/assets/:CSpaceID/new", {templateUrl: "partials/create-asset.html", controller: CreateAssetCtrl}).
+	    when("/assets/:CSpaceID/:AssetID/edit", {templateUrl: "partials/edit-asset.html", controller: EditAssetCtrl}).
 	    when("/account", {templateUrl: "partials/account.html",   controller: AccountCtrl}).
 	    when("/account/edit", {templateUrl: "partials/edit-account.html",   controller: EditAccountCtrl}).
 	    when("/documentation", {templateUrl: "partials/docs.html",   controller: DocsCtrl}).
-	    otherwise({redirectTo: "/cspaces"});
+	    otherwise({redirectTo: "/"});
     }]);

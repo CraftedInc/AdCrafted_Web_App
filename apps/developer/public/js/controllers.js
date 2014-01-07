@@ -62,7 +62,7 @@ function CreateCSpaceCtrl($scope, CSpaceCollection, CustomFileReader) {
 	if (newCSpaceForm.$valid) {
 	    $scope.waiting = true;
 	    CSpaceCollection.create($scope.cSpace, function() {
-		window.location = "#/cspaces/";
+		window.location = "#/assets";
 	    });
 	}
     }
@@ -94,7 +94,7 @@ function EditCSpaceCtrl($scope, $routeParams, SingleCSpace, CustomFileReader) {
 	    $scope.waiting = true;
 	    SingleCSpace.update({cSpaceID: $routeParams.CSpaceID},
 				 $scope.cSpace, function() {
-				     window.location = "#/cspaces/";
+				     window.location = "#/assets";
 				 });
 	}
     }
@@ -102,7 +102,7 @@ function EditCSpaceCtrl($scope, $routeParams, SingleCSpace, CustomFileReader) {
     $scope.del = function() {
 	$scope.waiting = true;
 	SingleCSpace.del({cSpaceID: $routeParams.CSpaceID}, function() {
-	    window.location = "#/cspaces/";
+	    window.location = "#/assets";
 	});
     }
 }
@@ -189,8 +189,8 @@ function CreateAssetCtrl($scope, $routeParams, AssetCollection,
 	    $scope.waiting = true;
 	    AssetCollection.create({cSpaceID: $routeParams.CSpaceID},
 				   $scope.asset, function(response) {
-				       window.location = "#/cspaces/" +
-					   $routeParams.CSpaceID + "/asset";
+				       window.location = "#/assets/" +
+					   $routeParams.CSpaceID;
 				   }, function(error) {
 				       if (!!error.data && error.data.message ==
 					   "AssetID Not Unique") {
@@ -277,8 +277,7 @@ function EditAssetCtrl($scope, $routeParams, SingleAsset, CustomFileReader) {
 				assetID: $routeParams.AssetID},
 			       $scope.newAsset, function() {
 				   window.location =
-				       "#/cspaces/" + $routeParams.CSpaceID +
-				       "/asset";
+				       "#/assets/" + $routeParams.CSpaceID;
 			       });
 	}
     }
@@ -288,8 +287,7 @@ function EditAssetCtrl($scope, $routeParams, SingleAsset, CustomFileReader) {
 	SingleAsset.del({cSpaceID: $routeParams.CSpaceID,
 			 assetID: $routeParams.AssetID}, function() {
 			     window.location =
-				 "#/cspaces/" + $routeParams.CSpaceID +
-				 "/asset";
+				 "#/assets/" + $routeParams.CSpaceID;
 			 });
     }
 }
