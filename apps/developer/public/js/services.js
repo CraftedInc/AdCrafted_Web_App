@@ -16,30 +16,6 @@ cSpaceServices.factory("SingleCSpace", function($resource) {
     });
 });
 
-// A module for Ad services.
-var adServices = angular.module("adServices", ["ngResource"]);
-
-adServices.factory("AdCollection", function($resource) {
-    return $resource("/api/cspace/:cSpaceID/ad", {}, {
-	create: {method: "POST"},
-	get: {method: "GET"}
-    });
-});
-
-adServices.factory("SingleAd", function($resource) {
-    return $resource("/api/cspace/:cSpaceID/ad/:adID", {}, {
-	get: {method: "GET"},
-	update: {method: "PUT"},
-	del: {method: "DELETE"}
-    });
-});
-
-adServices.factory("AdMetrics", function($resource) {
-    return $resource("/api/cspace/:cSpaceID/ad/:adID/metrics", {}, {
-	get: {method: "GET", isArray: true}
-    });
-});
-
 // A module for Asset services.
 var assetServices = angular.module("assetServices", ["ngResource"]);
 

@@ -105,7 +105,7 @@ app.configure(function() {
 });
 
 /**
- * The advertiser portal app.
+ * The developer portal.
  */
 
 // This route ensures that the static content required to run the advertiser
@@ -135,11 +135,6 @@ app.get("/api/cspace",
 	utils.ensureAuthenticated(),
 	cspaces.getAllUserCraftedSpaces);
 
-// RETRIEVE all public CraftedSpaces.
-app.get("/api/cspace/public",
-	utils.ensureAuthenticated(),
-	cspaces.getAllPublicCraftedSpaces);
-
 // RETRIEVE a single CraftedSpace.
 app.get("/api/cspace/:cSpaceID",
 	utils.ensureAuthenticated(),
@@ -154,41 +149,6 @@ app.put("/api/cspace/:cSpaceID",
 app.del("/api/cspace/:cSpaceID",
 	utils.ensureAuthenticated(),
 	cspaces.deleteCraftedSpace);
-
-// CREATE an ad in the specified CraftedSpace.
-app.post("/api/cspace/:cSpaceID/ad",
-	 utils.ensureAuthenticated(),
-	 ads.createAd);
-
-// RETRIEVE all ads within the specified CraftedSpace.
-app.get("/api/cspace/:cSpaceID/ad",
-	utils.ensureAuthenticated(),
-	ads.getAllAdsInCraftedSpace);
-
-// RETRIEVE a single ad from the specified CraftedSpace.
-app.get("/api/cspace/:cSpaceID/ad/:adID",
-	utils.ensureAuthenticated(),
-	ads.getAd);
-
-// RETRIEVE all Ads owned by the user.
-app.get("/api/ad",
-	utils.ensureAuthenticated(),
-	ads.getAllUserAds);
-
-// UPDATE an ad.
-app.put("/api/cspace/:cSpaceID/ad/:adID",
-	utils.ensureAuthenticated(),
-	ads.updateAd);
-
-// DELETE an ad without deleting the CraftedSpace.
-app.del("/api/cspace/:cSpaceID/ad/:adID",
-	utils.ensureAuthenticated(),
-	ads.deleteAd);
-
-// GET the metrics for an ad.
-app.get("/api/cspace/:cSpaceID/ad/:adID/metrics",
-	utils.ensureAuthenticated(),
-	ads.getMetrics);
 
 // CREATE an asset in the specified CraftedSpace.
 app.post("/api/cspace/:cSpaceID/asset",
