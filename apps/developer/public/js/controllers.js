@@ -355,6 +355,7 @@ function EditAccountCtrl($scope, $routeParams, Account) {
 function DocsCtrl($scope, $routeParams) {
     $scope.showAPIDocs = false;
     $scope.showUnityPluginDocs = false;
+    $scope.showJavaScriptPluginDocs = false;
     $scope.showGeneralInformation = false;
 }
 

@@ -166,7 +166,13 @@ html, body {
     border-bottom: 1px solid #333;
     padding: 20px 0;
 }
-.account-row, .docs-section {
+.docs-section {
+    background-color: #F5F5F5;
+    color: #333;
+    border-bottom: 1px solid #DDD;
+    padding: 20px 0;
+}
+.account-row {
     border-bottom: 1px solid #333;
     padding: 20px 0;
 }
@@ -175,6 +181,10 @@ html, body {
 }
 .doc-header {
     font-size: 20px;
+}
+.documentation {
+    border-top: 10px solid #333;
+    border-bottom: 10px solid #333;
 }
 .align-right {
     text-align: right;
@@ -326,18 +336,21 @@ body {
     background-color: #FCD2D2;
     border-radius: 4px;
     padding: 9.5px;
+    border: 1px solid #ccc;
 }
 .light-green-bg {
     color: #333;
     background-color: #D4FCD2;
     border-radius: 4px;
     padding: 9.5px;
+    border: 1px solid #ccc;
 }
 .light-yellow-bg {
     color: #333;
     background-color: #FCF9D2;
     border-radius: 4px;
     padding: 9.5px;
+    border: 1px solid #ccc;
 }
 .link-no-decoration:hover {
     text-decoration: none;
@@ -431,7 +444,9 @@ code {
     background-color: #EEE !important;
 }
 .docs-section code {
-    background-color: #CECECE !important;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #EEE !important;
 }
 pre {
     font-size: 12px !important;
