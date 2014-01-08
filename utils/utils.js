@@ -101,7 +101,7 @@ exports.parseAsset = function(item) {
 	    result[attr] = JSON.parse(value);
 	    if (result[attr][config.ATTRIBUTE_TYPE_KEY] == config.NUMBER_TYPE) {
 		result[attr][config.ATTRIBUTE_VALUE_KEY] =
-		    parseInt(result[attr][config.ATTRIBUTE_VALUE_KEY]);
+		    parseFloat(result[attr][config.ATTRIBUTE_VALUE_KEY]);
 	    } else if (result[attr][config.ATTRIBUTE_TYPE_KEY] ==
 		       config.STRING_ARRAY_TYPE) {
 		var regex = /\s*,\s*/;
@@ -113,7 +113,7 @@ exports.parseAsset = function(item) {
 		var numbers =
 		    (result[attr][config.ATTRIBUTE_VALUE_KEY]).split(regex);
 		for (var i = 0; i < numbers.length; i++) {
-		    numbers[i] = parseInt(numbers[i]);
+		    numbers[i] = parseFloat(numbers[i]);
 		}
 		result[attr][config.ATTRIBUTE_VALUE_KEY] = numbers;
 	    }
