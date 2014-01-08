@@ -27,8 +27,8 @@ $(document).ready(function() {
     };
     // The Fader object manages transitions between the elements specified by
     // jQuery selectors given to the constructor.
-    var fader = new Fader([$("#tagline-1"), $("#tagline-2"), $("#tagline-3")],
-			  [$("#nav-1"), $("#nav-2"), $("#nav-3")],
+    var fader = new Fader([$("#tagline-1"), $("#tagline-2"), $("#tagline-3"), $("#tagline-4")],
+			  [$("#nav-1"), $("#nav-2"), $("#nav-3"), $("#nav-4")],
 			  7000, 400, 200);
     fader.start();
     // Override the Fader when one of the navigation elements is clicked. The
