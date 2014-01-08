@@ -180,8 +180,7 @@ html, body {
     font-size: 20px;
 }
 .documentation {
-    border-top: 10px solid #333;
-    border-bottom: 10px solid #333;
+    border-top: 2px solid #333;
 }
 .align-right {
     text-align: right;

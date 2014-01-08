@@ -6,34 +6,25 @@
 <!-- Documentation display -->
 <div class="content-list documentation">
   <div class="row docs-section">
-    <div class="row">
-      <div class="col-xs-6 align-right">
-	<p style="margin-top: 5px"><strong>General Information</strong></p>
-      </div>
-      <div class="col-xs-6">
-	<a ng-click="showGeneralInfo = !showGeneralInfo" class="btn" ng-class="{'btn-danger': showGeneralInfo, 'btn-success': !showGeneralInfo}">
-	  <strong>{{showGeneralInfo && 'Hide' || 'Show'}}</strong>
-	</a>
+    <div class="row center">
+      <p style="margin-top: 5px"><strong>General Information</strong></p>
+    </div>
+    <div class="row docs-row">
+      <div class="col-xs-2"></div>
+      <div class="col-xs-10">
+	<div class="light-red-bg">
+	  <p><strong>Note:</strong> The Appcrafted documentation is being actively updated.</p>
+	</div>
       </div>
     </div>
-    <div ng-class="{'hide': !showGeneralInfo}">
-      <div class="row docs-row">
-	<div class="col-xs-2"></div>
-	<div class="col-xs-10">
-	  <div class="light-red-bg">
-	    <p><strong>Note:</strong> The Appcrafted documentation is being actively updated.</p>
-	    </div>
-	</div>
+    <div class="row docs-row">
+      <div class="col-xs-2 align-right">
+	<p><em>Overview</em></p>
       </div>
-      <div class="row docs-row">
-	<div class="col-xs-2 align-right">
-	  <p><em>Overview</em></p>
-	</div>
-	<div class="col-xs-10">
-	  <p><span class="green">Appcrafted assets</span> are NoSQL key-value stores that also handle content management and delivery. Developers can deliver files, images, and data to their mobile or web applications. Applications can also programmatically create, read, update, and delete content and data.</p>
-	  <p>Currently, Appcrafted supports a Web API, a Unity Plugin, and a JavaScript plugin. Android and iOS plugins will be available shortly.</p>
-	  <p>We are also working on several other backend services for app developers. We're very interested in feedback and suggestions, and we encourage you to contact us using <a class="link-no-decoration" target="_blank" href="https://www.appcrafted.com/#contact">this form</a>.</p>
-	</div>
+      <div class="col-xs-10">
+	<p><span class="green">Appcrafted assets</span> are NoSQL key-value stores that also handle content management and delivery. Developers can deliver files, images, and data to their mobile or web applications. Applications can also programmatically create, read, update, and delete content and data.</p>
+	<p>Currently, Appcrafted supports a Web API, a Unity Plugin, and a JavaScript plugin. Android and iOS plugins will be available shortly.</p>
+	<p>We are also working on several other backend services for app developers. We're very interested in feedback and suggestions, and we encourage you to <a href="mailto:contact@appcrafted.com" class="link-no-decoration">email us</a> or contact us using <a class="link-no-decoration" target="_blank" href="https://www.appcrafted.com/#contact">this form</a>.</p>
       </div>
     </div>
   </div>
@@ -342,7 +333,7 @@ this.craftedAssets[<span class="red">&lt;AssetID&gt;</span>].link</pre>
 	<div class="col-xs-2"></div>
 	<div class="col-xs-10">
 	  <div class="light-red-bg">
-	    <p><strong>Note:</strong> The Appcrafted documentation is being actively updated.</p>
+	    <p><strong>Note:</strong> The JavaScript Plugin documentation is being actively updated.</p>
 	  </div>
 	</div>
       </div>

@@ -132,7 +132,8 @@ exports.createAsset = function(request, response) {
 				      type != config.URL_TYPE &&
 				      type != config.IMAGE_TYPE &&
 				      type != config.FILE_TYPE &&
-				      type != config.ARRAY_TYPE &&
+				      type != config.STRING_ARRAY_TYPE &&
+				      type != config.NUMBER_ARRAY_TYPE &&
 				      type != config.NUMBER_TYPE)) {
 			    // If the type is not supported, send an error.
 			    response.send(500, {
@@ -367,7 +368,9 @@ exports.updateAsset = function(request, response) {
 		if (!!type &&
 		    type != config.STRING_TYPE && type != config.URL_TYPE &&
 		    type != config.IMAGE_TYPE && type != config.FILE_TYPE &&
-		    type != config.ARRAY_TYPE && type != config.NUMBER_TYPE) {
+		    type != config.STRING_ARRAY_TYPE &&
+		    type != config.NUMBER_ARRAY_TYPE &&
+		    type != config.NUMBER_TYPE) {
 		    // If the type is not supported, set it to null.
 		    type = null;
 		}
