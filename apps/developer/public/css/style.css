@@ -103,9 +103,6 @@ html, body {
     border-radius: 5px;
     transition: 0.25s;
 }
-.asset-container-thumbnail:hover {
-    background-color: #222;
-}
 .asset-container-thumbnail i {
     font-size: 100px;
 }
