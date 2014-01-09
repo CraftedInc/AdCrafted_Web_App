@@ -97,8 +97,11 @@ exports.parseAsset = function(item) {
 	    attribute["S"] : attribute["SS"] ?
 	    attribute["SS"] : null;
 	try {
-	    // Valid JSON string.
-	    result[attr] = JSON.parse(value);
+	    // If AssetID is a string-number, it will be parsed without an
+	    // exception. However, we want to keep it as a string.
+	    if (attr != "AssetID") {
+		result[attr] = JSON.parse(value);
+	    }
 	    if (result[attr][config.ATTRIBUTE_TYPE_KEY] == config.NUMBER_TYPE) {
 		result[attr][config.ATTRIBUTE_VALUE_KEY] =
 		    parseFloat(result[attr][config.ATTRIBUTE_VALUE_KEY]);
