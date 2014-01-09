@@ -116,5 +116,6 @@
       </button>
     </div>
     <p ng-show="(EditAssetForm.$error.required || EditAssetForm.$error.url) && submitted" class="error-message center"><i class="fa fa-warning"></i> Required fields are missing or invalid</p>
+    <p ng-show="!!errorMessage" class="error-message center"><i class="fa fa-warning"></i> {{errorMessage}}</p>
   </div>
 </form>

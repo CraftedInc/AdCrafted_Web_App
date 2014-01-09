@@ -81,7 +81,7 @@
 	    </div>
 	    <div ng-switch-when="FILE">
 	      <input type="file" file-input="file" on-change="readFile($index)">
-	      <span ng-show="attributeForm.attributeFileValid.$error.required && submitted" class="error-message"><i class="fa fa-warning"></i> invalid file</span>
+	      <span ng-show="attributeForm.attributeFileValid.$error.required && submitted" class="error-message"><i class="fa fa-warning"></i> Invalid file</span>
 	      <input type="file" name="attributeFileValid" class="hide" ng-model="attribute.Value" required>
 	    </div>
 	    <div ng-switch-when="STRING_ARRAY">
@@ -115,5 +115,6 @@
       </button>
     </div>
     <p ng-show="(newAssetForm.$error.required || newAssetForm.$error.url) && submitted" class="error-message center"><i class="fa fa-warning"></i> Required fields are missing or invalid</p>
+    <p ng-show="!!errorMessage" class="error-message center"><i class="fa fa-warning"></i> {{errorMessage}}</p>
   </div>
 </form>

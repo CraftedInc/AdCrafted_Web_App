@@ -156,6 +156,7 @@ function CreateAssetCtrl($scope, $routeParams, AssetCollection,
     $scope.cSpaceID = $routeParams.CSpaceID;
     $scope.submitted = false;
     $scope.assetIDNotUnique = false;
+    $scope.errorMessage = null;
 
     $scope.attributes = [{"Type": "STRING"}];
     $scope.asset = {};
@@ -179,6 +180,7 @@ function CreateAssetCtrl($scope, $routeParams, AssetCollection,
 
     $scope.create = function(newAssetForm) {
 	$scope.submitted = true;
+	$scope.errorMessage = null;
 	if (newAssetForm.$valid) {
 	    $scope.attributes.forEach(function(attribute) {
 		$scope.asset[attribute["Name"]]= {
@@ -195,6 +197,15 @@ function CreateAssetCtrl($scope, $routeParams, AssetCollection,
 				       if (!!error.data && error.data.message ==
 					   "AssetID Not Unique") {
 					   $scope.assetIDNotUnique = true;
+				       } else if (!!error.data) {
+					   if (error.data.message ==
+					       "File Not Base64-Encoded") {
+					       $scope.errorMessage =
+						   "File upload failed";
+					   } else {
+					       $scope.errorMessage =
+						   "Something went wrong";
+					   }
 				       }
 				       $scope.waiting = false;
 				   });
@@ -206,6 +217,7 @@ function EditAssetCtrl($scope, $routeParams, SingleAsset, CustomFileReader) {
     $scope.waiting = true;
     $scope.submitted = false;
     $scope.cSpaceID = $routeParams.CSpaceID;
+    $scope.errorMessage = null;
 
     $scope.attributes = [];
     $scope.attributesToRemove = [];
@@ -259,6 +271,7 @@ function EditAssetCtrl($scope, $routeParams, SingleAsset, CustomFileReader) {
 
     $scope.update = function(EditAssetForm) {
 	$scope.submitted = true;
+	$scope.errorMessage = null;
 	if (EditAssetForm.$valid) {
 	    $scope.waiting = true;
 	    $scope.attributes.forEach(function(attribute) {
@@ -275,9 +288,21 @@ function EditAssetCtrl($scope, $routeParams, SingleAsset, CustomFileReader) {
 	    });
 	    SingleAsset.update({cSpaceID: $routeParams.CSpaceID,
 				assetID: $routeParams.AssetID},
-			       $scope.newAsset, function() {
+			       $scope.newAsset, function(response) {
 				   window.location =
 				       "#/assets/" + $routeParams.CSpaceID;
+			       }, function(error) {
+				   if (!!error.data) {
+				       if (error.data.message ==
+					   "File Not Base64-Encoded") {
+					   $scope.errorMessage =
+					       "File upload failed";
+				       } else {
+					   $scope.errorMessage =
+					       "Something went wrong";
+				       }
+				   }
+				   $scope.waiting = false;
 			       });
 	}
     }

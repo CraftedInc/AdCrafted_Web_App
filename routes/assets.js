@@ -406,6 +406,11 @@ exports.updateAsset = function(request, response) {
 			    },
 			    "Action": "PUT"
 			};
+		    } else {
+			response.send(500, {
+			    message: "File Not Base64-Encoded"
+			});
+			return;
 		    }
 		} else if (action == config.DELETE_ATTRIBUTE_ACTION) {
 		    params.AttributeUpdates[attr] = {
