@@ -52,15 +52,21 @@ exports.isEmail = function(email) {
  */
 exports.parseBase64Data = function(data){
     var result = {};
+    var size = base64FileSize(data);
+    if (size > config.MAX_FILE_SIZE_KB) {
+	return {"size": size};
+    }
     var matches = data.match(/^data:.+\/(.+);base64,(.*)$/);
     if (!!matches && matches.length == 3) {
 	result = {
+	    "size": size,
 	    "isBase64": true,
 	    "ext": matches[1],
-	    "body": new Buffer(matches[2], 'base64')
+	    "body": new Buffer(matches[2], "base64")
 	};
     } else {
 	result = {
+	    "size": size,
 	    "isBase64": false,
 	    "ext": null,
 	    "body": null
@@ -258,4 +264,11 @@ function isEmpty(obj) {
         }
     }
     return true;
+}
+
+/**
+ * Returns the size of a Base64 encoded file in KB.
+ */
+function base64FileSize(s) {
+    return (encodeURI(s).split(/%..|./).length - 1) / 1333;
 }

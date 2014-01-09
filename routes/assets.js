@@ -148,7 +148,14 @@ exports.createAsset = function(request, response) {
 			if ((type == config.IMAGE_TYPE ||
 			     type == config.FILE_TYPE) && !!value) {
 			    var file = utils.parseBase64Data(value);
-			    if (file.isBase64) {
+			    if (file.size > config.MAX_FILE_SIZE_KB) {
+				response.send(500, {
+				    message:
+				    "File Exceeds Maximum Allowable Size: " +
+					config.MAX_FILE_SIZE_KB + "KB"
+				});
+				return;
+			    } else if (file.isBase64) {
 				var mime = type === config.IMAGE_TYPE ?
 				    "image/" : "application/";
 				var name = utils.generateKey(8);
@@ -383,7 +390,14 @@ exports.updateAsset = function(request, response) {
 		if ((type == config.IMAGE_TYPE || type == config.FILE_TYPE)
 		    && !!value && action == config.UPDATE_ATTRIBUTE_ACTION) {
 		    var file = utils.parseBase64Data(value);
-		    if (file.isBase64) {
+		    if (file.size > config.MAX_FILE_SIZE_KB) {
+			response.send(500, {
+			    message:
+			    "File Exceeds Maximum Allowable Size: " +
+				config.MAX_FILE_SIZE_KB + "KB"
+			});
+			return;
+		    } else if (file.isBase64) {
 			var mime = type === config.IMAGE_TYPE ?
 			    "image/" : "application/";
 			var name = utils.generateKey(8);

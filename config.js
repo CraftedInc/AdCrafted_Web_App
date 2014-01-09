@@ -35,6 +35,7 @@ config.NUMBER_ARRAY_TYPE = "NUMBER_ARRAY";
 config.NUMBER_TYPE = "NUMBER";
 config.DELETE_ATTRIBUTE_ACTION = "DELETE";
 config.UPDATE_ATTRIBUTE_ACTION = "UPDATE";
+config.MAX_FILE_SIZE_KB = 1000;
 
 /**
  * Local configuration.
