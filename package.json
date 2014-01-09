@@ -25,7 +25,6 @@
 	"validator": "1.4.x",
 	"passport": "0.1.x",
 	"passport-google-oauth": "0.1.x",
-	"connect-ensure-login": "0.1.x",
-	"connect-redis": "1.4.x"
+	"connect-ensure-login": "0.1.x"
     }
 }
