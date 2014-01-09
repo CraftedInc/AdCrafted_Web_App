@@ -14,5 +14,6 @@ angular.module("appcrafted", ["cSpaceServices", "assetServices", "accountService
 	    when("/account", {templateUrl: "partials/account.html",   controller: AccountCtrl}).
 	    when("/account/edit", {templateUrl: "partials/edit-account.html",   controller: EditAccountCtrl}).
 	    when("/documentation", {templateUrl: "partials/docs.html",   controller: DocsCtrl}).
+	    when("/downloads", {templateUrl: "partials/downloads.html",   controller: DownloadsCtrl}).
 	    otherwise({redirectTo: "/"});
     }]);

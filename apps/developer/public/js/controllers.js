@@ -360,6 +360,13 @@ function DocsCtrl($scope, $routeParams) {
 }
 
 /**
+ * Downloads controller.
+ */
+
+function DownloadsCtrl($scope) {
+}
+
+/**
  * Private functions.
  */
 
