@@ -46,27 +46,28 @@ exports.isEmail = function(email) {
 };
 
 /**
+ * Returns the estimated size of Base64-encoded file after it's been decoded.
+ */
+exports.base64FileSize = function(base64File) {
+    return base64File.length / 1333;
+};
+
+/**
  * Extracts the metadata from the Base64 encoded data and returns an object
  * containing the metadata and the Base64 encoded body.
  * @param {string} data The URL/Base64 encoded data.
  */
 exports.parseBase64Data = function(data){
     var result = {};
-    var size = base64FileSize(data);
-    if (size > config.MAX_FILE_SIZE_KB) {
-	return {"size": size};
-    }
     var matches = data.match(/^data:.+\/(.+);base64,(.*)$/);
     if (!!matches && matches.length == 3) {
 	result = {
-	    "size": size,
 	    "isBase64": true,
 	    "ext": matches[1],
 	    "body": new Buffer(matches[2], "base64")
 	};
     } else {
 	result = {
-	    "size": size,
 	    "isBase64": false,
 	    "ext": null,
 	    "body": null
