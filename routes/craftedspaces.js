@@ -82,7 +82,7 @@ exports.getCraftedSpace = function(request, response) {
     };
     db.getItem(params, function(err, data) {
 	if (err) {
-	    response.send(500, {message: "An Error Occurred", error: err});
+	    response.send(500, {message: "An Error Occurred"});
 	} else if (!utils.isEmpty(data)) {
 	    response.send(utils.parseItem(data.Item));
 	} else {
