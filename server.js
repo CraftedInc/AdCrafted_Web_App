@@ -49,6 +49,7 @@
  * Include modules here.
  */
 var express    = require("express")
+  , cluster    = require("cluster")
   , config     = require("./config")
   , AWS        = require("aws-sdk")
   , website    = require("./routes/website")
@@ -64,6 +65,18 @@ var express    = require("express")
  * Express application.
  */
 var app = express();
+
+/**
+ * The workers (clustering).
+ */
+var workers = {}
+  , count = require("os").cpus().length;
+// Spawns a new worker.
+function spawn(){
+    var worker = cluster.fork();
+    workers[worker.pid] = worker;
+    return worker;
+}
 
 /**
  * Environment-specific Express application configuration.
@@ -190,4 +203,18 @@ function init() {
     app.listen(process.env.PORT || 8888);
 }
 
-init();
+/**
+ * Spawn worker processes and start the server.
+ */
+if (cluster.isMaster) {
+    for (var i = 0; i < count; i++) {
+	spawn();
+    }
+    cluster.on("death", function(worker) {
+	console.log("worker " + worker.pid + " died. spawning a new process.");
+	delete workers[worker.pid];
+	spawn();
+    });
+} else {
+    init();
+}
