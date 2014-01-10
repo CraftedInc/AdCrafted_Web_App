@@ -74,7 +74,8 @@ var workers = {}
 // Spawns a new worker.
 function spawn(){
     var worker = cluster.fork();
-    workers[worker.pid] = worker;
+    workers[worker.id] = worker;
+    console.log("Spawned new worker (ID = " + worker.id + ")");
     return worker;
 }
 
@@ -211,8 +212,8 @@ if (cluster.isMaster) {
 	spawn();
     }
     cluster.on("exit", function(worker) {
-	console.log("worker " + worker.pid + " died. spawning a new process.");
-	delete workers[worker.pid];
+	console.log("worker " + worker.id + " died. spawning a new process.");
+	delete workers[worker.id];
 	spawn();
     });
 } else {
