@@ -204,7 +204,7 @@ function CreateAssetCtrl($scope, $routeParams, AssetCollection,
 						   "File upload failed";
 					   } else {
 					       $scope.errorMessage =
-						   "Something went wrong";
+						   error.data.message;
 					   }
 				       }
 				       $scope.waiting = false;
@@ -306,7 +306,7 @@ function EditAssetCtrl($scope, $routeParams, SingleAsset, CustomFileReader) {
 					       "File upload failed";
 				       } else {
 					   $scope.errorMessage =
-					       "Something went wrong";
+					       error.data.message;
 				       }
 				   }
 				   $scope.waiting = false;
