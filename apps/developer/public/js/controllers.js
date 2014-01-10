@@ -275,11 +275,18 @@ function EditAssetCtrl($scope, $routeParams, SingleAsset, CustomFileReader) {
 	if (EditAssetForm.$valid) {
 	    $scope.waiting = true;
 	    $scope.attributes.forEach(function(attribute) {
-		$scope.newAsset[attribute["Name"]]= {
-		    "Type": attribute["Type"],
-		    "Value": attribute["Value"],
-		    "Action": "UPDATE"
-		};
+		// Check that the attribute is not an existing file or image,
+		// which is manifested by a URL referencing a resource on the
+		// Appcrafted CDN.
+		if ((attribute["Type"] != "IMAGE" &&
+		     attribute["Type"] != "FILE") ||
+		    !isValidURL(attribute["Value"])) {
+		    $scope.newAsset[attribute["Name"]]= {
+			"Type": attribute["Type"],
+			"Value": attribute["Value"],
+			"Action": "UPDATE"
+		    };
+		}
 	    });
 	    $scope.attributesToRemove.forEach(function(attribute) {
 		$scope.newAsset[attribute["Name"]]= {
@@ -413,4 +420,18 @@ function contains(a, obj) {
 	}
     }
     return false;
+}
+
+function isValidURL(str) {
+    var pattern = new RegExp('^(https?:\\/\\/)?'+
+			     '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+
+			     '((\\d{1,3}\\.){3}\\d{1,3}))'+
+			     '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+
+			     '(\\?[;&a-z\\d%_.~+=-]*)?'+
+			     '(\\#[-a-z\\d_]*)?$','i');
+    if(!pattern.test(str)) {
+	return false;
+    } else {
+	return true;
+    }
 }
