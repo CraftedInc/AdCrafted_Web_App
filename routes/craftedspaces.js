@@ -110,7 +110,7 @@ exports.getAllUserCraftedSpaces = function(request, response) {
     };
     db.query(params, function(err, data) {
 	if (err) {
-	    response.send(500, {message: "An Error Occurred"});
+	    response.send(500, {message: "An Error Occurred", error: err});
 	} else {
 	    var result = {message: "Success",
 			  Count: data.Count,
