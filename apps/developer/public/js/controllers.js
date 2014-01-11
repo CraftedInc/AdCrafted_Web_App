@@ -61,8 +61,8 @@ function CreateCSpaceCtrl($scope, CSpaceCollection, CustomFileReader) {
 	$scope.submitted = true;
 	if (newCSpaceForm.$valid) {
 	    $scope.waiting = true;
-	    CSpaceCollection.create($scope.cSpace, function() {
-		window.location = "#/assets";
+	    CSpaceCollection.create($scope.cSpace, function(response) {
+		window.location = "#/assets/" + response.ID;
 	    });
 	}
     }
