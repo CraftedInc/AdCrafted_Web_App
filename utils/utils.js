@@ -53,6 +53,20 @@ exports.base64FileSize = function(base64File) {
 };
 
 /**
+ * Determines whether the string is a correctly-encoded Base64 file and also
+ * determines its size in KB.
+ */
+exports.validateBase64File = function(base64File) {
+    var size = base64File.length / 1333;
+    var matches =
+	base64File.substring(0,150).match(/^data:.+\/(.+);base64,(.*)$/);
+    return {
+	size: size,
+	isBase64: !!matches && matches.length == 3
+    };
+};
+
+/**
  * Extracts the metadata from the Base64 encoded data and returns an object
  * containing the metadata and the Base64 encoded body.
  * @param {string} data The URL/Base64 encoded data.

@@ -147,8 +147,13 @@ exports.createAsset = function(request, response) {
 			// be processed separately.
 			if ((type == config.IMAGE_TYPE ||
 			     type == config.FILE_TYPE) && !!value) {
-			    var size = utils.base64FileSize(value);
-			    if (size > config.MAX_FILE_SIZE_KB) {
+			    var meta = utils.validateBase64File(value);
+			    if (!meta.isBase64) {
+				response.send(500, {
+				    message: "File Not Base64-Encoded"
+				});
+				return;
+			    } else if (meta.size > config.MAX_FILE_SIZE_KB) {
 				response.send(500, {
 				    message:
 				    "File Exceeds Maximum Allowable Size: " +
@@ -157,34 +162,27 @@ exports.createAsset = function(request, response) {
 				return;
 			    }
 			    var file = utils.parseBase64Data(value);
-			    if (file.isBase64) {
-				var mime = type === config.IMAGE_TYPE ?
-				    "image/" : "application/";
-				var name = utils.generateKey(8);
-				var key = s3.generateAssetKey(cSpaceID,
-							      newAssetID,
-							      name, file.ext);
-				s3.upload(file.body, key, mime + file.ext,
-					  function(err, data) {
-					      if (err) {
-						  console.log(err);
-					      }
-					  });
-				params.Item[attr] = {
-				    "S": '{"' + config.ATTRIBUTE_TYPE_KEY +
-					'":"' + type + '","' +
-					config.ATTRIBUTE_VALUE_KEY + '":"' +
-					s3.getAssetFileURL(cSpaceID,
-							   newAssetID,
-							   name, file.ext) +
-					'"}'
-				};
-			    } else {
-				response.send(500, {
-				    message: "File Not Base64-Encoded"
-				});
-				return;
-			    }
+			    var mime = type === config.IMAGE_TYPE ?
+				"image/" : "application/";
+			    var name = utils.generateKey(8);
+			    var key = s3.generateAssetKey(cSpaceID,
+							  newAssetID,
+							  name, file.ext);
+			    s3.upload(file.body, key, mime + file.ext,
+				      function(err, data) {
+					  if (err) {
+					      console.log(err);
+					  }
+				      });
+			    params.Item[attr] = {
+				"S": '{"' + config.ATTRIBUTE_TYPE_KEY +
+				    '":"' + type + '","' +
+				    config.ATTRIBUTE_VALUE_KEY + '":"' +
+				    s3.getAssetFileURL(cSpaceID,
+						       newAssetID,
+						       name, file.ext) +
+				    '"}'
+			    };
 			} else if (!!type && !!value) {
 			    params.Item[attr] = {
 				"S": '{"' + config.ATTRIBUTE_TYPE_KEY + '":"' +
@@ -391,8 +389,13 @@ exports.updateAsset = function(request, response) {
 		// be processed separately.
 		if ((type == config.IMAGE_TYPE || type == config.FILE_TYPE)
 		    && !!value && action == config.UPDATE_ATTRIBUTE_ACTION) {
-		    var size = utils.base64FileSize(value);
-		    if (size > config.MAX_FILE_SIZE_KB) {
+		    var meta = utils.validateBase64File(value);
+		    if (!meta.isBase64) {
+			response.send(500, {
+			    message: "File Not Base64-Encoded"
+			});
+			return;
+		    } else if (meta.size > config.MAX_FILE_SIZE_KB) {
 			response.send(500, {
 			    message:
 			    "File Exceeds Maximum Allowable Size: " +
@@ -401,35 +404,28 @@ exports.updateAsset = function(request, response) {
 			return;
 		    }
 		    var file = utils.parseBase64Data(value);
-		    if (file.isBase64) {
-			var mime = type === config.IMAGE_TYPE ?
-			    "image/" : "application/";
-			var name = utils.generateKey(8);
-			var key = s3.generateAssetKey(cSpaceID, assetID,
-						      name, file.ext);
-			s3.upload(file.body, key, mime + file.ext,
-				  function(err, data) {
-				      if (err) {
-					  console.log(err);
-				      }
-				  });
-			params.AttributeUpdates[attr] = {
-			    "Value": {
-				"S": '{"' + config.ATTRIBUTE_TYPE_KEY +
-				    '":"' + type + '","' +
-				    config.ATTRIBUTE_VALUE_KEY + '":"' +
-				    s3.getAssetFileURL(cSpaceID,
-						       assetID,
-						       name, file.ext) + '"}'
-			    },
-			    "Action": "PUT"
-			};
-		    } else {
-			response.send(500, {
-			    message: "File Not Base64-Encoded"
-			});
-			return;
-		    }
+		    var mime = type === config.IMAGE_TYPE ?
+			"image/" : "application/";
+		    var name = utils.generateKey(8);
+		    var key = s3.generateAssetKey(cSpaceID, assetID,
+						  name, file.ext);
+		    s3.upload(file.body, key, mime + file.ext,
+			      function(err, data) {
+				  if (err) {
+				      console.log(err);
+				  }
+			      });
+		    params.AttributeUpdates[attr] = {
+			"Value": {
+			    "S": '{"' + config.ATTRIBUTE_TYPE_KEY +
+				'":"' + type + '","' +
+				config.ATTRIBUTE_VALUE_KEY + '":"' +
+				s3.getAssetFileURL(cSpaceID,
+						   assetID,
+						   name, file.ext) + '"}'
+			},
+			"Action": "PUT"
+		    };
 		} else if (action == config.DELETE_ATTRIBUTE_ACTION) {
 		    params.AttributeUpdates[attr] = {
 			"Action": "DELETE"
