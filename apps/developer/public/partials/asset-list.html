@@ -1,7 +1,8 @@
 <!-- CSPACE control bar -->
 <div class="form-inline row" id="control-bar" ng-class="{'hide': waitingAsset || waitingCSpace}">
   <a href="#/assets" class="left-link">
-    <i class="fa fa-suitcase"></i> Containers
+    <i class="fa fa-suitcase"></i>
+    <strong>Containers</strong>
   </a>
   <div class="form-group pull-right">
     <div class="input-group" id="input-group-search">
@@ -36,17 +37,44 @@
 
 <!-- Information Header -->
 <div class="info-header" ng-class="{'hide': waitingAsset || waitingCSpace}">
-  <a href="#/assets/{{CSpaceID}}/new" class="btn btn-success right-link">
-    <strong>Create an Asset</strong>
-  </a>
-  <p style="margin: 12px 0"><em>Container ID:</em> <code>{{CSpaceID}}</code> <em>&nbsp;Name:</em> <strong>{{cSpace.title}}</strong></p>
+
 </div>
 
-<h1 class="center" ng-show="!AssetCollection.Assets.length" ng-class="{'hide': waitingAsset || waitingCSpace}">
-  <i class="fa fa-warning"></i> This Container Is Empty
-</h1>
+<!-- CONTAINER INFO -->
+<div class="row content-list" ng-show="!waitingAsset && !waitingCSpace">
+  <div class="col-xs-3">
+    <p><em>Container ID</em></p>
+    <p><code>{{CSpaceID}}</code></p>
+  </div>
+  <div class="col-xs-6">
+    <p><em>Name</em></p>
+    <p>{{cSpace.title}}</p>
+  </div>
+  <div class="col-xs-3 align-right">
+    <a href="#/assets/{{CSpaceID}}/edit" class="green-link">
+      <i class="fa fa-edit"></i>
+      <strong>Edit Container</strong>
+    </a>
+  </div>
+</div>
+
+<!-- NEW ASSET -->
+<div style="margin-top: 30px" class="row content-list center" ng-class="{'hide': waitingAsset || waitingCSpace || !!AssetCollection.Assets.length}">
+  <a class="home-link" href="#/assets/{{CSpaceID}}/new">
+    <i class="fa fa-plus-square-o home-icon"></i>
+    <h2 style="margin: 0">New Asset</h2>
+  </a>
+</div>
 
 <!-- ASSET list -->
+<div style="margin: 30px 0 25px 0; border-top: 1px solid #333; padding: 25px 0 10px 0" class="row content-list" ng-class="{'hide': waitingAsset || waitingCSpace || !AssetCollection.Assets.length}">
+  <div class="col-xs-12 align-right">
+    <a href="#/assets/{{CSpaceID}}/new" class="home-link green-link" ng-show="!!AssetCollection.Assets.length">
+      <i class="fa fa-plus-circle"></i>
+      <strong>New Asset</strong>
+    </a>
+  </div>
+</div>
 <div class="row content-list asset-attribute-row" ng-class="{'hide': waitingAsset || waitingCSpace || !AssetCollection.Assets.length}">
   <div class="col-xs-2">
     <p><em>Asset ID</em></p>

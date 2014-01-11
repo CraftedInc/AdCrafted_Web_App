@@ -42,6 +42,14 @@ html, body {
     color: #5cb85c !important;
     text-decoration: none;
 }
+.green-link {
+    color: #5cb85c !important;
+    transition: 0.5s !important;
+}
+.green-link:hover {
+    color: #DDD !important;
+    text-decoration: none;
+}
 .right-link {
     transition: 0.25s;
     position: absolute;

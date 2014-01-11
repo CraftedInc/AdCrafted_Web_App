@@ -72,6 +72,7 @@ function EditCSpaceCtrl($scope, $routeParams, SingleCSpace, CustomFileReader) {
     $scope.waiting = true;
     $scope.hasImage = false;
     $scope.submitted = false;
+    $scope.cSpaceID = $routeParams.CSpaceID;
     $scope.cSpace =
 	SingleCSpace.get({cSpaceID: $routeParams.CSpaceID}, function() {
 	    $scope.waiting = false;
@@ -94,7 +95,8 @@ function EditCSpaceCtrl($scope, $routeParams, SingleCSpace, CustomFileReader) {
 	    $scope.waiting = true;
 	    SingleCSpace.update({cSpaceID: $routeParams.CSpaceID},
 				 $scope.cSpace, function() {
-				     window.location = "#/assets";
+				     window.location = "#/assets/" +
+					 $routeParams.CSpaceID;
 				 });
 	}
     }

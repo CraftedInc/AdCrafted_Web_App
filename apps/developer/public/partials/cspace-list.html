@@ -1,7 +1,8 @@
 <!-- CSPACE control bar -->
 <div class="form-inline row" id="cspace-control-bar" ng-class="{'hide': waiting}">
   <a href="#" class="left-link">
-    <i class="fa fa-home"></i> Home
+    <i class="fa fa-home"></i>
+    <strong>Home</strong>
   </a>
   <div class="form-group pull-right">
     <div class="input-group" id="input-group-search">
@@ -36,37 +37,37 @@
 
 <!-- Information Header -->
 <div class="info-header" ng-class="{'hide': waiting}">
-  <a href="#/assets/new" class="btn btn-success right-link" ng-show="!!CSpaces.length">
-     <strong>New Container</strong>
+  <a href="#/assets/new" class="green-link right-link" ng-show="!!CSpaces.length">
+    <i class="fa fa-plus-circle"></i>
+    <strong>New Container</strong>
   </a>
   <h1 ng-show="!CSpaces.length">
     <i class="fa fa-warning"></i>
-    You haven't created any Assets
+    You haven't created any assets
   </h1>
   <p ng-show="!CSpaces.length">
-    <em>Create a Container to store your Assets</em>
+    <em>Create a container to store assets</em>
   </p>
-  <p ng-show="!CSpaces.length">
-    <a href="#/assets/new" class="btn btn-success"><strong>Create a Container</strong></a>
-  </p>
-  <h1 ng-show="!!CSpaces.length">All Containers</h1>
+  <h1 ng-show="!!CSpaces.length">Containers</h1>
 </div>
 
 <!-- CSPACE list -->
 <div class="content-list" ng-class="{'hide': waiting}">
-  <div ng-repeat="CSpace in CSpaces | orderBy:orderProp:orderReverse | filter:query" class="asset-container-thumbnail">
-    <a class="home-link right-link" href="#/assets/{{CSpace.CSpaceID}}/edit">
-      <i style="font-size: 1em" class="fa fa-edit"></i> edit
+  <div ng-show="!CSpaces.length" class="center">
+    <a class="home-link" href="#/assets/new">
+      <i class="fa fa-suitcase home-icon"></i>
+      <h2 style="margin: 0"><i class="fa fa-plus-circle"></i> New Container</h2>
     </a>
+  </div>
+  <div ng-repeat="CSpace in CSpaces | orderBy:orderProp:orderReverse | filter:query" class="asset-container-thumbnail">
     <a class="home-link" href="#/assets/{{CSpace.CSpaceID}}">
       <i class="fa fa-suitcase"></i>
+      <p>
+	<span ng-show="!!CSpace.title">{{CSpace.title}}</span>
+	<span ng-show="!CSpace.title"><em>no name</em></span>
+      </p>
+      <p><em>created:</em> {{CSpace.date | date:'shortDate'}}</p>
     </a>
-    <p>
-      <span ng-show="!!CSpace.title">{{CSpace.title}}</span>
-      <span ng-show="!CSpace.title"><em>no name</em></span>
-    </p>
-    <p><em>ID:</em> <code>{{CSpace.CSpaceID}}</code></p>
-    <p><em>created:</em> {{CSpace.date | date:'shortDate'}}</p>
     <div style="overflow: hidden; height: 25px">
       <a class="label label-success tag" ng-repeat="tag in CSpace.tags" ng-click="populateSearch(tag)">{{tag}}</a>
     </div>

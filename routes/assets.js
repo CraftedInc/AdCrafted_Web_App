@@ -163,12 +163,12 @@ exports.createAsset = function(request, response) {
 			    }
 			    var file = utils.parseBase64Data(value);
 			    var mime = type === config.IMAGE_TYPE ?
-				"image/" : "application/";
+				"image/" + file.ext : "application/octet-stream";
 			    var name = utils.generateKey(8);
 			    var key = s3.generateAssetKey(cSpaceID,
 							  newAssetID,
 							  name, file.ext);
-			    s3.upload(file.body, key, mime + file.ext,
+			    s3.upload(file.body, key, mime,
 				      function(err, data) {
 					  if (err) {
 					      console.log(err);
@@ -405,11 +405,11 @@ exports.updateAsset = function(request, response) {
 		    }
 		    var file = utils.parseBase64Data(value);
 		    var mime = type === config.IMAGE_TYPE ?
-			"image/" : "application/";
+			"image/" + file.ext : "application/octet-stream";
 		    var name = utils.generateKey(8);
 		    var key = s3.generateAssetKey(cSpaceID, assetID,
 						  name, file.ext);
-		    s3.upload(file.body, key, mime + file.ext,
+		    s3.upload(file.body, key, mime,
 			      function(err, data) {
 				  if (err) {
 				      console.log(err);
