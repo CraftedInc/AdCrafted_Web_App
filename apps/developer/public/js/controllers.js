@@ -174,9 +174,17 @@ function CreateAssetCtrl($scope, $routeParams, AssetCollection,
     };
 
     $scope.readFile = function(index) {
+	var filename = this.file.name;
         CustomFileReader.readAsDataUrl(this.file, $scope)
             .then(function(result) {
-		$scope.attributes[index]["Value"] = result;
+		var data = result.substr(result.indexOf('base64') + 7);
+		if ($scope.attributes[index]["Type"] == "IMAGE") {
+		    $scope.attributes[index]["Data"] = result;
+		}
+		$scope.attributes[index]["Value"] = {
+		    "Name": filename,
+		    "Base64": data
+		};
             });
     };
 
@@ -262,12 +270,20 @@ function EditAssetCtrl($scope, $routeParams, SingleAsset, CustomFileReader) {
     };
 
     $scope.readFile = function(index) {
+	var filename = this.file.name;
         CustomFileReader.readAsDataUrl(this.file, $scope)
             .then(function(result) {
-		// Set the rewritten image src to null, thus forcing the new
-		// on to display.
-		$scope.attributes[index]["ImageSrc"] = null;
-		$scope.attributes[index]["Value"] = result;
+		var data = result.substr(result.indexOf('base64') + 7);
+		if ($scope.attributes[index]["Type"] == "IMAGE") {
+		    // Set the rewritten image src to null, thus forcing the new
+		    // on to display.
+		    $scope.attributes[index]["ImageSrc"] = null;
+		    $scope.attributes[index]["Data"] = result;
+		}
+		$scope.attributes[index]["Value"] = {
+		    "Name": filename,
+		    "Base64": data
+		};
             });
     };
 

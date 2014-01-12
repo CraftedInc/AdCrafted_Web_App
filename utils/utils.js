@@ -69,25 +69,13 @@ exports.validateBase64File = function(base64File) {
 /**
  * Extracts the metadata from the Base64 encoded data and returns an object
  * containing the metadata and the Base64 encoded body.
- * @param {string} data The URL/Base64 encoded data.
  */
-exports.parseBase64Data = function(data){
-    var result = {};
-    var matches = data.match(/^data:.+\/(.+);base64,(.*)$/);
-    if (!!matches && matches.length == 3) {
-	result = {
-	    "isBase64": true,
-	    "ext": matches[1],
-	    "body": new Buffer(matches[2], "base64")
-	};
-    } else {
-	result = {
-	    "isBase64": false,
-	    "ext": null,
-	    "body": null
-	};
-    }
-    return result;
+exports.parseBase64Data = function(value){
+    var nameAndExt = value.Name.match(/[^\\]*\.(\w+)$/);
+    return {
+	"body": new Buffer(value.Base64, "base64"),
+	"ext": nameAndExt[1]
+    };
 };
 
 /**

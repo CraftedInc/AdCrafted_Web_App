@@ -147,13 +147,13 @@ exports.createAsset = function(request, response) {
 			// be processed separately.
 			if ((type == config.IMAGE_TYPE ||
 			     type == config.FILE_TYPE) && !!value) {
-			    var meta = utils.validateBase64File(value);
-			    if (!meta.isBase64) {
+			    if (!value.Name || !value.Base64) {
 				response.send(500, {
-				    message: "File Not Base64-Encoded"
+				    message: "Invalid File or Image Attribute"
 				});
 				return;
-			    } else if (meta.size > config.MAX_FILE_SIZE_KB) {
+			    } else if (utils.base64FileSize(value.Base64) >
+				       config.MAX_FILE_SIZE_KB) {
 				response.send(500, {
 				    message:
 				    "File Exceeds Maximum Allowable Size: " +
@@ -389,13 +389,13 @@ exports.updateAsset = function(request, response) {
 		// be processed separately.
 		if ((type == config.IMAGE_TYPE || type == config.FILE_TYPE)
 		    && !!value && action == config.UPDATE_ATTRIBUTE_ACTION) {
-		    var meta = utils.validateBase64File(value);
-		    if (!meta.isBase64) {
+		    if (!value.Name || !value.Base64) {
 			response.send(500, {
-			    message: "File Not Base64-Encoded"
+			    message: "Invalid File or Image Attribute"
 			});
 			return;
-		    } else if (meta.size > config.MAX_FILE_SIZE_KB) {
+		    } else if (utils.base64FileSize(value.Base64) >
+			       config.MAX_FILE_SIZE_KB) {
 			response.send(500, {
 			    message:
 			    "File Exceeds Maximum Allowable Size: " +
