@@ -135,6 +135,11 @@ app.put("/v0/assets/:cSpaceID/:assetID",
 	utils.setUserIDOnRequest(),
 	assets.updateAsset);
 
+// UPDATE an asset (for clients that don't support HTTP PUT).
+app.post("/v0/assets/:cSpaceID/:assetID/update_post",
+	utils.setUserIDOnRequest(),
+	assets.updateAsset);
+
 // DELETE an asset without deleting the CraftedSpace.
 app.del("/v0/assets/:cSpaceID/:assetID",
 	utils.setUserIDOnRequest(),
