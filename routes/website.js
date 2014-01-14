@@ -15,6 +15,8 @@ exports.index = function(request, response) {
 			protocol: request.app.get("PROTOCOL"),
 			domain: request.app.get("DOMAIN"),
 			modal: request.query.signin || false,
-			email: request.query.email
+			email: request.query.email,
+			terms: request.query.terms || false,
+			privacy: request.query.privacy || false
 		    });
 };

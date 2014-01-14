@@ -12,9 +12,23 @@ block head
         $('#email-input').val('#{email}');
         $('#comment-modal').modal();
       });
+  if (terms)
+    script(type='text/javascript').
+      $(document).ready(function() {
+        $('#terms-modal').modal();
+      });
+  if (privacy)
+    script(type='text/javascript').
+      $(document).ready(function() {
+        $('#privacy-modal').modal();
+      });
 
 block content
   // Modals.
+  // Terms.
+  include terms
+  // Privacy.
+  include privacy
   // Signin modal.
   div#signin-modal.modal(tabindex='-1', role='dialog', aria-labelledby='signin-modal-label', aria-hidden='true')
     div.modal-dialog
@@ -27,7 +41,7 @@ block content
               img(src='/static/img/Red-signin_Long_base_32dp.png')
         div.modal-footer
           p By signing in with Google, you agree to our
-            <a href='#'>Terms of Service</a> & <a href='#'>Privacy Policy</a>
+            <a href='/?terms=true'>Terms of Service</a> & <a href='/?privacy=true'>Privacy Policy</a>
   // Extra comment modal
   div#comment-modal.modal(tabindex='-1', role='dialog', aria-labelledby='comment-modal-label', aria-hidden='true')
     div.modal-dialog
