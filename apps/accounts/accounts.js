@@ -172,26 +172,9 @@ app.get("/auth/google/callback",
 	    "google",
 	    { failureRedirect: "/login" }),
 	function(request, response) {
-	    // Successful authentication, redirect to the requested app.
-	    // But first, let's check that you're white-listed.
-	    // NOTE: this white-listing logic should be removed once our service
-	    // goes public.
-	    var authorized = false;
-	    for (var i = 0; i < config.USER_WHITELIST.length; i++) {
-		if (config.USER_WHITELIST[i] == request.user.email) {
-		    authorized = true;
-		    break;
-		}
-	    }
-	    if (authorized) {
-		var subdomain = request.session.subdomain || "www";
-		var url = request.app.get("PROTOCOL") + subdomain + "." +
-		    request.app.get("DOMAIN");
-	    } else {
-		var url = request.app.get("PROTOCOL") + "www." +
-		    request.app.get("DOMAIN") + "?email=" + request.user.email;
-		request.logout();
-	    }
+	    var subdomain = request.session.subdomain || "www";
+	    var url = request.app.get("PROTOCOL") + subdomain + "." +
+		request.app.get("DOMAIN");
 	    response.redirect(url);
 	});
 
