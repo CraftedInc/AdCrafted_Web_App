@@ -27,27 +27,11 @@ exports.createCraftedSpace = function(request, response) {
 	    },
 	    "date": {
 		"S": new Date().toISOString()
-	    },
-	    "image": {
-		"S": "null"
 	    }
 	}
     };
     for (var attr in cSpaceBody) {
-	// The image attribute is a Base64 encoded file and must be processed
-	// separately.
-	if (attr == "image" && !!cSpaceBody["image"]) {
-	    var file = utils.parseBase64Data(cSpaceBody[attr]);
-	    if (file.isBase64) {
-		var name = utils.generateKey(8);
-		var key = s3.generateCraftedSpaceKey(cSpaceID, name, file.ext);
-		s3.upload(file.body, key, "image/" + file.ext,
-			  function(err, data) {});
-		params.Item[attr] = {
-		    "S": s3.getCraftedSpaceFileURL(cSpaceID, name, file.ext)
-		};
-	    }
-	} else if (cSpaceBody[attr] instanceof Array) {
+	if (cSpaceBody[attr] instanceof Array) {
 	    params.Item[attr] = {"SS": cSpaceBody[attr]};
 	} else {
 	    params.Item[attr] = {"S": cSpaceBody[attr]};
@@ -173,20 +157,6 @@ exports.updateCraftedSpace = function(request, response) {
 	if (attr == "CSpaceID" || attr == "UserID") {
 	    // These attributes should not be updated.
 	    continue;
-	} else if (attr == "image") {
-	    var file = utils.parseBase64Data(cSpaceBody[attr]);
-	    if (file.isBase64) {
-		var name = utils.generateKey(8);
-		var key = s3.generateCraftedSpaceKey(cSpaceID, name, file.ext);
-		s3.upload(file.body, key, "image/" + file.ext,
-			  function(err, data) {});
-		params.AttributeUpdates[attr] = {
-		    "Value": {
-			"S": s3.getCraftedSpaceFileURL(cSpaceID,name,file.ext)
-		    },
-		    "Action": "PUT"
-		};
-	    }
 	} else if (cSpaceBody[attr] instanceof Array) {
 	    if (cSpaceBody[attr].length > 0) {
 		var uniqueTags = cSpaceBody[attr].filter(function(elem, pos) {
