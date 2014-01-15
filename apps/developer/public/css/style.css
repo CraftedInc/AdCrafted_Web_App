@@ -36,7 +36,7 @@ html, body {
 }
 .home-link {
     color: #999;
-    transition: 0.5s !important;
+    transition: 0.25s !important;
 }
 .home-link:hover {
     color: #5cb85c !important;
@@ -44,7 +44,7 @@ html, body {
 }
 .green-link {
     color: #5cb85c !important;
-    transition: 0.5s !important;
+    transition: 0.25s !important;
 }
 .green-link:hover {
     color: #DDD !important;
@@ -355,6 +355,9 @@ body {
     border-radius: 4px;
     padding: 9.5px;
     border: 1px solid #ccc;
+}
+.link-no-decoration {
+    transition: 0.25s;
 }
 .link-no-decoration:hover {
     text-decoration: none;
