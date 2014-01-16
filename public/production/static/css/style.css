@@ -322,6 +322,7 @@ pre.code {
     transition: 0.5s;
 }
 #logo {
+    font-weight: 700;
     margin-top: -3px;
     margin-right: 15px;
     padding-right: 0;
