@@ -417,6 +417,13 @@ function DownloadsCtrl($scope) {
 }
 
 /**
+ * Pricing controller.
+ */
+
+function PricingCtrl($scope) {
+}
+
+/**
  * Private functions.
  */
 
