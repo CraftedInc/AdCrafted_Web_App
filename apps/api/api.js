@@ -146,4 +146,24 @@ app.del("/v0/assets/:cSpaceID/:assetID",
 	utils.setUserIDOnRequest(),
 	assets.deleteAsset);
 
+// UPLOAD a file to an asset (POST).
+app.post("/v0/assets/:cSpaceID/:assetID/upload_file/:attrName",
+	utils.setUserIDOnRequest(),
+	 assets.upload("FILE"));
+
+// UPLOAD an image to an asset (POST).
+app.post("/v0/assets/:cSpaceID/:assetID/upload_image/:attrName",
+	utils.setUserIDOnRequest(),
+	 assets.upload("IMAGE"));
+
+// UPLOAD a file to an asset (PUT).
+app.put("/v0/assets/:cSpaceID/:assetID/upload_file/:attrName",
+	utils.setUserIDOnRequest(),
+	assets.upload("FILE"));
+
+// UPLOAD an image to an asset (PUT).
+app.put("/v0/assets/:cSpaceID/:assetID/upload_image/:attrName",
+	utils.setUserIDOnRequest(),
+	assets.upload("IMAGE"));
+
 exports.app = app;

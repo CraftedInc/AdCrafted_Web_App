@@ -120,8 +120,13 @@ S3.prototype.getAdImageURL = function(cSpaceID, adID, name, ext) {
  * @return {string} The url.
  */
 S3.prototype.getAssetFileURL = function(cSpaceID, assetID, name, ext) {
-    return this.endpoint + this.assetPrefix + "/" + cSpaceID + "/" + assetID +
-	"/" + name + "." + ext;
+    if (!!ext) {
+	return this.endpoint + this.assetPrefix + "/" + cSpaceID + "/" + assetID
+	+ "/" + name + "." + ext;
+    } else {
+	return this.endpoint + this.assetPrefix + "/" + cSpaceID + "/" + assetID
+	+ "/" + name;
+    }
 };
 
 /**
@@ -157,8 +162,12 @@ S3.prototype.generateAdKey = function(cSpaceID, adID, name, ext) {
  * @return {string} The key.
  */
 S3.prototype.generateAssetKey = function(cSpaceID, assetID, name, ext) {
-    return this.assetPrefix + "/" + cSpaceID + "/" + assetID + "/" + name +
+    if (!!ext) {
+	return this.assetPrefix + "/" + cSpaceID + "/" + assetID + "/" + name +
 	"." + ext;
+    } else {
+	return this.assetPrefix + "/" + cSpaceID + "/" + assetID + "/" + name;
+    }
 };
 
 /**
