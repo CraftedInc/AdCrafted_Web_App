@@ -180,6 +180,16 @@ app.del("/api/cspace/:cSpaceID/asset/:assetID",
 	utils.ensureAuthenticated(),
 	assets.deleteAsset);
 
+// UPLOAD a file to an asset.
+app.post("/api/cspace/:cSpaceID/asset/:assetID/upload_file/:attrName",
+	utils.ensureAuthenticated(),
+	 assets.upload("FILE"));
+
+// UPLOAD an image to an asset.
+app.post("/api/cspace/:cSpaceID/asset/:assetID/upload_image/:attrName",
+	utils.ensureAuthenticated(),
+	 assets.upload("IMAGE"));
+
 // GET the metrics for an asset.
 app.get("/api/cspace/:cSpaceID/asset/:assetID/metrics",
 	utils.ensureAuthenticated(),

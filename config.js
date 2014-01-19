@@ -37,6 +37,7 @@ config.NUMBER_TYPE = "NUMBER";
 config.DELETE_ATTRIBUTE_ACTION = "DELETE";
 config.UPDATE_ATTRIBUTE_ACTION = "UPDATE";
 config.MAX_FILE_SIZE_KB = 500;
+config.MAX_FILE_SIZE = 500000;
 
 /**
  * Local configuration.

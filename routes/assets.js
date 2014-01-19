@@ -13,6 +13,9 @@ var utils = require("../utils/utils");
 // Configuration.
 var config = require("../config");
 
+// File system, for reading uploaded files.
+var fs = require("fs");
+
 /**
  * Create a new Asset within the specified CraftedSpace.
  */
@@ -560,3 +563,126 @@ exports.updateMetrics = function(request, response) {
 	response.send(400, {message: "Invalid Request Body"});
     }
 };
+
+/**
+ * Upload an image or file.
+ */
+exports.upload = function(attr_type) {
+    return function(request, response) {
+	_upload(request, response, attr_type);
+    };
+};
+
+/**
+ * Private method to upload a file or image.
+ */
+function _upload(request, response, attr_type) {
+    var userID = request.user.id;
+    var db = response.app.get("db");
+    var s3 = response.app.get("s3");
+    var cSpaceID = request.params.cSpaceID;
+    var assetID = request.params.assetID;
+    var attrName = request.params.attrName;
+    var params = {
+	"TableName": response.app.get("AssetTable"),
+	"Key": {
+	    "CSpaceID": {
+		"S": cSpaceID
+	    },
+	    "AssetID" : {
+		"S": request.params.assetID + ""
+	    }
+	}
+    };
+    db.getItem(params, function(err, data) {
+	if (err) {
+	    response.send(500, {message: "An Error Occurred"});
+	} else if (utils.isEmpty(data)) {
+	    response.send(500, {message: "Asset Doesn't Exist"});
+	} else {
+	    if (!data.Item.UserID || data.Item.UserID.S != userID) {
+		response.send(403, {message: "Not Authorized"});
+	    } else {
+		// Grab the first file (only one is processed per request).
+		for (var file in request.files) {
+		    var path = request.files[file].path;
+		    var size = request.files[file].size;
+		    var type = request.files[file].type;
+		    var name = request.files[file].name;
+		    break;
+		}
+		if (!path || !size || !type || !name) {
+		    response.send(500, {message: "Couldn't Read File"});
+		} else if (size > config.MAX_FILE_SIZE) {
+		    response.send(500, {
+			message: "File Exceeds Maximum Size: " +
+			    config.MAX_FILE_SIZE
+		    });
+		} else {
+		    fs.readFile(path, function (err, data) {
+			if (err) {
+			    response.send(500, {
+				message: "Could Not Read File"
+			    });
+			} else {
+			    // Get the file extension, if it's provided.
+			    var parts = name.match(/[^\\]*\.(\w+)$/);
+			    var ext = !!parts && parts.length > 1 ? parts[1] :
+				null;
+			    name = utils.generateKey(8);
+			    var key = s3.generateAssetKey(cSpaceID,
+							  assetID,
+							  name, ext);
+			    s3.upload(data, key, type, function(err, data) {
+				if (err) {
+				    response.send(500, {
+					message: "Error Uploading File"
+				    });
+				} else {
+				    // Upload successful, now update the asset.
+				    params = {
+					"TableName": response.app.get("AssetTable"),
+					"Key": {
+					    "CSpaceID": {
+						"S": cSpaceID
+					    },
+					    "AssetID": {
+						"S": assetID + ""
+					    }
+					},
+					"AttributeUpdates": {}
+				    };
+				    params.AttributeUpdates[attrName] = {
+					"Value": {
+					    "S": '{"' +
+						config.ATTRIBUTE_TYPE_KEY +
+						'":"' + attr_type + '","' +
+						config.ATTRIBUTE_VALUE_KEY +
+						'":"' +
+						s3.getAssetFileURL(cSpaceID,
+								   assetID,
+								   name, ext) +
+						'"}'
+					},
+					"Action": "PUT"
+				    };
+				    db.updateItem(params, function(err, data) {
+					if (err) {
+					    response.send(500, {
+						message: "An Error Occurred"
+					    });
+					} else {
+					    response.send(200, {
+						message: "File Uploaded to Asset"
+					    });
+					}
+				    });
+				}
+			    });
+			}
+		    });
+		}
+	    }
+	}
+    });
+}
