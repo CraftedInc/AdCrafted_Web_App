@@ -193,9 +193,15 @@ function CreateAssetCtrl($scope, $routeParams, AssetCollection,
 	$scope.errorMessage = null;
 	if (newAssetForm.$valid) {
 	    $scope.attributes.forEach(function(attribute) {
+		if (attribute["Type"] == "STRING") {
+		    var value = angular.toJson(attribute["Value"]);
+		    value = value.substring(1, value.length - 1);
+		} else {
+		    var value = attribute["Value"];
+		}
 		$scope.asset[attribute["Name"]]= {
 		    "Type": attribute["Type"],
-		    "Value": attribute["Value"]
+		    "Value": value
 		};
 	    });
 	    $scope.waiting = true;
@@ -293,6 +299,12 @@ function EditAssetCtrl($scope, $routeParams, SingleAsset, CustomFileReader) {
 	if (EditAssetForm.$valid) {
 	    $scope.waiting = true;
 	    $scope.attributes.forEach(function(attribute) {
+		if (attribute["Type"] == "STRING") {
+		    var value = angular.toJson(attribute["Value"]);
+		    value = value.substring(1, value.length - 1);
+		} else {
+		    var value = attribute["Value"];
+		}
 		// Check that the attribute is not an existing file or image,
 		// which is manifested by a URL referencing a resource on the
 		// Appcrafted CDN.
@@ -301,7 +313,7 @@ function EditAssetCtrl($scope, $routeParams, SingleAsset, CustomFileReader) {
 		    !isValidURL(attribute["Value"])) {
 		    $scope.newAsset[attribute["Name"]]= {
 			"Type": attribute["Type"],
-			"Value": attribute["Value"],
+			"Value": value,
 			"Action": "UPDATE"
 		    };
 		}
