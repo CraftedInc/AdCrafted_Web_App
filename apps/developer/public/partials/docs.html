@@ -101,15 +101,6 @@
 	  <br>
 	  <p><em>Arguments (as JSON data):</em></p>
 	  <br>
-	  <p><span class="green">Attribute_Name</span> <code>string</code></p>
-	  <p>The name of the attribute.</p>
-	  <p><span class="green">Type</span> <code>string</code></p>
-	  <p>The attribute type.
-	    <pre>"STRING", "NUMBER", "STRING_ARRAY", "NUMBER_ARRAY", "URL", "FILE", "IMAGE"</pre>
-	  </p>
-	  <p><span class="green">Value</span> <span class="red">(depends on the Type)</span></p>
-	  <p><span class="green">Asset_ID</span> (optional) <code>string</code></p>
-	  <p>An optional ID for the asset. If none is provided, one will be generated automatically.</p>
 	  <pre>{
   &lt;<span class="green">Attribute_Name</span>&gt;: {
     "Type": &lt;<span class="green">Type</span>&gt;,
@@ -117,6 +108,15 @@
   },
   "AssetID": &lt;<span class="green">Asset_ID</span>&gt;
 }</pre>
+	  <p><code>string</code> <span class="green">Attribute_Name</span></p>
+	  <p>The name of the attribute.</p>
+	  <p><code>string</code> <span class="green">Type</span></p>
+	  <p>The attribute type.
+	    <pre>"STRING", "NUMBER", "STRING_ARRAY", "NUMBER_ARRAY", "URL"</pre>
+	  </p>
+	  <p><span class="green">Value</span> <span class="red">(depends on the Type)</span></p>
+	  <p><code>string</code> <span class="green">Asset_ID</span> (optional)</p>
+	  <p>An optional ID for the asset. If none is provided, one will be generated automatically.</p>
 	  <br>
 	  <p><em>Response:</em></p>
 	  <br>
@@ -129,10 +129,45 @@
 	  <br>
 	  <p><em>cURL example:</em></p>
 	  <br>
-	  <pre>$ curl http://api.appcrafted.com/v0/assets/<span class="red">&lt;CraftedSpaceID&gt;</span> \
+	  <pre>$ curl http://api.appcrafted.com/v0/assets/<span class="red">&lt;ContainerID&gt;</span> \
   -X POST -H 'Content-Type: application/json' \
   -d '{"caption": {"Type": "STRING", "Value": "Hello, world"}}' \
   -u <span class="red">&lt;AccessKey&gt;:</span></pre>
+	</div>
+      </div>
+      <div class="row docs-row">
+	<div class="col-xs-2 align-right">
+	  <p><em>Upload a File</em></p>
+	</div>
+	<div class="col-xs-10">
+	  <p><strong>POST</strong> <code>/v0/assets/&lt;ContainerID&gt;/&lt;AssetID&gt;/upload_file/&lt;AttrName&gt;</code></p>
+	  <p>Creates an asset attribute with type <code>FILE</code> containing a link to the file hosted on the Appcrafted CDN.</p>
+	  <br>
+	  <p><em>Parameters:</em></p>
+	  <p><span class="green">ContainerID</span></p>
+	  <p>The ID of the container.</p>
+	  <p><span class="green">AssetID</span></p>
+	  <p>The ID of the asset within the container.</p>
+	  <p><span class="green">AttrName</span></p>
+	  <p>The name of the file attribute. Must contain only URL-legal characters.</p>
+	  <br>
+	  <p><em>Request body:</em></p>
+	  <p>The file to be uploaded.</p>
+	  <br>
+	  <p><em>cURL example:</em></p>
+	  <pre>$ curl \
+  http://api.appcrafted.com/v0/assets/<span class="red">&lt;ContainerID&gt;</span>/<span class="red">&lt;AssetID&gt;</span>/upload_file/<span class="red">&lt;AttrName&gt</span> \
+  -X POST -F file=@localfile.txt \
+  -u <span class="red">&lt;AccessKey&gt;:</span></pre>
+	</div>
+      </div>
+      <div class="row docs-row">
+	<div class="col-xs-2 align-right">
+	  <p><em>Upload an Image</em></p>
+	</div>
+	<div class="col-xs-10">
+	  <p><strong>POST</strong> <code>/v0/assets/&lt;ContainerID&gt;/&lt;AssetID&gt;/upload_image/&lt;AttrName&gt;</code></p>
+	  <p>Same as uploading a file, except this creates an attribute with Type <code>IMAGE</code>. This enables the Unity plugin to process the image as a texture</p>
 	</div>
       </div>
       <div class="row docs-row">
@@ -165,7 +200,7 @@
 	  <br>
 	  <p><em>cURL example:</em></p>
 	  <br>
-	  <pre>$ curl http://api.appcrafted.com/v0/assets/<span class="red">&lt;CraftedSpaceID&gt;</span>/<span class="red">&lt;AssetID&gt;</span> -u <span class="red">&lt;AccessKey&gt;</span>:</pre>
+	  <pre>$ curl http://api.appcrafted.com/v0/assets/<span class="red">&lt;ContainerID&gt;</span>/<span class="red">&lt;AssetID&gt;</span> -u <span class="red">&lt;AccessKey&gt;</span>:</pre>
 	</div>
       </div>
       <div class="row docs-row">
@@ -205,7 +240,7 @@
 	  <br>
 	  <p><em>cURL example:</em></p>
 	  <br>
-	  <pre>$ curl http://api.appcrafted.com/v0/assets/<span class="red">&lt;CraftedSpaceID&gt;</span>/all -u <span class="red">&lt;AccessKey&gt;</span>:</pre>
+	  <pre>$ curl http://api.appcrafted.com/v0/assets/<span class="red">&lt;ContainerID&gt;</span>/all -u <span class="red">&lt;AccessKey&gt;</span>:</pre>
 	</div>
       </div>
       <div class="row docs-row">
@@ -246,7 +281,7 @@
 	  <br>
 	  <p><em>cURL example:</em></p>
 	  <br>
-	  <pre>$ curl http://api.appcrafted.com/v0/assets/<span class="red">&lt;CraftedSpaceID&gt;</span>/<span class="red">&lt;AssetID&gt;</span> \
+	  <pre>$ curl http://api.appcrafted.com/v0/assets/<span class="red">&lt;ContainerID&gt;</span>/<span class="red">&lt;AssetID&gt;</span> \
   -X PUT -H 'Content-Type: application/json' \
   -d '{"myAttribute": {"Action": "UPDATE", "Type": "NUMBER", "Value": 42}}' \
   -u <span class="red">&lt;AccessKey&gt;:</span></pre>
@@ -268,7 +303,7 @@
 	  <br>
 	  <p><em>cURL example:</em></p>
 	  <br>
-	  <pre>$ curl http://api.appcrafted.com/v0/assets/<span class="red">&lt;CraftedSpaceID&gt;</span>/<span class="red">&lt;AssetID&gt;</span> \
+	  <pre>$ curl http://api.appcrafted.com/v0/assets/<span class="red">&lt;ContainerID&gt;</span>/<span class="red">&lt;AssetID&gt;</span> \
   -X DELETE -u <span class="red">&lt;AccessKey&gt;:</span></pre>
 	</div>
       </div>

@@ -106,7 +106,7 @@
     <div ng-repeat="attr in attributesToShow | limitTo:4" class="col-xs-2 no-wrap">
       <div ng-switch on="Asset[attr]['Type']">
 	<div ng-switch-when="FILE">
-	  <a class="home-link" href="{{Asset[attr]['Value']}}"><i class="fa fa-download"></i> Download</a>
+	  <a class="home-link" href="{{Asset[attr]['Value']}}" target="_blank"><i class="fa fa-download"></i> Download</a>
 	</div>
 	<div ng-switch-when="IMAGE">
 	  <a class="home-link" href="{{Asset[attr]['Value']}}" target="_blank"><i class="fa fa-picture-o"></i> View</a>
