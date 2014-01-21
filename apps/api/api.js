@@ -171,8 +171,53 @@ app.put("/v0/assets/:cSpaceID/:assetID/upload_image/:attrName",
  */
 
 // CREATE an asset in the specified CraftedSpace.
+app.post("/v1/assets/:cSpaceID",
+	 utils.authenticateAPIRequest(),
+	 assets.createAsset);
+
+// RETRIEVE all Assets within the specified CraftedSpace.
+app.get("/v1/assets/:cSpaceID/all",
+	utils.authenticateAPIRequest(),
+	assets.getAllAssetsInCraftedSpace);
+
+// RETRIEVE a single Asset.
 app.get("/v1/assets/:cSpaceID/:assetID",
 	utils.authenticateAPIRequest(),
 	assets.getAsset);
+
+// UPDATE an asset.
+app.put("/v1/assets/:cSpaceID/:assetID",
+	utils.authenticateAPIRequest(),
+	assets.updateAsset);
+
+// UPDATE an asset (for clients that don't support HTTP PUT).
+app.post("/v1/assets/:cSpaceID/:assetID/update_post",
+	 utils.authenticateAPIRequest(),
+	 assets.updateAsset);
+
+// DELETE an asset without deleting the CraftedSpace.
+app.del("/v1/assets/:cSpaceID/:assetID",
+	utils.authenticateAPIRequest(),
+	assets.deleteAsset);
+
+// UPLOAD a file to an asset (POST).
+app.post("/v1/assets/:cSpaceID/:assetID/upload_file/:attrName",
+	 utils.authenticateAPIRequest(),
+	 assets.upload("FILE"));
+
+// UPLOAD an image to an asset (POST).
+app.post("/v1/assets/:cSpaceID/:assetID/upload_image/:attrName",
+	 utils.authenticateAPIRequest(),
+	 assets.upload("IMAGE"));
+
+// UPLOAD a file to an asset (PUT).
+app.put("/v1/assets/:cSpaceID/:assetID/upload_file/:attrName",
+	utils.authenticateAPIRequest(),
+	assets.upload("FILE"));
+
+// UPLOAD an image to an asset (PUT).
+app.put("/v1/assets/:cSpaceID/:assetID/upload_image/:attrName",
+	utils.authenticateAPIRequest(),
+	assets.upload("IMAGE"));
 
 exports.app = app;
