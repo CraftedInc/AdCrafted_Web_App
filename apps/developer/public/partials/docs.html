@@ -100,7 +100,6 @@
 	  <p>Creates a new asset in the specified container.</p>
 	  <br>
 	  <p><em>Arguments (as JSON data):</em></p>
-	  <br>
 	  <pre>{
   &lt;<span class="green">Attribute_Name</span>&gt;: {
     "Type": &lt;<span class="green">Type</span>&gt;,
@@ -119,7 +118,6 @@
 	  <p>An optional ID for the asset. If none is provided, one will be generated automatically.</p>
 	  <br>
 	  <p><em>Response:</em></p>
-	  <br>
 	  <p>The Appcrafted server will respond with <code>HTTP 201</code> and JSON.</p>
 	  <pre>{
   "message": "New Asset Created",
@@ -128,7 +126,6 @@
 }</pre>
 	  <br>
 	  <p><em>cURL example:</em></p>
-	  <br>
 	  <pre>$ curl http://api.appcrafted.com/v0/assets/<span class="red">&lt;ContainerID&gt;</span> \
   -X POST -H 'Content-Type: application/json' \
   -d '{"caption": {"Type": "STRING", "Value": "Hello, world"}}' \
@@ -179,7 +176,6 @@
 	  <p>Retrieves a single asset.</p>
 	  <br>
 	  <p><em>Response:</em></p>
-	  <br>
 	  <pre>{
   "Text": {
     "Type": "STRING",
@@ -199,7 +195,6 @@
 }</pre>
 	  <br>
 	  <p><em>cURL example:</em></p>
-	  <br>
 	  <pre>$ curl http://api.appcrafted.com/v0/assets/<span class="red">&lt;ContainerID&gt;</span>/<span class="red">&lt;AssetID&gt;</span> -u <span class="red">&lt;AccessKey&gt;</span>:</pre>
 	</div>
       </div>
@@ -212,7 +207,6 @@
 	  <p>Retrieves all assets from the specified container.</p>
 	  <br>
 	  <p><em>Response:</em></p>
-	  <br>
 	  <p>Assets will be returned in an array named <code>Assets</code>. For example, this container holds one asset with three attributes (<em>Text</em>, <em>Link</em>, and <em>Image</em>). Note that <em>Image</em> holds a reference to the Appcrafted CDN.</p>
 	  <pre>{
   "message": "Success",
@@ -239,7 +233,6 @@
 }</pre>
 	  <br>
 	  <p><em>cURL example:</em></p>
-	  <br>
 	  <pre>$ curl http://api.appcrafted.com/v0/assets/<span class="red">&lt;ContainerID&gt;</span>/all -u <span class="red">&lt;AccessKey&gt;</span>:</pre>
 	</div>
       </div>
@@ -256,7 +249,6 @@
 	  <p>Updates or deletes the attributes of the specified asset depending on the supplied JSON.</p>
 	  <br>
 	  <p><em>Update</em> an attribute:</p>
-	  <br>
 	  <pre>{
   &lt;<span class="green">Attribute_Name&gt;</span>: {
     "Action": "UPDATE",
@@ -266,7 +258,6 @@
 }</pre>
 	  <br>
 	  <p><em>Delete</em> an attribute:</p>
-	  <br>
 	  <pre>{
   &lt;<span class="green">Attribute_Name&gt;</span>: {
     "Action": "DELETE"
@@ -274,13 +265,11 @@
 }</pre>
 	  <br>
 	  <p><em>Response:</em></p>
-	  <br>
 	  <pre>{
   "message": "Asset Updated"
 }</pre>
 	  <br>
 	  <p><em>cURL example:</em></p>
-	  <br>
 	  <pre>$ curl http://api.appcrafted.com/v0/assets/<span class="red">&lt;ContainerID&gt;</span>/<span class="red">&lt;AssetID&gt;</span> \
   -X PUT -H 'Content-Type: application/json' \
   -d '{"myAttribute": {"Action": "UPDATE", "Type": "NUMBER", "Value": 42}}' \
@@ -296,13 +285,11 @@
 	  <p>Deletes the specified asset.</p>
 	  <br>
 	  <p><em>Response:</em></p>
-	  <br>
 	  <pre>{
   "message": "Asset Deleted"
 }</pre>
 	  <br>
 	  <p><em>cURL example:</em></p>
-	  <br>
 	  <pre>$ curl http://api.appcrafted.com/v0/assets/<span class="red">&lt;ContainerID&gt;</span>/<span class="red">&lt;AssetID&gt;</span> \
   -X DELETE -u <span class="red">&lt;AccessKey&gt;:</span></pre>
 	</div>
