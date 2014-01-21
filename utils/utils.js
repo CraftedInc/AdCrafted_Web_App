@@ -7,6 +7,11 @@
 var config = require("./../config");
 
 /**
+ * Crypto library for computing HMAC-SHA1 signatures.
+ */
+var crypto = require("crypto");
+
+/**
  * Tests whether an object is empty (contains no attributes of its own).
  * @param {Object} obj The object to test.
  * @return {boolean} Whether the object is empty.
@@ -253,8 +258,12 @@ exports.generateKey = function(length) {
 /**
  * Computes the signature of the request using the provided secret key.
  */
-function computeSignature(request, secretKey) {
-    return secretKey;
+function computeSignature(request, key) {
+    var method = request.method;
+    var host = request.headers["host"];
+    var url = request.url;
+    var message = method + "\n" + host + "\n" + url;
+    return crypto.createHmac("sha1", key).update(message).digest("base64");
 }
 
 /**

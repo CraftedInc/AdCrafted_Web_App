@@ -113,7 +113,7 @@ app.configure(function() {
 });
 
 /**
- * The Web API.
+ * The Web API v0 (no request signing).
  */
 
 // CREATE an asset in the specified CraftedSpace.
@@ -165,5 +165,14 @@ app.put("/v0/assets/:cSpaceID/:assetID/upload_file/:attrName",
 app.put("/v0/assets/:cSpaceID/:assetID/upload_image/:attrName",
 	utils.setUserIDOnRequest(),
 	assets.upload("IMAGE"));
+
+/**
+ * The Web API v1 (with request signing).
+ */
+
+// CREATE an asset in the specified CraftedSpace.
+app.get("/v1/assets/:cSpaceID/:assetID",
+	utils.authenticateAPIRequest(),
+	assets.getAsset);
 
 exports.app = app;
