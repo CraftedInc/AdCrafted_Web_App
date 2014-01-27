@@ -13,6 +13,10 @@ var fs     = require("fs");
 var contactEmailTemplate =
     jade.compile(fs.readFileSync(__dirname + "/../views/emails/contact.jade"));
 
+var contactEmailTemplateExt =
+    jade.compile(fs.readFileSync(
+	__dirname + "/../views/emails/contact_external.jade"));
+
 // Collect email, role, and comment.
 exports.collectEmail = function(request, response) {
     var ses = response.app.get("ses");
@@ -53,6 +57,45 @@ exports.collectEmail = function(request, response) {
 	} else {
 	    response.send({"status": 200,
 			   "message": "Success"});
+	}
+    });
+};
+
+// Collect email, role, and comment.
+exports.collectEmailExternal = function(request, response) {
+    var ses = response.app.get("ses");
+    var email = request.body.email || "Email not provided";
+    var appName = request.body.appName || "Unknown App";
+    var html = contactEmailTemplateExt(
+	{email: email,
+	 appName: appName}
+    );
+    var params = {
+	"Source": config.NOTIFICATIONS_EMAIL,
+	"Destination": {
+	    "ToAddresses": config.ADMIN_EMAILS
+	},
+	"Message": {
+	    "Subject": {
+		"Data": "[" + appName + "] Email Submitted!"
+	    },
+	    "Body": {
+		"Html": {
+		    "Data": html
+		}
+	    }
+	}
+    };
+    ses.sendEmail(params, function(err, data) {
+	if (err) {
+	    console.log(err);
+	    response.send(500, {
+		message: "Error! Please try again."
+	    });
+	} else {
+	    response.send({
+		"message": "Success"
+	    });
 	}
     });
 };

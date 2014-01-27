@@ -17,7 +17,7 @@ config.USER_WHITELIST = ["jbpasko@gmail.com",
 			 "michael.nadel@gmail.com", "ianrosenwach@gmail.com",
 			 "zachaikman@gmail.com", "domagoj.baronica@gmail.com"];
 config.ADMIN_EMAILS = ["james@adcrafted.com", "brandon@adcrafted.com"];
-config.NOTIFICATIONS_EMAIL = "AppCrafted Notifications <notifications@appcrafted.com>";
+config.NOTIFICATIONS_EMAIL = "Appcrafted Notifications <notifications@appcrafted.com>";
 config.CSPACE_USER_ID_INDEX = "CSpaceUserID-INDEX";
 config.ASSET_USER_ID_INDEX = "AssetUserID-INDEX";
 config.ALLOW_ORIGINS = "*";

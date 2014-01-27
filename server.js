@@ -202,6 +202,9 @@ function init() {
     // Collect an email.
     app.post("/email", landing.collectEmail);
 
+    // Collect an email from an external landing page.
+    app.post("/collect_email", landing.collectEmailExternal);
+
     app.listen(process.env.PORT || 8888);
 }
 
